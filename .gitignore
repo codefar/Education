@@ -48,3 +48,9 @@ project_libs/Android-PullToRefresh/extras/PullToRefreshListFragment/project.prop
 project_libs/Android-PullToRefresh/extras/PullToRefreshViewPager/project.properties
 
 project_libs/Android-PullToRefresh/library/project.properties
+
+project_libs/adapter-core/bin/R.txt
+
+project_libs/adapter-core/bin/jarlist.cache
+
+project_libs/adapter-core/.settings/org.eclipse.jdt.core.prefs
