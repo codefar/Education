@@ -31,7 +31,7 @@
  * constructor.
  */
 
-package com.souyidai.investment.android.common;
+package com.education.common;
 
 import java.io.IOException;
 import java.net.InetAddress;

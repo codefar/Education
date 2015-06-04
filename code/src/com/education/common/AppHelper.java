@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.common;
+package com.education.common;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,20 +29,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.souyidai.investment.android.Constants;
-import com.souyidai.investment.android.LoginActivity;
-import com.souyidai.investment.android.MainActivity;
-import com.souyidai.investment.android.R;
-import com.souyidai.investment.android.SydApp;
-import com.souyidai.investment.android.entity.Share;
-import com.souyidai.investment.android.entity.User;
-import com.souyidai.investment.android.utils.LogUtil;
+import com.education.EduApp;
+import com.education.Constants;
+import com.education.LoginActivity;
+import com.education.R;
+import com.education.EduApp;
+import com.education.entity.User;
+import com.education.utils.LogUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,7 +48,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import com.souyidai.investment.android.widget.ShareDialog;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;
@@ -74,13 +67,13 @@ import org.apache.http.protocol.HTTP;
 public class AppHelper {
 
     private static final String TAG = "AppHelper";
-    private static final boolean DEBUG = SydApp.DEBUG;
+    private static final boolean DEBUG = EduApp.DEBUG;
 
-    public static Intent makeLogoutIntent(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return intent;
-    }
+//    public static Intent makeLogoutIntent(Context context) {
+//        Intent intent = new Intent(context, MainActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        return intent;
+//    }
 
     public static void startLauncher(Context context) {
         Intent intent = new Intent();
@@ -125,40 +118,6 @@ public class AppHelper {
                             : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
         }
-    }
-
-    private static int sBindTimes = 0;
-    public static void bindJpush(final Context context, final String uid, boolean force) {
-        if (!force && sBindTimes >= 3) {
-            if (DEBUG) {
-                Log.e("JPUSH_BIND", "bind jpush failed! uid=" + uid);
-            }
-            return;
-        }
-
-        if (force) {
-            sBindTimes = 0;
-        }
-
-        final String mixId = LogUtil.md5Hex(String.valueOf(uid));
-        JPushInterface.setAlias(context, mixId, new TagAliasCallback() {
-            @Override
-            public void gotResult(int i, String s, Set<String> strings) {
-                sBindTimes++;
-                if (i != 0) {
-                    if (DEBUG) {
-                        Log.w("JPUSH_BIND", "status: " + i);
-                        bindJpush(context, uid, false);
-                    }
-                } else {
-                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-                    sp.edit().putBoolean(Constants.SP_COLUMN_USER_BIND_JPUSH, true).apply();
-                    if (DEBUG) {
-                        Log.d("JPUSH_BIND", "bind successful! uid:" + uid + " mixId: " + mixId);
-                    }
-                }
-            }
-        });
     }
 
     public static HttpClient getNewHttpClient() {
@@ -240,21 +199,6 @@ public class AppHelper {
         return  (s == null || s.equals("")) ? "0.00" : s;
     }
 
-    public static void initImageLoader(Context context) {
-        ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(context)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .discCacheSize(50 * 1024 * 1024) // 50 Mb
-                .tasksProcessingOrder(QueueProcessingType.LIFO);
-
-        if (SydApp.DEBUG) {
-            builder.writeDebugLogs();
-        }
-        ImageLoaderConfiguration config = builder.build();
-        // Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(config);
-    }
-
     public static boolean saveBitmap(Bitmap bitmap, String filename) {
         boolean status = true;
         FileOutputStream out = null;
@@ -274,21 +218,6 @@ public class AppHelper {
             }
             return status;
         }
-    }
-
-    public static void call(final Context context) {
-        new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT)
-                .setTitle(R.string.call_dialog_title)
-                .setMessage(R.string.customer_service_number_display)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.call,  new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +   context.getText(R.string.customer_service_number_real)));
-                        context.startActivity(intent);
-                    }
-                })
-                .show();
     }
 
     public static void showLogoutDialog(final Context context) {
@@ -416,14 +345,6 @@ public class AppHelper {
             }
             v.setVisibility(View.GONE);
         }
-    }
-
-    public static void showTransferInterestSettlementTips(Context context) {
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.transfer_interest_settlement_title)
-                .setMessage(R.string.transfer_interest_settlement_msg)
-                .setPositiveButton(R.string.confirm, null)
-                .show();
     }
 
     public static String formatTimeToHMS(long time) {
@@ -555,7 +476,7 @@ public class AppHelper {
                 }
             }
         } catch (UnsupportedEncodingException e) {
-            if (SydApp.DEBUG) {
+            if (EduApp.DEBUG) {
                 Log.e("SydApp", "setParamForUrl error!", e);
             }
             return url;
@@ -563,19 +484,6 @@ public class AppHelper {
         Log.d("NEW_URL", "url: " + urlHead);
         map.clear();
         return urlHead;
-    }
-
-    public static void showShareDialog(Context context, final Share share) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.activity_share, null);
-        final ShareDialog dialog = new ShareDialog(context, share);
-        view.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
     }
 
     public static int[] getTimeArray(long time) {
@@ -592,17 +500,5 @@ public class AppHelper {
         array[2] = s;
         array[3] = ms;
         return array;
-    }
-
-    public static AlertDialog showDialog(Context context, String content, int leftBtnStr, int rightBtnStr, DialogInterface.OnClickListener leftListener, DialogInterface.OnClickListener rightListener) {
-        View view = View.inflate(context, R.layout.accept_voice_validator_dialog, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
-        builder.setView(view);
-        builder.setCancelable(false);
-        TextView contentText = (TextView) view.findViewById(R.id.dialog_content);
-        contentText.setText(content);
-        builder.setNegativeButton(leftBtnStr, leftListener);
-        builder.setPositiveButton(rightBtnStr, rightListener);
-        return builder.show();
     }
 }

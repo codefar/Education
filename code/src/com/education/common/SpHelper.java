@@ -1,9 +1,9 @@
-package com.souyidai.investment.android.common;
+package com.education.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import com.souyidai.investment.android.Constants;
+import com.education.Constants;
 
 /**
  * Created by su on 15-3-30.

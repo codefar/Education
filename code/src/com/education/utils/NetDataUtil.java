@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.utils;
+package com.education.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -7,7 +7,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import com.souyidai.investment.android.SydApp;
+import com.education.EduApp;
 
 /**
  * Created by su on 14-6-3.
@@ -15,7 +15,7 @@ import com.souyidai.investment.android.SydApp;
 public class NetDataUtil {
 
     private static final String TAG = "NetDataUtil";
-    private static final boolean DEBUG = SydApp.DEBUG;
+    private static final boolean DEBUG = EduApp.DEBUG;
 
     private static void log(String fieldName, String content) {
         if (DEBUG) {

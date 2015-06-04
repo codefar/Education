@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_20">#43FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="clickable_text">#006AC7</color>
+    <color name="hyperlink_text">@color/clickable_text</color>
+    <color name="bg_gray">#EFEFEF</color>
+    <color name="disable_text">#C2C2C2</color>
+
+</resources>

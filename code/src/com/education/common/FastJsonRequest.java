@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.common;
+package com.education.common;
 
 import android.os.Build;
 import android.util.Log;
@@ -11,9 +11,9 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.souyidai.investment.android.Constants;
-import com.souyidai.investment.android.SydApp;
-import com.souyidai.investment.android.utils.LogUtil;
+import com.education.Constants;
+import com.education.EduApp;
+import com.education.utils.LogUtil;
 
 import java.net.URI;
 import java.nio.charset.Charset;
@@ -47,16 +47,7 @@ public class FastJsonRequest<T> extends Request<T> {
         if (mHeaders == null) {
             mHeaders = new HashMap<String, String>();
         }
-        mHeaders.put("user-agent", "Android/" + SydApp.sVersionName
-                + " (" + SydApp.sPackageName + ";" + Build.VERSION.RELEASE + ";" + SydApp.sScreenWidth + ";" + SydApp.sScreenHeight + ";" + Build.MANUFACTURER + ";" + Build.MODEL + ")");
-        URI uri = URI.create(mUrl);
-        mHeaders.put("authToken", LogUtil.md5Hex(Constants.AUTH_TOKEN_SECRET_KEY + uri.getPath()));
-        mHeaders.put("deviceId", SydApp.sDeviceId);
-        mHeaders.put("umeng_channel", SydApp.sUMengChannel);
-        String xAuthToken = SpHelper.getXAuthToken();
-        if (xAuthToken != null && !xAuthToken.equals("")) {
-            mHeaders.put(Constants.SP_COLUMN_X_AUTH_TOKEN, xAuthToken);
-        }
+
         this.mListener = listener;
 
         setShouldCache(false);
@@ -81,9 +72,6 @@ public class FastJsonRequest<T> extends Request<T> {
         String json = new String(response.data, Charset.forName("UTF-8"));
         Map<String, String> headers = response.headers;
         String xAuthToken = headers.get(Constants.SP_COLUMN_X_AUTH_TOKEN);
-        if (xAuthToken != null && !xAuthToken.equals("")) {
-            SpHelper.setXAuthToken(xAuthToken);
-        }
 //        if (SydApp.DEBUG) {
 //            Log.d("json_data", "json: \n" + new String(response.data));
 //        }
