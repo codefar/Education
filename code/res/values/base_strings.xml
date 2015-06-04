@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="download_new_version">下载新版本</string>
+    <string name="download_later">稍后下载</string>
+    <string name="ok">OK</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="settings">设置</string>
+    <string name="known">知道了</string>
+    <string name="percent_sign">%</string>
+    <string name="save_successfully">图片已保存到相册</string>
+    <string name="save_failed">保存失败</string>
+    <string name="login_immediately">立即登录</string>
+    <string name="logout">退出登录</string>
+    <string name="logout_safely">安全退出</string>
+    <string name="logout_msg">确定退出登录？</string>
+    <string name="check_version">版本检测</string>
+    <string name="hint">提示</string>
+    <string name="spec">说明</string>
+    <string name="current_version">当前版本为<xliff:g id="version">%s</xliff:g></string>
+    <string name="loading_error">加载错误，请重试</string>
+    <string name="logout_dialog_message">您想退出当前账号的登录状态吗？</string>
+    <string name="load_error">数据加载失败</string>
+    <string name="reload_hint_text">点击重新加载</string>
+
+</resources>

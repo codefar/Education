@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.utils;
+package com.education.utils;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.util.Log;
 import com.android.volley.VolleyError;
-import com.souyidai.investment.android.Constants;
-import com.souyidai.investment.android.SydApp;
+import com.education.EduApp;
+import com.education.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,7 +25,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class LogUtil {
 
-    public static final boolean DEBUG = SydApp.DEBUG;
+    public static final boolean DEBUG = EduApp.DEBUG;
     private static final String TAG = "LogUtil";
 
     public static final Charset UTF_8 = Charset.forName("UTF-8");

@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.utils;
+package com.education.utils;
 
 
 import android.graphics.Bitmap;

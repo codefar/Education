@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.common;
+package com.education.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,10 +6,10 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import com.souyidai.investment.android.Constants;
-import com.souyidai.investment.android.SydApp;
-import com.souyidai.investment.android.utils.LogUtil;
-import com.souyidai.investment.android.utils.NetDataUtil;
+import com.education.EduApp;
+import com.education.Constants;
+import com.education.utils.LogUtil;
+import com.education.utils.NetDataUtil;
 
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -23,7 +23,7 @@ import java.util.Date;
  */
 
 public class PhoneService {
-    private static final boolean DEBUG = SydApp.DEBUG;
+    private static final boolean DEBUG = EduApp.DEBUG;
     private static final String TAG = "PhoneService";
 
     private static PhoneService sPhoneService;

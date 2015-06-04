@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.common;
+package com.education.common;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -6,8 +6,9 @@ import android.util.Log;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.Response;
-import com.souyidai.investment.android.R;
-import com.souyidai.investment.android.SydApp;
+import com.education.EduApp;
+import com.education.R;
+import com.education.EduApp;
 
 /**
  * Created by su on 15-3-30.
@@ -31,25 +32,7 @@ public abstract class SydVolleyResponseListener implements Response.Listener<JSO
         * 699 系统维护
         * */
     public void onResponse(JSONObject response) {
-        Integer errorCode = response.getInteger("errorCode");
-        if (errorCode != null) {
-            if (SydApp.DEBUG) {
-                Log.d("SydVolleyResponseListener", "url: " + mUrl + "\t errorCode: " + errorCode);
-            }
-            if (errorCode == 302) {//302 重新登录
-                if (mContext != null) {
-                    new AlertDialog.Builder(mContext)
-                            .setMessage("您的登录状态已经过期，请重新登录")
-                            .setPositiveButton(R.string.confirm, null)
-                            .show();
-                }
-            } else if (errorCode == 699) {//699 系统维护
-                if (mContext != null) {
-                    Toast.makeText(mContext, "平台正在停机维护,请稍侯", Toast.LENGTH_LONG).show();
-                }
-            }
-            onSuccessfulResponse(response);
-        }
+        onSuccessfulResponse(response);
     }
 
     public abstract void onSuccessfulResponse(JSONObject response);

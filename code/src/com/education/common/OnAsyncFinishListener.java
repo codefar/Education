@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.common;
+package com.education.common;
 
 /**
  * Created by su on 15-4-10.
