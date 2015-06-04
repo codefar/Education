@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.utils.location;
+package com.education.utils.location;
 
 import android.telephony.SignalStrength;
 

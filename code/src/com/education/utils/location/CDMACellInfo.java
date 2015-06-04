@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.utils.location;
+package com.education.utils.location;
 
 /**
  * Created by su on 2014/6/9.

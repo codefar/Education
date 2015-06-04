@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.utils.location;
+package com.education.utils.location;
 
 import android.content.Context;
 import android.telephony.CellLocation;
@@ -7,11 +7,11 @@ import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
-import com.souyidai.investment.android.Constants;
-import com.souyidai.investment.android.SydApp;
-import com.souyidai.investment.android.common.PhoneService;
-import com.souyidai.investment.android.utils.NetDataUtil;
 
+import com.education.Constants;
+import com.education.EduApp;
+import com.education.common.PhoneService;
+import com.education.utils.NetDataUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +22,7 @@ import java.util.List;
  * */
 public class CellIDInfoManager {
 
-    private static final boolean DEBUG = SydApp.DEBUG;
+    private static final boolean DEBUG = EduApp	.DEBUG;
     private static final String TAG = "CellIDInfoManager";
 
     private CellIDInfoManager() {

@@ -1,4 +1,4 @@
-package com.souyidai.investment.android.utils;
+package com.education.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -138,7 +138,7 @@ public class ID5Helper {
      * @return Hashtable 对象
      */
     private static Map<String, String> getAreaCode() {
-        Map<String, String> hashtable = new Hashtable<>();
+        Map<String, String> hashtable = new Hashtable<String, String>();
         hashtable.put("11", "北京");
         hashtable.put("12", "天津");
         hashtable.put("13", "河北");
