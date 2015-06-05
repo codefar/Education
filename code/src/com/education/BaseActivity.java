@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.education.common.AppHelper;
 import com.education.entity.User;
+import com.education.utils.MenuHelper;
 
 import java.util.Map;
 
@@ -63,13 +64,7 @@ public abstract class BaseActivity extends Activity {
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        User user = User.getInstance(this);
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                break;
-            default:
-                break;
-        }
+        MenuHelper.menuItemSelected(this, featureId, item);
         return super.onMenuItemSelected(featureId, item);
     }
 

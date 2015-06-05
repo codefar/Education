@@ -1,20 +1,12 @@
 package com.education;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.education.ManualTimFragment;
-import com.education.PersonCenterFragment;
-import com.education.R;
-import com.education.SmartRecomentFragment;
-import com.education.VolunteerCollectionFragment;
-
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentBaseActivity {
 
 	private FragmentTabHost mTabHost;
 
@@ -51,4 +43,12 @@ public class MainActivity extends FragmentActivity {
 		mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		return super.onOptionsItemSelected(item);
+	}
 }

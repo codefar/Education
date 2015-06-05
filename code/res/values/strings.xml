@@ -14,10 +14,15 @@
     <string name="fetch_again">重新发送</string>
     <string name="register_successfully">注册成功</string>
     <string name="commit">提交</string>
+    <string name="login">登录</string>
     <string name="login_ing">登录中...</string>
     <string name="register_ing">注册中...</string>
+    <string name="register">注册</string>
     <string name="password_length_error">密码长度应为5-20个字符</string>
     <string name="sms_local_check_error">验证码为4位数字</string>
     <string name="cell_number_with_china_country_code">+86 <xliff:g id="cell_number">%s</xliff:g></string>
     <string name="verify_and_set_password">验证并设置密码</string>
+    <string name="forget_password">忘记密码？</string>
+    <string name="input_username">请输入用户名</string>
+    <string name="input_password">请输入登录密码</string>
 </resources>
