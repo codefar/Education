@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="button_main_default">#178FFE</color>
     <color name="button_main_pressed">#1580E4</color>
     <color name="button_main_disable">#DEDEDE</color>
+
+    <color name="tab_select">#178ffe</color>
+    <color name="tab_normal">#666666</color>
+    <color name="tab_bg">#fafafa</color>
+    <color name="content_bg">#f8f8f8</color>
+
 </resources>
