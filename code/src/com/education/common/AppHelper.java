@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.education.EduApp;
 import com.education.Constants;
 import com.education.LoginActivity;
+import com.education.MainActivity;
 import com.education.R;
 import com.education.EduApp;
 import com.education.entity.User;
@@ -244,6 +245,12 @@ public class AppHelper {
                 .setMessage(tip)
                 .setPositiveButton(R.string.known, null)
                 .show();
+    }
+
+    public static Intent makeLogoutIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return intent;
     }
 
     public static ShapeDrawable getShapeDrawable(int color, int radius) {

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">LauncherActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>
@@ -10,4 +9,15 @@
     <string name="manual_tim">手工添报</string>
     <string name="volunteer_collection">志愿收藏</string>
     <string name="person_center">个人中心</string>
+    <string name="internet_exception">网络异常，请重试</string>
+    <string name="fetch_again_in_seconds"><xliff:g id="number">%d</xliff:g>秒</string>
+    <string name="fetch_again">重新发送</string>
+    <string name="register_successfully">注册成功</string>
+    <string name="commit">提交</string>
+    <string name="login_ing">登录中...</string>
+    <string name="register_ing">注册中...</string>
+    <string name="password_length_error">密码长度应为5-20个字符</string>
+    <string name="sms_local_check_error">验证码为4位数字</string>
+    <string name="cell_number_with_china_country_code">+86 <xliff:g id="cell_number">%s</xliff:g></string>
+    <string name="verify_and_set_password">验证并设置密码</string>
 </resources>
