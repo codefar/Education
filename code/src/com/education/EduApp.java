@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -41,6 +42,7 @@ public class EduApp extends Application {
     public static int sScreenWidth;
     public static int sScreenHeight;
     public static String sApplicationLabel;
+    public static String sDeviceId;
     private static boolean sInit;
 
     public static final String sRootDirPath;
@@ -105,6 +107,8 @@ public class EduApp extends Application {
         if (DEBUG) {
             AppHelper.logUMengDeviceInfo(this);
         }
+        TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+        sDeviceId = tm.getDeviceId();
         final SharedPreferences defaultSP = PreferenceManager.getDefaultSharedPreferences(this);
         sHost = defaultSP.getString(Constants.SP_COLUMN_ENVIRONMENT, "https://app.souyidai.com/app/");
         sPassportHost = "https://passport.souyidai.com/app/";

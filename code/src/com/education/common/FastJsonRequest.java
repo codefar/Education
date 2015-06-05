@@ -1,6 +1,7 @@
 package com.education.common;
 
 import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.android.volley.AuthFailureError;
@@ -48,6 +49,14 @@ public class FastJsonRequest<T> extends Request<T> {
             mHeaders = new HashMap<String, String>();
         }
 
+        mHeaders.put("os", "android");
+        mHeaders.put("osVersion", Build.VERSION.RELEASE);
+        mHeaders.put("appVersion", String.valueOf(EduApp.sVersionCode));
+        mHeaders.put("ver", "1");
+        mHeaders.put("udId", EduApp.sDeviceId);
+        mHeaders.put("appKey", "benshigaokao");
+        mHeaders.put("userId", "");
+        mHeaders.put("userSession", "");
         this.mListener = listener;
 
         setShouldCache(false);
