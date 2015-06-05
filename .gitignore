@@ -2,7 +2,7 @@
 project_libs/adapter-core/.project
 
 *.properties
-
+code/code.iml
 code/.project
 
 code/.classpath
@@ -18,9 +18,9 @@ project_libs/Android-PullToRefresh/library/project.properties
 project_libs/Android-PullToRefresh/extras/PullToRefreshViewPager/project.properties
 
 project_libs/Android-PullToRefresh/extras/PullToRefreshListFragment/project.properties
-
+project_libs/adapter-core/gen/
 project_libs/adapter-core/gen/com/souyidai/core/R.java
-
+project_libs/adapter-core/adapter-core.iml
 *.class
 
 *.properties
