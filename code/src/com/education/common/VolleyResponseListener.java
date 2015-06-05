@@ -13,16 +13,16 @@ import com.education.EduApp;
 /**
  * Created by su on 15-3-30.
  */
-public abstract class SydVolleyResponseListener implements Response.Listener<JSONObject> {
+public abstract class VolleyResponseListener implements Response.Listener<JSONObject> {
 
     private Context mContext;
     private String mUrl;
 
-    public SydVolleyResponseListener(Context context) {
+    public VolleyResponseListener(Context context) {
         this.mContext = context;
     }
 
-    public SydVolleyResponseListener(String url, Context context) {
+    public VolleyResponseListener(String url, Context context) {
         this.mContext = context;
         this.mUrl = url;
     }
