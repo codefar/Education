@@ -11,6 +11,7 @@
     <string name="person_center">个人中心</string>
     <string name="internet_exception">网络异常，请重试</string>
     <string name="fetch_again_in_seconds"><xliff:g id="number">%d</xliff:g>秒</string>
+    <string name="input_phone_sms_code">请输入%1$s收到的验证码</string>
     <string name="fetch_again">重新发送</string>
     <string name="register_successfully">注册成功</string>
     <string name="commit">提交</string>
@@ -20,9 +21,10 @@
     <string name="register">注册</string>
     <string name="password_length_error">密码长度应为5-20个字符</string>
     <string name="sms_local_check_error">验证码为4位数字</string>
-    <string name="cell_number_with_china_country_code">+86 <xliff:g id="cell_number">%s</xliff:g></string>
     <string name="verify_and_set_password">验证并设置密码</string>
     <string name="forget_password">忘记密码？</string>
     <string name="input_username">请输入用户名</string>
     <string name="input_password">请输入登录密码</string>
+    <string name="input_right_phone_number">请输入正确的手机号</string>
+    <string name="set_login_password">设置登录密码</string>
 </resources>

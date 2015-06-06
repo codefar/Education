@@ -6,5 +6,7 @@ package com.education;
 public class Url {
 
     public static final String LOGIN = "";
+    public static final String REGISTER = "";
     public static final String GET_PASSWORD_BACK = "";
+    public static final String CHECK_MOBILE = "";
 }

@@ -10,4 +10,7 @@
     <color name="tab_bg">#fafafa</color>
     <color name="content_bg">#f8f8f8</color>
 
+    <color name="first_text">#333333</color>
+    <color name="second_text">#666666</color>
+    <color name="third_text">#999999</color>
 </resources>

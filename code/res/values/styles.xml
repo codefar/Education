@@ -31,9 +31,14 @@
     <style name="EditText">
         <item name="android:textColor">@color/black</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingLeft">4dip</item>
-        <item name="android:paddingRight">4dip</item>
+        <item name="android:paddingLeft">17dip</item>
+        <item name="android:paddingRight">17dip</item>
         <item name="android:background">@drawable/edittext_bg_selector</item>
+    </style>
+
+    <!--可清空EditText样式-->
+    <style name="EditText.SingleLine" parent="EditText">
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="MajorButton">
