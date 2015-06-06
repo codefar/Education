@@ -29,4 +29,5 @@
     <string name="set_login_password">设置登录密码</string>
     <string name="major_collected_in_college">已收藏%1$s的专业</string>
 
+     <string name="smart_recomment_tip">智能志愿推荐功能结合性格测试，考生分数、所在考区、近五年的各高校和专业录取的人数、最高分、最低分分等条件利用大数据分析算法给你智能推荐最适合你的专业和院校。</string>
 </resources>

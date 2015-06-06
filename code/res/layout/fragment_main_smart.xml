@@ -2,15 +2,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/action_bar_bg"
     tools:context="com.education.MainActivity$PlaceholderFragment" >
 
-    <TextView
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_alignParentTop="true"
+        android:background="@color/line_divider"/>
+    
+    <Button
+        android:id="@+id/start_btn"
+        android:layout_marginTop="@dimen/dimen_27_dip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/smart_recomment" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/divider"
+        android:background="@drawable/index_nav" />
+
+    <TextView
+        android:paddingTop="@dimen/dimen_5_dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/start_btn"
+        android:layout_marginLeft="@dimen/dimen_17_dip"
+        android:layout_marginRight="@dimen/dimen_17_dip"
+        android:paddingLeft="@dimen/dimen_17_dip"
+        android:paddingRight="@dimen/dimen_17_dip"
+        android:text="@string/smart_recomment_tip"
+        android:textColor="@color/white"
+        android:gravity="left|bottom"
+        android:textSize="@dimen/dimen_12_dip"
+        
+        android:background="@drawable/shuru" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/index_shan" />
 
 </RelativeLayout>
