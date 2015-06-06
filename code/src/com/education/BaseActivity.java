@@ -3,7 +3,6 @@ package com.education;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -22,7 +21,6 @@ import java.util.Map;
  */
 public abstract class BaseActivity extends Activity {
 
-    private SharedPreferences mSP;
     protected Map<String, String> mUrlParamMap;
 
     protected abstract void unLoginForward(User user);
@@ -34,9 +32,6 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSP = PreferenceManager.getDefaultSharedPreferences(this);
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-
         Intent intent = getIntent();
 
         boolean showDialog = intent.getBooleanExtra("show_dialog", false);
