@@ -15,7 +15,7 @@ import com.education.entity.User;
 public class MenuHelper {
 
     public static void menuItemSelected(Context context, int featureId, MenuItem item) {
-        User user = User.getInstance(context);
+        User user = User.getInstance();
         switch (item.getItemId()) {
             case R.id.action_login:
                 context.startActivity(new Intent(context, LoginActivity.class));

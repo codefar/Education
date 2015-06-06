@@ -8,7 +8,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -19,7 +18,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
-import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,7 +25,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.EduApp;
@@ -35,9 +32,7 @@ import com.education.Constants;
 import com.education.LoginActivity;
 import com.education.MainActivity;
 import com.education.R;
-import com.education.EduApp;
 import com.education.entity.User;
-import com.education.utils.LogUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -174,31 +169,6 @@ public class AppHelper {
         return null;
     }
 
-    public static String formatAmount(long amount) {
-        return Constants.FORMAT_AMOUNT.format(amount / (double) 100).replaceAll("(\\d)(?=(?:\\d{3})+(?:\\.\\d+)?$)", "$1,");
-    }
-
-    public static String formatAmount(double amount) {
-        return Constants.FORMAT_AMOUNT.format(amount).replaceAll("(\\d)(?=(?:\\d{3})+(?:\\.\\d+)?$)", "$1,");
-    }
-
-    public static String formatPercent(long percent) {
-        return formatAmount(percent);
-    }
-
-    public static String formatSectorRingPercent(double percent) {
-        if (percent > 9900) {
-            return formatAmount((long) percent).replaceAll("\\.\\d+$", "%");
-        } else if (percent > 0 && percent < 100) {
-            return "1%";
-        } else {
-            if (percent % 100 != 0) {
-                percent += 100;
-            }
-            return formatAmount((long) percent).replaceAll("\\.\\d+$", "%");
-        }
-    }
-
     public static String fillNullNumberString(String s) {
         return  (s == null || s.equals("")) ? "0.00" : s;
     }
@@ -231,7 +201,7 @@ public class AppHelper {
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        User.clearUser(context);
+                        User.clearUser();
                         Intent intent = new Intent(context, LoginActivity.class);
                         intent.putExtra("back_to_main", true);
                         context.startActivity(intent);

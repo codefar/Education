@@ -14,6 +14,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.education.Constants;
 import com.education.EduApp;
+import com.education.entity.User;
 import com.education.utils.LogUtil;
 
 import java.net.URI;
@@ -49,14 +50,16 @@ public class FastJsonRequest<T> extends Request<T> {
             mHeaders = new HashMap<String, String>();
         }
 
+        User user = User.getInstance();
+
         mHeaders.put("os", "android");
         mHeaders.put("osVersion", Build.VERSION.RELEASE);
         mHeaders.put("appVersion", String.valueOf(EduApp.sVersionCode));
         mHeaders.put("ver", "1");
         mHeaders.put("udId", EduApp.sDeviceId);
         mHeaders.put("appKey", "benshigaokao");
-        mHeaders.put("userId", "");
-        mHeaders.put("userSession", "");
+        mHeaders.put("userId", user.getId());
+        mHeaders.put("userSession", user.getUserSession());
         this.mListener = listener;
 
         setShouldCache(false);
@@ -80,10 +83,6 @@ public class FastJsonRequest<T> extends Request<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         String json = new String(response.data, Charset.forName("UTF-8"));
         Map<String, String> headers = response.headers;
-        String xAuthToken = headers.get(Constants.SP_COLUMN_X_AUTH_TOKEN);
-//        if (SydApp.DEBUG) {
-//            Log.d("json_data", "json: \n" + new String(response.data));
-//        }
         return Response.success(JSON.parseObject(json, mClazz),
                 HttpHeaderParser.parseCacheHeaders(response));
     }

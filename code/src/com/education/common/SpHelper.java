@@ -10,18 +10,10 @@ import com.education.Constants;
  */
 public class SpHelper {
 
-    private static SharedPreferences sDefaultSharedPreferences;
+    public static SharedPreferences sDefaultSharedPreferences;
 
     public static void initSharedPreferences(Context context) {
         sDefaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
-    public static void setXAuthToken(String xAuthToken) {
-        sDefaultSharedPreferences.edit().putString(Constants.SP_COLUMN_X_AUTH_TOKEN, xAuthToken).apply();
-    }
-
-    public static String getXAuthToken() {
-        return sDefaultSharedPreferences.getString(Constants.SP_COLUMN_X_AUTH_TOKEN, "");
     }
 
 }

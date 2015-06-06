@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -56,8 +57,8 @@ public abstract class BaseActivity extends Activity {
             return;
         }
 
-        User user = User.getInstance(this);
-        if (user.getWayToLogin() == null) {
+        User user = User.getInstance();
+        if (TextUtils.isEmpty(user.getId())) {
             unLoginForward(user);
         }
     }
@@ -76,7 +77,7 @@ public abstract class BaseActivity extends Activity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        User user = User.getInstance(this);
+        User user = User.getInstance();
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -97,7 +98,7 @@ public abstract class BaseActivity extends Activity {
     }
 
     protected void logout() {
-        User.clearUser(this);
+        User.clearUser();
         startActivity(AppHelper.makeLogoutIntent(this));
     }
 
