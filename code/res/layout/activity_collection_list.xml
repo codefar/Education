@@ -7,8 +7,18 @@
     <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_17_dip"
             android:divider="@null"
             android:listSelector="@android:color/transparent"
             android:id="@+id/list"/>
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:layout_marginTop="@dimen/dimen_17_dip"
+            android:layout_marginLeft="@dimen/dimen_17_dip"
+            android:layout_marginRight="@dimen/dimen_17_dip"
+            android:text="开始筛选"
+            android:id="@+id/filter"
+            style="@style/MajorButton"/>
 </LinearLayout>
 

@@ -49,6 +49,9 @@
         <activity android:name="com.education.CollectionListActivity"
                   android:exported="true"
                   android:screenOrientation="portrait"/>
+        <activity android:name="com.education.FilterActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
