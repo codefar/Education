@@ -27,4 +27,6 @@
     <string name="input_password">请输入登录密码</string>
     <string name="input_right_phone_number">请输入正确的手机号</string>
     <string name="set_login_password">设置登录密码</string>
+    <string name="major_collected_in_college">已收藏%1$s的专业</string>
+
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:paddingLeft="@dimen/dimen_17_dip"
+            android:paddingRight="@dimen/dimen_17_dip"
+            android:gravity="center_vertical"
+            android:text="@string/major_collected_in_college"
+            android:textSize="@dimen/dimen_12_dip"
+            android:textColor="@color/first_text"
+            android:id="@+id/header_title"/>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/divider"/>
+</RelativeLayout>
+

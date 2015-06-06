@@ -9,4 +9,5 @@ public class Url {
     public static final String REGISTER = "";
     public static final String GET_PASSWORD_BACK = "";
     public static final String CHECK_MOBILE = "";
+    public static final String SHOU_CANG_YUAN_XIAO_LIE_BIAO = "/zysc/getYx";
 }

@@ -155,7 +155,7 @@ public class EduApp extends Application {
             sScreenHeight = size.x;
         }
 
-
+        AppHelper.initImageLoader(this);
         AppHelper.createGestureFileIfNotExist(this);
         AppHelper.createPasswordFileIfNotExist(this);
     }

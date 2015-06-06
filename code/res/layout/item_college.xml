@@ -22,7 +22,7 @@
             android:layout_marginLeft="@dimen/dimen_9_dip"
             android:layout_toRightOf="@id/icon"
             android:layout_centerVertical="true"
-            android:id="@+id/title"
+            android:id="@+id/item_title"
             android:text="title"
             android:textSize="@dimen/dimen_12_dip"
             android:textColor="@color/first_text"
@@ -43,5 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/divider"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:id="@+id/divider"/>
 </RelativeLayout>

@@ -49,6 +49,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;
@@ -507,5 +510,20 @@ public class AppHelper {
         array[2] = s;
         array[3] = ms;
         return array;
+    }
+
+    public static void initImageLoader(Context context) {
+        ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(context)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .discCacheSize(50 * 1024 * 1024) // 50 Mb
+                .tasksProcessingOrder(QueueProcessingType.LIFO);
+
+        if (EduApp.DEBUG) {
+            builder.writeDebugLogs();
+        }
+        ImageLoaderConfiguration config = builder.build();
+        // Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(config);
     }
 }
