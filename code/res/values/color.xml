@@ -4,6 +4,7 @@
     <color name="button_main_default">#178FFE</color>
     <color name="button_main_pressed">#1580E4</color>
     <color name="button_main_disable">#DEDEDE</color>
+    <color name="divider">#DEDEDE</color>
 
     <color name="tab_select">#178ffe</color>
     <color name="tab_normal">#666666</color>
