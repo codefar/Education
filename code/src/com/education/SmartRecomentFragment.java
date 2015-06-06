@@ -1,14 +1,15 @@
 package com.education;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class SmartRecomentFragment extends Fragment {
+public class SmartRecomentFragment extends CommonFragment {
 
-    /**
+    private static final String TAG = SmartRecomentFragment.class.getSimpleName();
+
+	/**
      * When creating, retrieve this instance's number from its arguments.
      */
     @Override
@@ -26,4 +27,9 @@ public class SmartRecomentFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main_smart, container, false);
         return v;
     }
+    
+	@Override
+	protected String getLogTag() {
+		return TAG;
+	}
 }

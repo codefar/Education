@@ -1,12 +1,14 @@
 package com.education;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class PersonCenterFragment extends Fragment {
+public class PersonCenterFragment extends CommonFragment {
+	
+	private static final String TAG = PersonCenterFragment.class.getSimpleName();
+	
 
     /**
      * When creating, retrieve this instance's number from its arguments.
@@ -26,4 +28,9 @@ public class PersonCenterFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main_center, container, false);
         return v;
     }
+
+	@Override
+	protected String getLogTag() {
+		return TAG;
+	}
 }

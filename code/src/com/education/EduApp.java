@@ -48,7 +48,6 @@ public class EduApp extends Application {
     public static final String sRootDirPath;
     public static final String sTempDirPath;
     public static final String sPicDirPath;
-    public static String sDeviceId;
 
     public static final String SP_COLUMN_NEED_TO_UPDATE = "need_to_update";
     public static final String SP_COLUMN_FORCE_TO_UPDATE = "force_to_update";

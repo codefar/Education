@@ -47,7 +47,7 @@ public class LoginActivity extends CommonBaseActivity implements View.OnClickLis
 
 
     @Override
-    protected void unLoginForward(User user) {
+    protected void unLoginForward(User user) { 
         //do nothing here
     }
 

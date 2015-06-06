@@ -1,7 +1,7 @@
 package com.education;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTabHost;
+import android.support.v13.app.FragmentTabHost;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,7 +19,7 @@ public class MainActivity extends FragmentBaseActivity {
 
 	private void initTabs() {
 		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-		mTabHost.setup(this, getSupportFragmentManager(),
+		mTabHost.setup(this, getFragmentManager(),
 				R.id.realtabcontent);
 
 		View tab_smart = getLayoutInflater().inflate(
