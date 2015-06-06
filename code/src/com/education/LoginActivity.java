@@ -179,10 +179,7 @@ public class LoginActivity extends CommonBaseActivity implements View.OnClickLis
     }
 
     private void getPasswordBack() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        Uri url = Uri.parse(Url.GET_PASSWORD_BACK);
-        intent.setData(url);
+        Intent intent = new Intent(this, FindPasswordActivity.class);
         startActivity(intent);
     }
 

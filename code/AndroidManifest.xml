@@ -39,6 +39,9 @@
         <activity android:name="com.education.RegisterActivity"
                   android:exported="true"
                   android:screenOrientation="portrait"/>
+        <activity android:name="com.education.FindPasswordActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
