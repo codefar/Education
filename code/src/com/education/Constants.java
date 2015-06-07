@@ -1,6 +1,5 @@
 package com.education;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 /**
@@ -21,8 +20,6 @@ public class Constants {
 
     public static final String LOCK_PATTERN_FILE = "gesture.key";
     public static final String LOCK_PASSWORD_FILE = "password.key";
-    public static final String FILE_FORMAL_UMENG_FEEDBACK = "umeng_feedback_conversations.xml";
-    public static final String FILE_FORMAL_UMENG_CACHE = "umeng_it.cache";
 
     public static final String PASSWORD_STR = "[~`!@#$%^&*()_=+\\[{\\]}\\|;:'\",<.>/?0-9a-zA-Z-]{5,20}";
     /*
@@ -36,7 +33,6 @@ public class Constants {
 
     public static final String SP_COLUMN_INIT = "init";
     public static final String SP_COLUMN_UUID = "uuid";
-    public static final String SP_COLUMN_WAY_TO_LOGIN = "way_to_login";
     public static final String SP_COLUMN_USER_ID = "user_id";
     public static final String SP_COLUMN_USER_NAME = "user_name";
     public static final String SP_COLUMN_USER_SESSION = "user_session";
@@ -46,6 +42,9 @@ public class Constants {
     public static final String SP_COLUMN_USER_PHONE_EMAIL = "user_phone_email";
     public static final String SP_COLUMN_USER_PHONE_ID5 = "user_phone_id5";
     public static final String SP_COLUMN_USER_EXPIRE_TIME = "user_expire_time";
+    public static final String SP_COLUMN_USER_SCORE = "user_score";
+    public static final String SP_COLUMN_USER_PROVINCE = "user_province";
+    public static final String SP_COLUMN_USER_PROVINCE_ID = "user_province_id";
     public static final String SP_COLUMN_NEED_TO_UPDATE = "need_to_update";
     public static final String SP_COLUMN_FORCE_TO_UPDATE = "force_to_update";
     public static final String SP_COLUMN_NEW_VERSION_APK_NAME = "new_version_apk_name";
@@ -55,16 +54,7 @@ public class Constants {
     public static final String SP_COLUMN_NEW_VERSION_URL = "new_version_url";
     public static final String SP_COLUMN_NEW_VERSION_DESCRIPTION = "new_version_description";
     public static final String SP_COLUMN_ENVIRONMENT = "environment";
-    public static final String SP_COLUMN_MSG_PUSH = "msg_push";
-    public static final String SP_COLUMN_WRONG_DATE = "wrong_date";
-    public static final String SP_COLUMN_WRONG_TIMES = "wrong_times";
-    public static final String SP_COLUMN_TRADE_PASSWORD_STATUS = "trade_password_status";
     public static final String SP_COLUMN_NICKNAME_STATUS = "nickname_status";
-    public static final String SP_COLUMN_EMAIL_STATUS = "email_status";
-    public static final String SP_COLUMN_QUESTION_ID = "question_id";
-    public static final String SP_COLUMN_HAS_NEW_MESSAGE = "has_new_message";
-    public static final String SP_COLUMN_MAX_UNREAD_MESSAGE_ID = "max_unread_message_id";
-    public static final String SP_COLUMN_MAX_UNREAD_NOTICE_ID = "max_unread_notice_id";
 
     public static final boolean DEBUG = false;
 }

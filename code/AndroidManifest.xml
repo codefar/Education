@@ -62,7 +62,7 @@
                   android:label="FilterActivity"
                   android:exported="true"
                   android:screenOrientation="portrait"/>
-        <activity android:name="com.education.MinAdmissionScoreActivity"
+        <activity android:name=".AdmissionInPastYesrActivity"
                   android:label="MinAdmissionScoreActivity"
                   android:exported="true"
                   android:screenOrientation="portrait"/>Ï

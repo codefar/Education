@@ -1,33 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:widget="http://schemas.android.com/apk/res/com.education"
+              xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:paddingLeft="@dimen/dimen_17_dip"
               android:paddingRight="@dimen/dimen_17_dip"
               android:background="@color/content_bg">
-    <TextView
+    <info.hoang8f.android.segmented.SegmentedGroup
+            android:id="@+id/segmented"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_34_dip"
-            android:gravity="center_vertical"
-            android:text="以历年录取分数为条件筛选专业"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8_dip"
+            tyle="@style/EditText.SingleLine"
+            android:minHeight="@dimen/dimen_34_dip"
+            android:orientation="horizontal"
+            segmentedgroup:border_width="1dp"
+            segmentedgroup:corner_radius="5dp"
+            segmentedgroup:tint_color="@color/tab_select" >
+        <RadioButton
+                android:id="@+id/btn_li_ke"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="分数" />
+        <RadioButton
+                android:id="@+id/btn_wen_ke"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="排名" />
+    </info.hoang8f.android.segmented.SegmentedGroup>
     <com.education.widget.ClearableEditText
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_34_dip"
             android:layout_marginTop="@dimen/dimen_9_dip"
             android:id="@+id/year"
-            widget:unit="年"/>
+            android:textSize="@dimen/dimen_12_dip"
+            android:textColor="@color/first_text"
+            widget:unit="年"
+            widget:unitColor="@color/first_text"/>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_9_dip"
             android:orientation="horizontal">
         <com.education.widget.ClearableEditText
-                android:layout_width="match_parent"
+                android:layout_width="0dip"
                 android:layout_height="@dimen/dimen_34_dip"
-                android:layout_marginTop="@dimen/dimen_9_dip"
+                android:layout_weight="1"
                 android:id="@+id/min"
-                widget:unit="分"/>
+                android:textSize="@dimen/dimen_12_dip"
+                android:textColor="@color/first_text"/>
+        <TextView
+                android:layout_width="@dimen/dimen_34_dip"
+                android:layout_height="@dimen/dimen_34_dip"
+                android:gravity="center"
+                android:text="至"
+                android:textSize="@dimen/dimen_12_dip"
+                android:textColor="@color/first_text"
+                android:includeFontPadding="false"/>
+        <com.education.widget.ClearableEditText
+                android:layout_width="0dip"
+                android:layout_height="@dimen/dimen_34_dip"
+                android:layout_weight="1"
+                android:id="@+id/max"
+                android:textSize="@dimen/dimen_12_dip"
+                android:textColor="@color/first_text"/>
     </LinearLayout>
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:layout_marginTop="@dimen/dimen_17_dip"
+            android:text="恢复默认值"
+            android:id="@+id/reset"
+            style="@style/MajorButton"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_26_dip"
+            android:gravity="center"
+            android:text="注:默认值是你的高考成绩上下浮动20分"
+            android:textSize="@dimen/dimen_10_dip"
+            android:textColor="@color/third_text"
+            android:id="@+id/hint"/>
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:layout_marginTop="@dimen/dimen_17_dip"
+            android:text="确认筛选"
+            android:id="@+id/confirm"
+            style="@style/MajorButton"/>
 </LinearLayout>
 

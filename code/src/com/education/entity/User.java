@@ -24,10 +24,9 @@ public class User {
         if (sUser == null) {
             sUser = new User();
             SharedPreferences sp = SpHelper.sDefaultSharedPreferences;
-            String wayToLogin = sp.getString(Constants.SP_COLUMN_WAY_TO_LOGIN, "");
-            Log.v(TAG, "wayToLogin: " + wayToLogin);
+            String userId = sp.getString(Constants.SP_COLUMN_USER_ID, "");
             //未登录
-            if (wayToLogin.equals("")) {
+            if (TextUtils.isEmpty(userId)) {
                 return sUser;
             } else {
                 sUser.mId = sp.getString(Constants.SP_COLUMN_USER_ID, "");
@@ -59,6 +58,10 @@ public class User {
     private String mEmail;
     private long mExpireTime;
 
+    private String mProvince;
+    private String mProvinceId;
+    private float mScore;
+
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Id: " + mId + "\n");
@@ -68,6 +71,30 @@ public class User {
         sb.append("LoginTime: " + Constants.SDF_YYYY_MM_DD_HH_MM_SS.format(new Date(mLoginTime)));
         sb.append("ExpireTime: " + Constants.SDF_YYYY_MM_DD_HH_MM_SS.format(new Date(mExpireTime)));
         return sb.toString();
+    }
+
+    public float getScore() {
+        return mScore;
+    }
+
+    public void setScore(float mScore) {
+        this.mScore = mScore;
+    }
+
+    public String getProvinceId() {
+        return mProvinceId;
+    }
+
+    public void setProvinceId(String mProvinceId) {
+        this.mProvinceId = mProvinceId;
+    }
+
+    public String getProvince() {
+        return mProvince;
+    }
+
+    public void setProvince(String mProvince) {
+        this.mProvince = mProvince;
     }
 
     public String getId() {
@@ -160,25 +187,27 @@ public class User {
                 .putString(Constants.SP_COLUMN_USER_PHONE_EMAIL, user.mEmail)
                 .putLong(Constants.SP_COLUMN_USER_LOGIN_TIME, user.mLoginTime)
                 .putLong(Constants.SP_COLUMN_USER_EXPIRE_TIME, user.mExpireTime)
+                .putString(Constants.SP_COLUMN_USER_PROVINCE, "")
+                .putString(Constants.SP_COLUMN_USER_PROVINCE_ID, "")
+                .putFloat(Constants.SP_COLUMN_USER_SCORE, 0f)
         .apply();
     }
 
     public static synchronized void clearUser() {
         SharedPreferences sp = SpHelper.sDefaultSharedPreferences;
-        sp.edit().putString(Constants.SP_COLUMN_WAY_TO_LOGIN, "")
-                .putString(Constants.SP_COLUMN_USER_ID, "") //不删除temp_user_id，用于检测手势密码
+        sp.edit().putString(Constants.SP_COLUMN_USER_ID, "") //不删除temp_user_id，用于检测手势密码
                 .putString(Constants.SP_COLUMN_USER_NAME, "")
                 .putString(Constants.SP_COLUMN_USER_SESSION, "")
                 .putBoolean(Constants.SP_COLUMN_NICKNAME_STATUS, false)
                 .putString(Constants.SP_COLUMN_USER_PHONE_NICKNAME, "")
                 .putString(Constants.SP_COLUMN_USER_PHONE_EMAIL, "")
                 .putString(Constants.SP_COLUMN_USER_PHONE_ID5, "")
+                .putString(Constants.SP_COLUMN_USER_PROVINCE, "")
+                .putString(Constants.SP_COLUMN_USER_PROVINCE_ID, "")
+                .putFloat(Constants.SP_COLUMN_USER_SCORE, 0f)
                 .putLong(Constants.SP_COLUMN_USER_PHONE_NUMBER, -1)
                 .putLong(Constants.SP_COLUMN_USER_LOGIN_TIME, -1)
                 .putLong(Constants.SP_COLUMN_USER_EXPIRE_TIME, -1)
-                .putInt(Constants.SP_COLUMN_WRONG_TIMES, 0)
-                .putLong(Constants.SP_COLUMN_WRONG_DATE, System.currentTimeMillis())
-                .putString(Constants.SP_COLUMN_QUESTION_ID, "")
                 .apply();
         clear();
     }
