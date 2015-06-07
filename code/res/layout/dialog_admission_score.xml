@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:widget="http://schemas.android.com/apk/res/com.education"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingLeft="@dimen/dimen_17_dip"
+              android:paddingRight="@dimen/dimen_17_dip"
+              android:background="@color/content_bg">
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:gravity="center_vertical"
+            android:text="以历年录取分数为条件筛选专业"/>
+    <com.education.widget.ClearableEditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:layout_marginTop="@dimen/dimen_9_dip"
+            android:id="@+id/year"
+            widget:unit="年"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <com.education.widget.ClearableEditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_34_dip"
+                android:layout_marginTop="@dimen/dimen_9_dip"
+                android:id="@+id/min"
+                widget:unit="分"/>
+    </LinearLayout>
+</LinearLayout>
+

@@ -1,8 +1,6 @@
 package com.education.entity;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import com.education.Constants;
@@ -39,7 +37,6 @@ public class User {
                 sUser.mExpireTime = sp.getLong(Constants.SP_COLUMN_USER_EXPIRE_TIME, -1);
                 sUser.mPhoneNumber = sp.getLong(Constants.SP_COLUMN_USER_PHONE_NUMBER, -1);
                 sUser.mEmail = sp.getString(Constants.SP_COLUMN_USER_PHONE_EMAIL, "");
-//                sUser.mDisplayName = sp.getString(Constants.SP_COLUMN_USER_DISPLAY_NAME, "");
                 sUser.setNickName(sp.getString(Constants.SP_COLUMN_USER_PHONE_NICKNAME, ""));
             }
         } else {
@@ -53,8 +50,9 @@ public class User {
 
     private String mId;
     private String mName;
+    private String mId5;
+    private int mRank;
     private String mNickName;
-    private String mDisplayName;
     private String mUserSession = "";
     private long mLoginTime;
     private long mPhoneNumber;
@@ -86,6 +84,22 @@ public class User {
 
     public void setName(String name) {
         this.mName = name;
+    }
+
+    public String getId5() {
+        return mId5;
+    }
+
+    public void setId5(String id5) {
+        this.mId5 = id5;
+    }
+
+    public int getRank() {
+        return mRank;
+    }
+
+    public void setRank(int rank) {
+        this.mRank = rank;
     }
 
     public String getUserSession() {
@@ -120,52 +134,12 @@ public class User {
         this.mPhoneNumber = phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        if (phoneNumber != null) {
-            try {
-                this.mPhoneNumber = Long.parseLong(phoneNumber.replaceAll("^\\+0?86", ""));
-                if (mDisplayName == null || "".equals(mDisplayName)) {
-                    mDisplayName = hideName(String.valueOf(mPhoneNumber), 3, 4);
-                }
-            } catch (NumberFormatException e) {
-                Log.e(TAG, "wrong cell number! NUMBER = " + phoneNumber);
-            }
-        }
-    }
-
     public String getNickName() {
         return mNickName;
     }
 
     public void setNickName(String nickName) {
         this.mNickName = nickName;
-        mDisplayName = hideName(nickName, 1, 1);
-        if ("".equals(mDisplayName)) {
-            mDisplayName = hideName(String.valueOf(mPhoneNumber), 3, 3);
-        }
-    }
-
-    public String getDisplayName() {
-        return mDisplayName;
-    }
-
-    public static String hideName(String name, int first, int last) {
-        String hideName = "";
-        if (name != null) {
-            int length = name.length();
-            for (int i = 0; i < length; i++) {
-                if (i < first || i > length - last - 1) {
-                    hideName += String.valueOf(name.charAt(i));
-                } else {
-                    hideName += "*";
-                }
-            }
-        }
-        return hideName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.mDisplayName = displayName;
     }
 
     public String getEmail() {

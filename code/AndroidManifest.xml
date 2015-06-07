@@ -37,30 +37,35 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.education.LoginActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.education.RegisterActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.education.FindPasswordActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.education.CollectionListActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.education.FilterActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
+
+        <activity android:name="com.education.LoginActivity"
+                  android:label="LoginActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.education.RegisterActivity"
+                  android:label="RegisterActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.education.FindPasswordActivity"
+                  android:label="FindPasswordActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name="com.education.CollectionListActivity"
+                  android:label="CollectionListActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.education.FilterActivity"
+                  android:label="FilterActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.education.MinAdmissionScoreActivity"
+                  android:label="MinAdmissionScoreActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
