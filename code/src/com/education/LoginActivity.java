@@ -196,6 +196,7 @@ public class LoginActivity extends CommonBaseActivity implements View.OnClickLis
                     user.setUserSession(userInfo.getUserSession());
                     User.saveUser(user);
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
                 } else {
                     ErrorData errorData = AppHelper.getErrorData(response);
                     mBlockedDialogFragment.dismissAllowingStateLoss();
