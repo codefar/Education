@@ -1,10 +1,29 @@
 package com.education;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.education.common.AppHelper;
+import com.education.common.FastJsonRequest;
+import com.education.common.VolleyErrorListener;
+import com.education.common.VolleyResponseListener;
+import com.education.entity.ErrorData;
+import com.education.entity.User;
+import com.education.entity.UserInfo;
+import com.education.utils.LogUtil;
 import com.education.utils.MenuHelper;
+import com.education.widget.SimpleBlockedDialogFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -16,6 +35,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		OnClickListener {
@@ -25,7 +45,8 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 
 	private Button mAnsABtn, mAnsBBtn, mAnsCBtn, mAnsDBtn;
 	private TextView mTotalNumTextView, mCurrentNumTextView, mQuestionTextView;
-
+	private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
+	
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
 	 */
@@ -55,6 +76,8 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		mTotalNumTextView = (TextView) v.findViewById(R.id.total);
 		mCurrentNumTextView = (TextView) v.findViewById(R.id.current);
 		mQuestionTextView = (TextView) v.findViewById(R.id.question);
+		
+		fetchQuestions();
 		return v;
 	}
 
@@ -125,5 +148,39 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		mCurrentQueston++;
 		mCurrentNumTextView.setText("" + mCurrentQueston);
 		mQuestionTextView.setText("问题" + String.valueOf(mCurrentQueston));
+	}
+	
+	private void fetchQuestions(){
+		mBlockedDialogFragment.show(getFragmentManager(), "block_dialog");
+		final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.GET_QUESTION
+                , null, new VolleyResponseListener(getActivity()) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+            	Log.i(TAG, response.toJSONString());
+                if (success) {
+                    String data = response.getString("userInfo");
+                    
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    mBlockedDialogFragment.dismissAllowingStateLoss();
+                    Toast.makeText(getActivity(), errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+                mBlockedDialogFragment.dismissAllowingStateLoss();
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                mBlockedDialogFragment.dismissAllowingStateLoss();
+                Toast.makeText(getActivity(), getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                return AppHelper.makeSimpleData("", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
 	}
 }

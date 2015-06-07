@@ -36,6 +36,9 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 	private EditText mZoneEditText;
 	private SegmentedGroup mSegmentedGroup;
 
+	private boolean goSmartRecomnetStep2 = false;
+	public static final String GO_SMART_RECOMNET_STEP2 = "GO_SMART_RECOMNET_STEP2";
+
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
 	 */
@@ -43,6 +46,10 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setupTitleBar();
+		if (getArguments() != null) {
+			goSmartRecomnetStep2 = getArguments().getBoolean(
+					GO_SMART_RECOMNET_STEP2, true);
+		}
 	}
 
 	/**
@@ -70,7 +77,7 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 		super.onResume();
 		setupTitleBar();
 	}
-	
+
 	@Override
 	protected String getLogTag() {
 		return TAG;
@@ -85,10 +92,16 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btn_next) {
-            FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-            ft.replace(R.id.container, new SmartRecomentFragmentStep2(), "step2");
-            ft.addToBackStack(null);
-            ft.commit();
+			if (goSmartRecomnetStep2) {
+				FragmentTransaction ft = getActivity().getFragmentManager()
+						.beginTransaction();
+				ft.replace(R.id.container, new SmartRecomentFragmentStep2(),
+						"step2");
+				ft.addToBackStack(null);
+				ft.commit();
+			} else {
+				// whet to do
+			}
 		}
 	}
 

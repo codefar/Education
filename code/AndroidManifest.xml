@@ -65,7 +65,13 @@
         <activity android:name="com.education.MinAdmissionScoreActivity"
                   android:label="MinAdmissionScoreActivity"
                   android:exported="true"
-                  android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"/>Ï
+        <activity
+            android:name=".SetUserInfoActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" >
+        </activity>
+
     </application>
 
 </manifest>

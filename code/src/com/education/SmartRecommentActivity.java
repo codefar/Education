@@ -18,8 +18,12 @@ public class SmartRecommentActivity extends CommonBaseActivity implements View.O
 		setContentView(R.layout.activity_smart_recomment);
 		setupTitleBar();
 		if (savedInstanceState == null) {
+			SmartRecomentFragmentStep1 fragmentStep1 = new SmartRecomentFragmentStep1();
+			Bundle args = new Bundle();
+			args.putBoolean(SmartRecomentFragmentStep1.GO_SMART_RECOMNET_STEP2, true);
+			fragmentStep1.setArguments(args );
 			getFragmentManager().beginTransaction()
-					.add(R.id.container, new SmartRecomentFragmentStep1()).commit();
+					.add(R.id.container, fragmentStep1).commit();
 		}
 	}
 
