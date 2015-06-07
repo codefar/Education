@@ -24,7 +24,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_main_volunterr, container, false);
+        View v = inflater.inflate(R.layout.fragment_main_volunteer, container, false);
         return v;
     }
 

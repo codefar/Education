@@ -1,8 +1,6 @@
 package com.education.common;
 
 import android.os.Build;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -12,12 +10,9 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.education.Constants;
 import com.education.EduApp;
 import com.education.entity.User;
-import com.education.utils.LogUtil;
 
-import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
