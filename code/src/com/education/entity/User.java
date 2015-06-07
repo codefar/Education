@@ -176,8 +176,8 @@ public class User {
         this.mEmail = email;
     }
 
-    public static synchronized void saveUser(Context context, User user) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    public static synchronized void saveUser(User user) {
+        SharedPreferences sp = SpHelper.sDefaultSharedPreferences;
         sp.edit().putString(Constants.SP_COLUMN_USER_ID, user.mId)
                 .putString(Constants.SP_COLUMN_USER_NAME, user.mName)
                 .putString(Constants.SP_COLUMN_USER_SESSION, user.mUserSession)
@@ -187,11 +187,6 @@ public class User {
                 .putLong(Constants.SP_COLUMN_USER_LOGIN_TIME, user.mLoginTime)
                 .putLong(Constants.SP_COLUMN_USER_EXPIRE_TIME, user.mExpireTime)
         .apply();
-        onSaveUser(context);
-    }
-
-    private static void onSaveUser(Context context) {
-
     }
 
     public static synchronized void clearUser() {

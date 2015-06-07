@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.education.common.FastJsonRequest;
+import com.education.common.VolleyResponseListener;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
 
@@ -186,9 +187,9 @@ public class RegisterStep3Fragment extends CommonFragment implements View.OnClic
 
     private void appLogin(final String userName, final String passWord, final String kaptcha, final String smsCode, final String sign, final String version){
         final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.LOGIN
-                , null, new Response.Listener<JSONObject>() {
+                , null, new VolleyResponseListener(mActivity) {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
                 Integer errorCode = response.getInteger("errorCode");
                 if (EduApp.DEBUG) {
                     Log.i(TAG, response.toJSONString());

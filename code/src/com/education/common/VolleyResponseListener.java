@@ -2,6 +2,7 @@ package com.education.common;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
@@ -32,8 +33,9 @@ public abstract class VolleyResponseListener implements Response.Listener<JSONOb
         * 699 系统维护
         * */
     public void onResponse(JSONObject response) {
-        onSuccessfulResponse(response);
+        String error = response.getString("error");
+        onSuccessfulResponse(response, TextUtils.isEmpty(error));
     }
 
-    public abstract void onSuccessfulResponse(JSONObject response);
+    public abstract void onSuccessfulResponse(JSONObject response, boolean success);
 }

@@ -5,9 +5,7 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +17,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.education.common.AppHelper;
 import com.education.common.FastJsonRequest;
 import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
-import com.education.entity.AppLoginEntity;
+import com.education.entity.ErrorData;
 import com.education.entity.User;
+import com.education.entity.UserInfo;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
 
@@ -187,17 +187,19 @@ public class LoginActivity extends CommonBaseActivity implements View.OnClickLis
         final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.LOGIN
                 , null, new VolleyResponseListener(LoginActivity.this) {
             @Override
-            public void onSuccessfulResponse(JSONObject response) {
-                Integer errorCode = response.getInteger("errorCode");
-                if (EduApp.DEBUG) {
-                    Log.i(TAG, "appLogin" + response.toJSONString());
-                }
-                if (errorCode != null && errorCode == 0) {
-                    AppLoginEntity passport = (AppLoginEntity) JSON.parseObject(response.getString("data"), AppLoginEntity.class);
-
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    String data = response.getString("userInfo");
+                    UserInfo userInfo = JSON.parseObject(data, UserInfo.class);
+                    User user = User.getInstance();
+                    user.setId(userInfo.getUserId());
+                    user.setUserSession(userInfo.getUserSession());
+                    User.saveUser(user);
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
                     mBlockedDialogFragment.dismissAllowingStateLoss();
-                    Toast.makeText(LoginActivity.this, response.getString("errorMessage"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new VolleyErrorListener() {
@@ -210,8 +212,10 @@ public class LoginActivity extends CommonBaseActivity implements View.OnClickLis
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                return params;
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("loginName", userName);
+                map.put("password", password);
+                return AppHelper.makeSimpleData("login", map);
             }
         };
         EduApp.sRequestQueue.add(request);

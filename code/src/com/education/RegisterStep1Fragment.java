@@ -130,7 +130,7 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
         final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.CHECK_MOBILE
                 , null, new VolleyResponseListener(mActivity) {
             @Override
-            public void onSuccessfulResponse(JSONObject response) {
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
                 Integer errorCode = response.getInteger("errorCode");
                 if (EduApp.DEBUG) {
                     Log.i(TAG, "appCheckMobile " + response.toJSONString());

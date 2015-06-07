@@ -27,11 +27,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.education.EduApp;
 import com.education.Constants;
 import com.education.LoginActivity;
 import com.education.MainActivity;
 import com.education.R;
+import com.education.entity.ErrorData;
 import com.education.entity.User;
 
 import java.io.File;
@@ -40,6 +43,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.KeyStore;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -495,5 +499,27 @@ public class AppHelper {
         ImageLoaderConfiguration config = builder.build();
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
+    }
+
+    public static Map<String, String> makeSimpleData(String request, Map<String, String> data) {
+        Map<String, String> map = new HashMap<String, String>();
+        Set<String> set = data.keySet();
+        JSONObject jsonObject = new JSONObject();
+        JSONObject params = new JSONObject();
+        for (String key : set) {
+            params.put(key, data.get(key));
+        }
+        jsonObject.put("params", params);
+        jsonObject.put("request", request);
+        map.put("userData", jsonObject.toJSONString());
+        if (EduApp.DEBUG) {
+            Log.d(TAG, "map: " + map);
+        }
+        return map;
+    }
+
+    public static ErrorData getErrorData(JSONObject response) {
+        String data = response.getString("error");
+        return JSON.parseObject(data, ErrorData.class);
     }
 }
