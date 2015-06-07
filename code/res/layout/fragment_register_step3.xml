@@ -12,6 +12,7 @@
             android:layout_height="@dimen/dimen_34_dip"
             android:layout_marginTop="@dimen/dimen_14_dip"
             android:inputType="textPassword"
+            android:textSize="@dimen/dimen_12_dip"
             android:hint="请设置6-20位字符组成的登录密码"
             style="@style/EditText.SingleLine"
             android:id="@+id/password"/>
@@ -20,6 +21,7 @@
             android:layout_height="@dimen/dimen_34_dip"
             android:layout_marginTop="@dimen/dimen_14_dip"
             android:inputType="textPassword"
+            android:textSize="@dimen/dimen_12_dip"
             android:hint="确认密码"
             style="@style/EditText.SingleLine"
             android:id="@+id/confirm"/>

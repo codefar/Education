@@ -42,7 +42,8 @@
                 android:text="同意"
                 android:textSize="@dimen/dimen_10_dip"
                 android:textColor="@color/third_text"
-                android:button="@null"/>
+                android:button="@null"
+                android:checked="true"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

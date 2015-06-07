@@ -1,15 +1,17 @@
 package com.education;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,9 +20,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.education.common.AppHelper;
 import com.education.common.FastJsonRequest;
 import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
+import com.education.entity.ErrorData;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
 
@@ -40,14 +44,8 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
     private EditText mPhoneNumberEditText;
     private Resources mResources;
     private RegisterActivity mActivity;
-    private LinearLayout mCellNumberLayout;
-
-    public static final String UNREGISTERED = "UNREGISTERED";
-    public static final String REGISTERED = "REGISTERED";
-    public static final String REGISTERED_NOT_ACTIVE = "REGISTERED_NOT_ACTIVE";
-    public static final String BLACK_USER = "BLACK_USER";
-    public static final String SIGN_ERROR = "SIGN_ERROR";
-    public static final String INVALID_MOBILE = "INVALID_MOBILE";
+    private CheckBox mCheckBox;
+    private Button mRegister;
 
     public static RegisterStep1Fragment create() {
         return new RegisterStep1Fragment();
@@ -69,9 +67,18 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_register_step1, null);
-        mCellNumberLayout = (LinearLayout) layout.findViewById(R.id.cell_number_layout);
         TextView protocolTextView = (TextView) layout.findViewById(R.id.protocol);
         protocolTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        mRegister = (Button) layout.findViewById(R.id.register);
+        mRegister.setOnClickListener(this);
+        mCheckBox = (CheckBox) layout.findViewById(R.id.agree);
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mRegister.setEnabled(isChecked);
+            }
+        });
+        mRegister.setEnabled(mCheckBox.isChecked());
         mPhoneNumberEditText = (EditText) layout.findViewById(R.id.cell_number);
         return layout;
     }
@@ -127,21 +134,21 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
     }
 
     private void appCheckMobile(final String mobile) {
-        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.CHECK_MOBILE
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.REGISTER_GET_SMS_CODE
                 , null, new VolleyResponseListener(mActivity) {
             @Override
             public void onSuccessfulResponse(JSONObject response, boolean success) {
-                Integer errorCode = response.getInteger("errorCode");
-                if (EduApp.DEBUG) {
-                    Log.i(TAG, "appCheckMobile " + response.toJSONString());
-                }
-                if (errorCode != null && errorCode == 0) {
-                    String checkResult = response.getString("data");
-
+                if (success) {
+                    Fragment newFragment = RegisterStep2Fragment.create(mPhoneNumberEditText.getText().toString(), 120);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.layout, newFragment, "step2");
+                    ft.addToBackStack(null);
+                    ft.commit();
                 } else {
-                    mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
-                    Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
                 }
+                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
             }
         }, new VolleyErrorListener() {
             @Override
@@ -154,8 +161,8 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("mobile", mobile);
-                return params;
+                params.put("phoneNum", mobile);
+                return AppHelper.makeSimpleData("regChkPN", params);
             }
         };
         EduApp.sRequestQueue.add(request);

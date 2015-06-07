@@ -2,6 +2,7 @@ package com.education;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
@@ -20,15 +21,17 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.education.common.AppHelper;
 import com.education.common.FastJsonRequest;
+import com.education.common.VolleyErrorListener;
+import com.education.common.VolleyResponseListener;
+import com.education.entity.ErrorData;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * Created by su on 2014/9/19.
@@ -44,12 +47,10 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
     private String mCellNumber;
     private Button mRegisterButton;
     private TextView mFetchSmsCodeButton;
-    private EditText mPasswordEditText;
     private EditText mCodeEditText;
     private TextView mCellNumberTextView;
 
     private RegisterActivity mActivity;
-    private LinearLayout mSmsCodeLayout;
     private int mInitCountDownTime;
 
     public static RegisterStep2Fragment create(String cellNumber, int countDownTime) {
@@ -90,13 +91,11 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
         mRegisterButton = (Button) layout.findViewById(R.id.commit);
         mRegisterButton.setOnClickListener(this);
 
-        mSmsCodeLayout = (LinearLayout) layout.findViewById(R.id.sms_code_layout);
         mCodeEditText = (EditText) layout.findViewById(R.id.sms_code);
         mCodeEditText.requestFocus();
         InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInputFromInputMethod(mCodeEditText.getWindowToken(), InputMethodManager.SHOW_FORCED);
 
-        mPasswordEditText = (EditText) layout.findViewById(R.id.password);
         mCellNumberTextView = (TextView) layout.findViewById(R.id.cell_number);
         mCellNumberTextView.setText(getString(R.string.input_phone_sms_code, mCellNumber));
         return layout;
@@ -108,31 +107,14 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
             return true;
         }
         new AlertDialog.Builder(mActivity)
-                .setMessage(R.string.sms_local_check_error)
+                .setMessage("请出入短信验证码")
                 .setPositiveButton(R.string.confirm, null)
                 .show();
         return false;
     }
 
-    private boolean checkPassword() {
-        String password = mPasswordEditText.getText().toString();
-        if (!Pattern.matches(".{5,20}", password)) {
-            new AlertDialog.Builder(mActivity)
-                    .setMessage(R.string.password_length_error)
-                    .setPositiveButton(R.string.confirm, null)
-                    .show();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     private boolean checkInput() {
         if (!checkSmsCode()) {
-            return false;
-        }
-
-        if (!checkPassword()) {
             return false;
         }
 
@@ -144,14 +126,12 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
         switch (v.getId()) {
             case R.id.commit:
                 mRegisterButton.requestFocus();
-                register();
+                checkCode();
                 break;
             case R.id.fetch_code:
                 mFetchSmsCodeButton.setEnabled(false);
-                String password = mPasswordEditText.getText().toString();
-                String code = mCodeEditText.getText().toString();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                mSimpleBlockedDialogFragment.updateMessage(getText(R.string.register_ing));
+                mSimpleBlockedDialogFragment.updateMessage("获取中...");
                 mSimpleBlockedDialogFragment.show(ft, "block_dialog");
                 break;
             default:
@@ -159,15 +139,12 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
         }
     }
 
-    private boolean register() {
+    private boolean checkCode() {
         if (checkInput()) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             mSimpleBlockedDialogFragment.updateMessage(getText(R.string.register_ing));
             mSimpleBlockedDialogFragment.show(ft, "block_dialog");
-
-            String password = mPasswordEditText.getText().toString();
-            String code = mCodeEditText.getText().toString();
-            appRegister(mCellNumber, password, code);
+            checkCode(mCellNumber, mCodeEditText.getText().toString());
         }
         return false;
     }
@@ -202,17 +179,6 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
         mHandler.removeMessages(ACTION_COUNT_DOWN);
     }
 
-    private static final int ACTION_REGISTER = 3;
-    private static final int ACTION_LOGIN = 4;
-    private static final int ACTION_FETCH_RED_ENVELOPE_AMOUNT = 5;
-
-    private static final int SMS_RESULT_SUCCESSFUL = 0;
-    private static final int SMS_RESULT_FAIL = 1;
-    private static final int SMS_RESULT_INVALIDATE = 2;
-    private static final int SMS_RESULT_BLACK_LIST = 3;
-    private static final int SMS_RESULT_VOICE_CODE = 101;
-    private static final int SMS_RESULT_CALL_CUSTOMER_SUPPORT = 102;
-
     private static final int ACTION_COUNT_DOWN = 1;
     private int mCountDown = 0;
 
@@ -242,40 +208,26 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
         return null;
     }
 
-    private void appRegister(final String userName, final String passWord, final String smsCode) {
-        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.REGISTER
-                , null, new Response.Listener<JSONObject>() {
+    private void checkCode(final String phoneNumber, final String smsCode) {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.REGISTER_CHECK_SMS_CODE
+                , null, new VolleyResponseListener(mActivity) {
             @Override
-            public void onResponse(JSONObject response) {
-                Integer errorCode = response.getInteger("errorCode");
-                if (EduApp.DEBUG) {
-                    Log.i(TAG, response.toJSONString());
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    Fragment newFragment = RegisterStep3Fragment.create(mCellNumber, 120);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.layout, newFragment, "step3");
+                    ft.addToBackStack(null);
+                    ft.commit();
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
                 }
                 mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
-                if (errorCode != null && errorCode == 0) {
-                    if (errorCode == 0) {
-
-                    } else {
-                        mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
-                    }
-                    String message = null;
-                    switch (errorCode) {
-                        case -1:
-                            message = getResources().getString(R.string.internet_exception);
-                            break;
-                        default:
-                            message = response.getString("errorMessage");
-                            break;
-                    }
-
-                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
-                }
             }
-        }, new Response.ErrorListener() {
+        }, new VolleyErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
+            public void onVolleyErrorResponse(VolleyError volleyError) {
                 LogUtil.logNetworkResponse(volleyError, TAG);
                 mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
                 Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
@@ -284,10 +236,9 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("userName", userName);
-                params.put("passWord", passWord);
-                params.put("smsCode", smsCode);
-                return params;
+                params.put("phoneNum", phoneNumber);
+                params.put("SMCode", smsCode);
+                return AppHelper.makeSimpleData("chkSMCode", params);
             }
         };
         EduApp.sRequestQueue.add(request);

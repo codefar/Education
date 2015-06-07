@@ -3,6 +3,7 @@ package com.education;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,15 +12,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.education.common.AppHelper;
 import com.education.common.FastJsonRequest;
+import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
+import com.education.entity.ErrorData;
+import com.education.entity.User;
+import com.education.entity.UserInfo;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
 
@@ -41,7 +46,7 @@ public class RegisterStep3Fragment extends CommonFragment implements View.OnClic
     private String mCellNumber;
     private Button mRegisterButton;
     private EditText mPasswordEditText;
-    private TextView mCellNumberTextView;
+    private EditText mConfirmEditText;
 
     private RegisterActivity mActivity;
 
@@ -73,22 +78,28 @@ public class RegisterStep3Fragment extends CommonFragment implements View.OnClic
         mRegisterButton.setOnClickListener(this);
 
         mPasswordEditText = (EditText) layout.findViewById(R.id.password);
-        mCellNumberTextView = (TextView) layout.findViewById(R.id.cell_number);
-        mCellNumberTextView.setText(getString(R.string.input_phone_sms_code, mCellNumber));
+        mConfirmEditText = (EditText) layout.findViewById(R.id.confirm);
         return layout;
     }
 
     private boolean checkPassword() {
         String password = mPasswordEditText.getText().toString();
-        if (!Pattern.matches(".{5,20}", password)) {
+        if (!Pattern.matches(".{6,20}", password)) {
             new AlertDialog.Builder(mActivity)
                     .setMessage(R.string.password_length_error)
                     .setPositiveButton(R.string.confirm, null)
                     .show();
             return false;
-        } else {
-            return true;
         }
+
+        if (!password.equals(mConfirmEditText.getText().toString())) {
+            new AlertDialog.Builder(mActivity)
+                    .setMessage("两次密码需输入一致")
+                    .setPositiveButton(R.string.confirm, null)
+                    .show();
+            return false;
+        }
+        return true;
     }
 
     private boolean checkInput() {
@@ -118,8 +129,7 @@ public class RegisterStep3Fragment extends CommonFragment implements View.OnClic
             mSimpleBlockedDialogFragment.show(ft, "block_dialog");
 
             String password = mPasswordEditText.getText().toString();
-            String code = "";
-            appRegister(mCellNumber, password, code);
+            appRegister(mCellNumber, password);
         }
         return false;
     }
@@ -134,40 +144,22 @@ public class RegisterStep3Fragment extends CommonFragment implements View.OnClic
         return null;
     }
 
-    private void appRegister(final String userName, final String passWord, final String smsCode) {
+    private void appRegister(final String userName, final String password) {
         final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.REGISTER
-                , null, new Response.Listener<JSONObject>() {
+                , null, new VolleyResponseListener(mActivity) {
             @Override
-            public void onResponse(JSONObject response) {
-                Integer errorCode = response.getInteger("errorCode");
-                if (EduApp.DEBUG) {
-                    Log.i(TAG, response.toJSONString());
-                }
-                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
-                if (errorCode != null && errorCode == 0) {
-                    if (errorCode == 0) {
-
-                    } else {
-                        mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
-                    }
-                    String message = null;
-                    switch (errorCode) {
-                        case -1:
-                            message = getResources().getString(R.string.internet_exception);
-                            break;
-                        default:
-                            message = response.getString("errorMessage");
-                            break;
-                    }
-
-                    Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    appLogin(userName, password);
                 } else {
-                    Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
                 }
             }
-        }, new Response.ErrorListener() {
+        }, new VolleyErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
+            public void onVolleyErrorResponse(VolleyError volleyError) {
                 LogUtil.logNetworkResponse(volleyError, TAG);
                 mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
                 Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
@@ -175,36 +167,38 @@ public class RegisterStep3Fragment extends CommonFragment implements View.OnClic
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("userName", userName);
-                params.put("passWord", passWord);
-                params.put("smsCode", smsCode);
-                return params;
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("phoneNum", userName);
+                map.put("password", password);
+                return AppHelper.makeSimpleData("register", map);
             }
         };
         EduApp.sRequestQueue.add(request);
     }
 
-    private void appLogin(final String userName, final String passWord, final String kaptcha, final String smsCode, final String sign, final String version){
+    private void appLogin(final String userName, final String password) {
         final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.LOGIN
                 , null, new VolleyResponseListener(mActivity) {
             @Override
             public void onSuccessfulResponse(JSONObject response, boolean success) {
-                Integer errorCode = response.getInteger("errorCode");
-                if (EduApp.DEBUG) {
-                    Log.i(TAG, response.toJSONString());
-                }
-                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
-                if (errorCode != null && errorCode == 0) {
-
+                if (success) {
+                    String data = response.getString("userInfo");
+                    UserInfo userInfo = JSON.parseObject(data, UserInfo.class);
+                    User user = User.getInstance();
+                    user.setId(userInfo.getUserId());
+                    user.setUserSession(userInfo.getUserSession());
+                    User.saveUser(user);
+                    startActivity(new Intent(mActivity, MainActivity.class));
+                    mActivity.finish();
                 } else {
-                    Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
                 }
-
             }
-        }, new Response.ErrorListener() {
+        }, new VolleyErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
+            public void onVolleyErrorResponse(VolleyError volleyError) {
                 LogUtil.logNetworkResponse(volleyError, TAG);
                 mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
                 Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
@@ -212,14 +206,10 @@ public class RegisterStep3Fragment extends CommonFragment implements View.OnClic
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("userName", userName);
-                params.put("passWord", passWord);
-                params.put("kaptcha", kaptcha);
-                params.put("smsCode", smsCode);
-                params.put("sign", sign);
-                params.put("version", version);
-                return params;
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("loginName", userName);
+                map.put("password", password);
+                return AppHelper.makeSimpleData("login", map);
             }
         };
         EduApp.sRequestQueue.add(request);
