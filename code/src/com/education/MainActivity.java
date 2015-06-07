@@ -9,6 +9,10 @@ import android.widget.LinearLayout;
 public class MainActivity extends FragmentBaseActivity {
 
 	private FragmentTabHost mTabHost;
+    public static final int TAB_SMART = 0;
+    public static final int TAB_MANUAL = 1;
+    public static final int TAB_VOLUNTEER = 2;
+    public static final int TAB_CENTER = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,4 +55,18 @@ public class MainActivity extends FragmentBaseActivity {
 		int id = item.getItemId();
 		return super.onOptionsItemSelected(item);
 	}
+
+    @Override
+    public void onBackPressed() {
+        int tabId = mTabHost.getCurrentTab();
+        if (tabId == TAB_VOLUNTEER) {
+            VolunteerCollectionFragment f= (VolunteerCollectionFragment) getFragmentManager().findFragmentByTag("tab_volunteer");
+            if (f.back()) {
+                super.onBackPressed();
+            } else {
+                return;
+            }
+        }
+        super.onBackPressed();
+    }
 }
