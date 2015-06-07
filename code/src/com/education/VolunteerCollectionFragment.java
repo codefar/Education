@@ -77,7 +77,11 @@ public class VolunteerCollectionFragment extends CommonFragment {
 
         mHeaderLayout = (RelativeLayout) mInflater.inflate(R.layout.header_collection_list, null);
         mHeaderTitleTextView = mHeaderLayout.findViewById(R.id.header_title);
-        displayCollege();
+        if (mType == TYPE_COLLEGE) {
+            displayCollege();
+        } else {
+            displayMajor();
+        }
         return v;
     }
 
