@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_34_dip"
+    android:minHeight="@dimen/dimen_34_dip" >
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dimen_17_dip"
+        android:src="@drawable/arrow_right" />
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="@dimen/dimen_51_dip"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dimen_9_dip"
+        android:layout_toRightOf="@id/icon"
+        android:includeFontPadding="false"
+        android:text="专业1"
+        android:textColor="@color/first_text"
+        android:textSize="@dimen/dimen_10_dip" />
+
+    <TextView
+        android:id="@+id/item_title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dimen_9_dip"
+        android:layout_toRightOf="@id/item_title"
+        android:includeFontPadding="false"
+        android:text="建筑"
+        android:textColor="@color/first_text"
+        android:textSize="@dimen/dimen_12_dip" />
+
+    <TextView
+        android:id="@+id/item_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dimen_6_dip"
+        android:layout_toLeftOf="@id/arrow"
+        android:includeFontPadding="false"
+        android:text="收藏"
+        android:textColor="@color/third_text"
+        android:textSize="@dimen/dimen_10_dip" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider" />
+
+</RelativeLayout>

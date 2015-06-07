@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
     <string name="app_name">LauncherActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
     <string name="smart_recomment">智能推荐</string>
     <string name="manual_tim">手工添报</string>
     <string name="volunteer_collection">志愿收藏</string>
@@ -28,6 +28,20 @@
     <string name="input_right_phone_number">请输入正确的手机号</string>
     <string name="set_login_password">设置登录密码</string>
     <string name="major_collected_in_college">已收藏%1$s的专业</string>
+    <string name="smart_recomment_tip">智能志愿推荐功能结合性格测试，考生分数、所在考区、近五年的各高校和专业录取的人数、最高分、最低分分等条件利用大数据分析算法给你智能推荐最适合你的专业和院校。</string>
+    <string name="title_activity_smart_recomment">智能推荐</string>
+    <string name="annalyse">正在使用大数据分析算法进行智能计算，请等待...</string>
 
-     <string name="smart_recomment_tip">智能志愿推荐功能结合性格测试，考生分数、所在考区、近五年的各高校和专业录取的人数、最高分、最低分分等条件利用大数据分析算法给你智能推荐最适合你的专业和院校。</string>
+    <string name="smart_recomment_smart1">第一步:输入考生信息</string>
+    <string name="smart_recomment_smart2">第二步:性格测试</string>
+    <string name="smart_recomment_smart3">第三步:智能推荐</string>
+    
+    <string name="input_student_name">输入考生姓名</string>
+    <string name="input_student_id">输入考生身份证号</string>
+    <string name="input_student_score">输入考生成绩</string>
+    <string name="input_student_position">输入考生排位</string>
+    <string name="select_zone">选择考区</string>
+    <string name="li_ke">理科</string>
+    <string name="wen_ke">文科</string>
+    <string name="current">当前</string>
 </resources>

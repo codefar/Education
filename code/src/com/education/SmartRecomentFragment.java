@@ -1,12 +1,16 @@
 package com.education;
 
+import com.education.utils.MenuHelper;
+
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -46,21 +50,18 @@ public class SmartRecomentFragment extends CommonFragment implements OnClickList
 	
 	protected void setupTitleBar() {
         ActionBar bar = getActivity().getActionBar();
-        bar.setDisplayOptions(-ActionBar.DISPLAY_USE_LOGO);
-        bar.setHomeButtonEnabled(true);
+        bar.setDisplayHomeAsUpEnabled(false); 
+        bar.setDisplayShowHomeEnabled(false);
+        bar.setTitle(R.string.smart_recomment);
+        setHasOptionsMenu(true);
     }
 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.start_btn) {
-			
+			Intent intent = new Intent(getActivity(),SmartRecommentActivity.class);
+			startActivity(intent);
 		}
-	}
-
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
 	@Override
@@ -68,5 +69,10 @@ public class SmartRecomentFragment extends CommonFragment implements OnClickList
 		inflater.inflate(R.menu.main, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-	
+
+    @Override 
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	MenuHelper.menuItemSelected(getActivity(), 0, item);
+        return super.onOptionsItemSelected(item);
+    }
 }

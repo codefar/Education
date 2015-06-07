@@ -24,4 +24,8 @@
     <string name="reload_hint_text">点击重新加载</string>
     <string name="next_step">下一步</string>
 
+    <string name="ans1">A、完全符合</string>
+    <string name="ans2">B、较为符合</string>
+    <string name="ans3">C、略为符合</string>
+    <string name="ans4">D、完全不符</string>
 </resources>

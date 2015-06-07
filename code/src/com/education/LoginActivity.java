@@ -41,7 +41,6 @@ public class LoginActivity extends CommonBaseActivity implements View.OnClickLis
     private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
 
     private Resources mResources;
-
     private String mUserName;
     private String mCheckingPhoneNumber;
 

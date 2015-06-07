@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 14 theme customizations can go here. -->
         <!--<item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar</item>-->
@@ -45,12 +45,19 @@
         <item name="android:background">@drawable/button_main_selector</item>
     </style>
     
+    <style name="GreenButton">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/button_green_selector</item>
+    </style>
+    
+    
     <style name="RadioButton">
         <item name="android:textColor">@drawable/button_text_color</item>
-        <item name="android:minHeight">33dp</item>
+        <item name="android:minHeight">@dimen/dimen_34_dip</item>
         <item name="android:minWidth">70dp</item>
         <item name="android:gravity">center</item>
         <item name="android:button">@null</item>
+        <item name="android:textSize">@dimen/dimen_12_dip</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingRight">5dp</item>
     </style>

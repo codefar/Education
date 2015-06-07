@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dimen_9_dip"
+        android:paddingLeft="@dimen/dimen_17_dip"
+        android:paddingRight="@dimen/dimen_17_dip"
+        android:paddingTop="@dimen/dimen_17_dip" >
+
+        <TextView
+            android:id="@+id/ranking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/red_dot"
+            android:gravity="center"
+            android:text="01"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_17_dip" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_17_dip"
+            android:layout_toRightOf="@+id/ranking" >
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="北京大学"
+                android:textColor="@color/third_text"
+                android:textSize="@dimen/dimen_15_dip" />
+
+            <TextView
+                android:id="@+id/type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:text="综合 985 211"
+                android:textColor="@color/first_text"
+                android:textSize="@dimen/dimen_12_dip" />
+
+            <TextView
+                android:id="@+id/buck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/name"
+                android:text="第一批 A段"
+                android:textColor="@color/third_text"
+                android:textSize="@dimen/dimen_12_dip" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider"/>
+
+    <LinearLayout
+        android:id="@+id/item_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dimen_17_dip" >
+		<include layout="@layout/item_smart_setep3_item"/>
+		<include layout="@layout/item_smart_setep3_item"/>
+		<include layout="@layout/item_smart_setep3_item"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" />
+
+</LinearLayout>
