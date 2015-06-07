@@ -41,9 +41,9 @@ public class MainActivity extends FragmentBaseActivity {
 				ManualTimFragment.class, null);
 		mTabHost.addTab(mTabHost.newTabSpec("tab_volunteer").setIndicator(tab_volunteer),
 				VolunteerCollectionFragment.class, null);
-		mTabHost.addTab(mTabHost.newTabSpec("tab_center").setIndicator(tab_center),
+		mTabHost.addTab(mTabHost.newTabSpec("tab_center1").setIndicator(tab_center),
 				PersonCenterFragment.class, null);
-		// 设置tabs之间的分隔线不显示
+		//设置tabs之间的分隔线不显示
 		mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
 	}
 
