@@ -41,24 +41,6 @@
                 android:id="@+id/fetch_code"
                 style="@style/MajorButton"/>
     </LinearLayout>
-    <!--设置登录帐号-->
-    <EditText
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_34_dip"
-            android:layout_marginTop="@dimen/dimen_14_dip"
-            android:inputType="textPassword"
-            android:hint="请设置登录帐号"
-            style="@style/EditText.SingleLine"
-            android:id="@+id/username"/>
-    <!--设置登录密码-->
-    <EditText
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_34_dip"
-            android:layout_marginTop="@dimen/dimen_14_dip"
-            android:inputType="textPassword"
-            android:hint="请设置6-20位字符组成的登录密码"
-            style="@style/EditText.SingleLine"
-            android:id="@+id/password"/>
     <Button
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_34_dip"

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:paddingLeft="@dimen/dimen_17_dip"
+              android:paddingRight="@dimen/dimen_17_dip"
+              android:background="@color/white">
+    <!--设置登录密码-->
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:layout_marginTop="@dimen/dimen_14_dip"
+            android:inputType="textPassword"
+            android:hint="请设置6-20位字符组成的登录密码"
+            style="@style/EditText.SingleLine"
+            android:id="@+id/password"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:layout_marginTop="@dimen/dimen_14_dip"
+            android:inputType="textPassword"
+            android:hint="确认密码"
+            style="@style/EditText.SingleLine"
+            android:id="@+id/confirm"/>
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:layout_marginTop="@dimen/dimen_23_dip"
+            android:text="@string/commit"
+            android:id="@+id/commit"
+            style="@style/MajorButton"/>
+</LinearLayout>
+
