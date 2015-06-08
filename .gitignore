@@ -54,3 +54,8 @@ project_libs/adapter-core/bin/R.txt
 project_libs/adapter-core/bin/jarlist.cache
 
 project_libs/adapter-core/.settings/org.eclipse.jdt.core.prefs
+code/libs/android-support-v4.jar
+code/project.properties
+project_libs/Android-PullToRefresh/sample/project.properties
+project_libs/android-segmented-control/demo/src/main/.classpath
+project_libs/android-segmented-control/library/src/main/.classpath
