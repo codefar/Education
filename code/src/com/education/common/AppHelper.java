@@ -35,6 +35,7 @@ import com.education.LoginActivity;
 import com.education.MainActivity;
 import com.education.R;
 import com.education.entity.ErrorData;
+import com.education.entity.Share;
 import com.education.entity.User;
 
 import java.io.File;
@@ -48,6 +49,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import com.education.widget.ShareDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
@@ -382,6 +384,20 @@ public class AppHelper {
         } else {
             return number;
         }
+    }
+
+
+    public static void showShareDialog(Context context, final Share share) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.activity_share, null);
+        final ShareDialog dialog = new ShareDialog(context, share);
+        view.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     public static String encodeString(String str) {

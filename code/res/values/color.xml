@@ -23,5 +23,6 @@
     
     <color name="action_bar_bg">#178FFE</color>
     <color name="line_divider">#1580E4</color>
-	
+    <color name="share_bg_transparent">#50000000</color>
+
 </resources>
