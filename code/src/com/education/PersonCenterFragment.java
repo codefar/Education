@@ -1,5 +1,6 @@
 package com.education;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -94,7 +95,7 @@ public class PersonCenterFragment extends CommonFragment {
             if (position == 0) {
 
             } else if (position == 1) {
-
+                startActivity(new Intent(getActivity(), ChangePasswordActivity.class));
             } else if (position == 2) {
 
             } else if (position == 3) {

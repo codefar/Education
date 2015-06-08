@@ -53,6 +53,10 @@
                   android:label="FindPasswordActivity"
                   android:exported="true"
                   android:screenOrientation="portrait"/>
+        <activity android:name=".ChangePasswordActivity"
+                  android:label="ChangePasswordActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
 
         <activity android:name="com.education.CollectionListActivity"
                   android:label="CollectionListActivity"
@@ -63,9 +67,9 @@
                   android:exported="true"
                   android:screenOrientation="portrait"/>
         <activity android:name=".AdmissionInPastYearActivity"
-                  android:label="MinAdmissionScoreActivity"
+                  android:label="AdmissionInPastYearActivity"
                   android:exported="true"
-                  android:screenOrientation="portrait"/>Ï
+                  android:screenOrientation="portrait"/>
         <activity
             android:name=".SetUserInfoActivity"
             android:exported="true"
