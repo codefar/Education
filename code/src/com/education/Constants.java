@@ -21,7 +21,7 @@ public class Constants {
     public static final String LOCK_PATTERN_FILE = "gesture.key";
     public static final String LOCK_PASSWORD_FILE = "password.key";
 
-    public static final String PASSWORD_STR = "[~`!@#$%^&*()_=+\\[{\\]}\\|;:'\",<.>/?0-9a-zA-Z-]{5,20}";
+    public static final String PASSWORD_STR = "[~`!@#$%^&*()_=+\\[{\\]}\\|;:'\",<.>/?0-9a-zA-Z-]{6,20}";
     /*
     * same as microlog.appender.FileAppender.File in assets/microlog.properties
     * */

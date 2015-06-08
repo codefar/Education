@@ -1,5 +1,6 @@
 package com.education;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.education.common.AppHelper;
+import com.education.entity.Share;
+import com.education.widget.ShareDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,11 +98,17 @@ public class PersonCenterFragment extends CommonFragment {
             if (position == 0) {
 
             } else if (position == 1) {
-
+                startActivity(new Intent(getActivity(), ChangePasswordActivity.class));
             } else if (position == 2) {
 
             } else if (position == 3) {
 
+            } else if (position == 4) {
+                Share share = new Share();
+                share.setTitle("测试");
+                share.setUrl("www.baidu.com");
+                share.setDescription("这里可以多写一些字啊多写一些字啊多写一些字!");
+                AppHelper.showShareDialog(getActivity(), share);
             }
         }
 
@@ -134,6 +144,11 @@ public class PersonCenterFragment extends CommonFragment {
         item4.title = "关于";
         item4.icon = R.drawable.about;
         mItemList.add(item4);
+
+        Item item5 = new Item();
+        item5.title = "分享";
+        item5.icon = R.drawable.about;
+        mItemList.add(item5);
 
         mItemAdapter.notifyDataSetChanged();
     }

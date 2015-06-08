@@ -19,7 +19,7 @@
     <string name="login_ing">登录中...</string>
     <string name="register_ing">注册中...</string>
     <string name="register">注册</string>
-    <string name="password_length_error">密码长度应为5-20个字符</string>
+    <string name="password_length_error">密码长度应为6-20个字符</string>
     <string name="sms_local_check_error">验证码为4位数字</string>
     <string name="verify_and_set_password">验证并设置密码</string>
     <string name="forget_password">忘记密码？</string>
@@ -44,4 +44,14 @@
     <string name="li_ke">理科</string>
     <string name="wen_ke">文科</string>
     <string name="current">当前</string>
+
+    <string name="same_password_error">新旧密码不能一致</string>
+    <string name="progress_bar_committing_please_wait">提交中，请稍候</string>
+    <string name="modify_login_password">修改登录密码</string>
+
+    <string name="errcode_success">发送成功</string>
+    <string name="errcode_cancel">发送取消</string>
+    <string name="errcode_deny">发送被拒绝</string>
+    <string name="errcode_unknown">发送返回</string>
+
 </resources>

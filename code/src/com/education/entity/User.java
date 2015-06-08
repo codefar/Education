@@ -230,6 +230,7 @@ public class User {
             Log.w(TAG, "currentTimeMillis: " + Constants.SDF_YYYY_MM_DD_HH_MM_SS_SSS.format(new Date(System.currentTimeMillis())));
         }
 
-        return sUser.mExpireTime > System.currentTimeMillis();
+//        return sUser.mExpireTime > System.currentTimeMillis();
+        return true;
     }
 }
