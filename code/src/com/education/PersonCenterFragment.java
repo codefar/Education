@@ -136,6 +136,10 @@ public class PersonCenterFragment extends CommonFragment {
                 share.setUrl("www.baidu.com");
                 share.setDescription("这里可以多写一些字啊多写一些字啊多写一些字!");
                 AppHelper.showShareDialog(mActivity, share);
+            } else if (position == 5) {
+                User.clearUser();
+                mActivity.finish();
+                startActivity(new Intent(mActivity, LoginActivity.class));
             }
         }
 
@@ -240,6 +244,11 @@ public class PersonCenterFragment extends CommonFragment {
         item5.title = "分享";
         item5.icon = R.drawable.about;
         mItemList.add(item5);
+
+        Item item6 = new Item();
+        item6.title = "退出(测试用)";
+        item6.icon = R.drawable.about;
+        mItemList.add(item6);
 
         mItemAdapter.notifyDataSetChanged();
     }

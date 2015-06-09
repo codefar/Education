@@ -1,15 +1,9 @@
 package com.education.common;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.Response;
-import com.education.EduApp;
-import com.education.R;
-import com.education.EduApp;
 
 /**
  * Created by su on 15-3-30.
