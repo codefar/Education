@@ -11,7 +11,8 @@ public class Url {
     public static final String REGISTER_CHECK_SMS_CODE = SCHEME + "/register/chkSMCode";
     public static final String REGISTER = SCHEME + "/register/regUser";
     public static final String CHANGE_PASSWORD = SCHEME + "/my/setpassword";
-    public static final String GET_PASSWORD_BACK = "";
+    public static final String SET_NICKNAME = SCHEME + "/my/setaccount";
+    public static final String GET_PASSWORD_BACK = "/my/resetPassword";
     public static final String CHECK_MOBILE = "";
     public static final String SHOU_CANG_YUAN_XIAO_LIE_BIAO = "/zysc/getYx"; 
     public static final String GET_QUESTION = "http://www.benshijy.com:8018/zntj/getTms";
