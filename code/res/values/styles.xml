@@ -1,23 +1,26 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+
         <!-- API 14 theme customizations can go here. -->
-        <!--<item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar</item>-->
-        <!--<item name="android:actionOverflowButtonStyle">@style/OverFlow</item>-->
+        <!-- <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar</item> -->
+        <!-- <item name="android:actionOverflowButtonStyle">@style/OverFlow</item> -->
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:actionMenuTextAppearance">@style/ActionBarMenu</item>
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
     <style name="ActionBarMenu" parent="@android:style/TextAppearance.Holo.Large">
-        <!--部分机型必须使用下面属性才能修改actionbar上菜单文字颜色-->
+
+        <!-- 部分机型必须使用下面属性才能修改actionbar上菜单文字颜色 -->
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/dimen_16_dip</item>
     </style>
     <!-- ActionBar styles -->
-    <style name="MyActionBar"
-           parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/action_bar_bg</item>-->
-        <!--<item name="android:icon">@drawable/logo</item>-->
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/action_bar_bg</item>
+-->                <!-- <item name="android:icon">@drawable/logo</item> -->
         <item name="android:displayOptions">showHome|useLogo</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleTextStyle</item>
     </style>
@@ -27,7 +30,7 @@
         <item name="android:textSize">@dimen/dimen_16_dip</item>
     </style>
 
-    <!--可清空EditText样式-->
+    <!-- 可清空EditText样式 -->
     <style name="EditText">
         <item name="android:textColor">@color/black</item>
         <item name="android:paddingLeft">17dip</item>
@@ -35,7 +38,7 @@
         <item name="android:background">@drawable/edittext_bg_selector</item>
     </style>
 
-    <!--可清空EditText样式-->
+    <!-- 可清空EditText样式 -->
     <style name="EditText.SingleLine" parent="EditText">
         <item name="android:singleLine">true</item>
     </style>
@@ -44,13 +47,12 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/button_main_selector</item>
     </style>
-    
+
     <style name="GreenButton">
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/button_green_selector</item>
     </style>
-    
-    
+
     <style name="RadioButton">
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:minHeight">@dimen/dimen_34_dip</item>
@@ -66,4 +68,28 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_from_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
     </style>
+
+    <!-- 筛选学校和专业页面  成绩，排位，种类，考区 -->
+    <style name="filter_school_and_major_top_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#999999</item>
+        <item name="android:textSize">30px</item>
+         <item name="android:layout_marginTop">15dp</item>
+    </style>
+
+    <style name="filter_school_and_major_down_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:textSize">36px</item>
+    </style>
+
+    <style name="shaixuan_img_style">
+        <item name="android:layout_width">39dp</item>
+        <item name="android:layout_height">39dp</item>
+        <item name="android:layout_marginLeft">12px</item>
+         <item name="android:scaleType">fitXY</item>
+    </style>
+
 </resources>

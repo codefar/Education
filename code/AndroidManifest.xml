@@ -66,6 +66,10 @@
                   android:label="FilterActivity"
                   android:exported="true"
                   android:screenOrientation="portrait"/>
+         <activity android:name="com.education.FilterSchoolAndMajorActivity"
+                  android:label="FilterSchoolAndMajorActivity"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
         <activity android:name=".AdmissionInPastYearActivity"
                   android:label="AdmissionInPastYearActivity"
                   android:exported="true"

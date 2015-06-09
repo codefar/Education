@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="360dp"
+    android:layout_height="40dp"
+    android:layout_gravity="center_vertical" >
+
+    <EditText
+        android:id="@+id/search_school_major_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:ellipsize="end"
+        android:hint="请输入学校 、专业信息"
+        android:paddingLeft="40dp"
+        android:singleLine="true" />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@id/search_school_major_edit"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/top_sousuo" />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignEnd="@id/search_school_major_edit"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/top_yuyin" />
+
+</RelativeLayout>

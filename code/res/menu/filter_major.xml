@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_add"
+        android:actionLayout="@layout/filter_school_major_action_bar"
+        android:icon="@drawable/arrow_right"
+        android:showAsAction="ifRoom|withText"/>
+
+</menu>
