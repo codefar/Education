@@ -57,7 +57,7 @@ public class EduApp extends Application {
     public static final String SP_COLUMN_NEW_VERSION_DESCRIPTION = "new_version_description";
     public static final String SP_COLUMN_NEW_VERSION_TITLE = "new_version_title";
 
-    public static final String WX_APP_ID = "wxb9e9416e250782f7";
+    public static final String WX_APP_ID = "wxa85e1dd72d4132cf";
 
     static {
         File externalStorage = Environment.getExternalStorageDirectory();
