@@ -37,55 +37,72 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.education.LoginActivity"
-                  android:label="LoginActivity"
-                  android:exported="true"
-                  android:screenOrientation="portrait"/>
-        <activity android:name="com.education.RegisterActivity"
-                  android:label="RegisterActivity"
-                  android:exported="true"
-                  android:screenOrientation="portrait"/>
-        <activity android:name="com.education.FindPasswordActivity"
-                  android:label="FindPasswordActivity"
-                  android:exported="true"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".ChangePasswordActivity"
-                  android:label="ChangePasswordActivity"
-                  android:exported="true"
-                  android:screenOrientation="portrait"/>
-
-        <activity android:name="com.education.CollectionListActivity"
-                  android:label="CollectionListActivity"
-                  android:exported="true"
-                  android:screenOrientation="portrait"/>
-        <activity android:name="com.education.FilterActivity"
-                  android:label="FilterActivity"
-                  android:exported="true"
-                  android:screenOrientation="portrait"/>
-         <activity android:name="com.education.FilterSchoolAndMajorActivity"
-                  android:label="FilterSchoolAndMajorActivity"
-                  android:exported="true"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".AdmissionInPastYearActivity"
-                  android:label="AdmissionInPastYearActivity"
-                  android:exported="true"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:label="LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="true"
+            android:label="RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FindPasswordActivity"
+            android:exported="true"
+            android:label="FindPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="true"
+            android:label="ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CollectionListActivity"
+            android:exported="true"
+            android:label="CollectionListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FilterActivity"
+            android:exported="true"
+            android:label="FilterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FilterSchoolAndMajorActivity"
+            android:exported="true"
+            android:label="FilterSchoolAndMajorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ShaiXuanActivity"
+            android:exported="true"
+            android:label="ShaiXuanActivity"
+            android:screenOrientation="portrait" />
+         <activity
+            android:name=".DetailConditionActivity"
+            android:exported="true"
+            android:label="多选条件"
+            android:theme="@style/bklistDialog"
+            android:screenOrientation="portrait" />
+         
+        <activity
+            android:name=".AdmissionInPastYearActivity"
+            android:exported="true"
+            android:label="AdmissionInPastYearActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SetUserInfoActivity"
             android:exported="true"
             android:screenOrientation="portrait" >
         </activity>
-
-
         <activity
-                android:name=".wxapi.WXEntryActivity"
-                android:label="@string/app_name"
-                android:exported="true"
-                android:launchMode="singleTop"/>
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" />
     </application>
 
 </manifest>

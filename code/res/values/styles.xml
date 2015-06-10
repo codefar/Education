@@ -91,5 +91,14 @@
         <item name="android:layout_marginLeft">12px</item>
          <item name="android:scaleType">fitXY</item>
     </style>
-
+    
+    <style name="bklistDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/white</item> <!-- //设置背景 -->
+        <item name="android:backgroundDimEnabled">true</item> <!-- //设置是否背景模糊 -->
+        <item name="android:windowIsTranslucent">true</item> <!-- //设置半透明 -->
+        <item name="android:windowFullscreen">false</item>
+//设置全屏        <!-- <item name="android:backgroundDimEnabled">false</item>activity不变暗 -->
+        <item name="android:windowIsFloating">true</item>
+    </style>
+ 
 </resources>

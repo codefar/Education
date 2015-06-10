@@ -186,6 +186,7 @@
             android:src="@drawable/paixu_normal" />
 
         <TextView
+            android:id="@+id/filter_textview"
             style="@style/filter_school_and_major_down_text"
             android:layout_marginRight="12px"
             android:layout_toLeftOf="@id/shaixuan_img"

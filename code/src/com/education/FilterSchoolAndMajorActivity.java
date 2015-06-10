@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -18,15 +19,21 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.education.entity.ShaiXuanInfo;
 import com.education.entity.User;
 
-public class FilterSchoolAndMajorActivity extends CommonBaseActivity {
+public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
+		View.OnClickListener {
 
 	private ListView mSearchResulListView;
 	private List<SchoolItem> mItemList = new ArrayList<SchoolItem>();
 	protected LayoutInflater mInflater;
 	protected Resources mResources;
 	private ItemAdapter mItemAdapter;
+	private TextView mFilterTextView;
+	private Intent mShaixuanIntent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +44,12 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity {
 		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mResources = getResources();
 		mSearchResulListView = (ListView) findViewById(R.id.filter_school_result_list);
+		mFilterTextView = (TextView) findViewById(R.id.filter_textview);
 		mItemAdapter = new ItemAdapter();
+		mShaixuanIntent = new Intent(this, ShaiXuanActivity.class);
 		mSearchResulListView.setAdapter(mItemAdapter);
 		displayCollege();
+		mFilterTextView.setOnClickListener(this);
 
 	}
 
@@ -193,6 +203,25 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity {
 
 		public String getSchoolName() {
 			return schoolName;
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		//获取筛选条件
+		if (requestCode == 1 && resultCode == 1) {
+			ShaiXuanInfo info=(ShaiXuanInfo)data.getSerializableExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
+			Toast.makeText(this, info.toString(), Toast.LENGTH_SHORT).show();
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.filter_textview:
+			startActivityForResult(mShaixuanIntent, 1);
+			break;
 		}
 	}
 }
