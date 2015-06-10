@@ -53,7 +53,6 @@ public class Constants {
     public static final String SP_COLUMN_USER_PHONE_EMAIL = "user_phone_email";
     public static final String SP_COLUMN_USER_PHONE_ID5 = "user_phone_id5";
     public static final String SP_COLUMN_USER_EXPIRE_TIME = "user_expire_time";
-    public static final String SP_COLUMN_USER_SCORE = "user_score";
     public static final String SP_COLUMN_USER_PROVINCE = "user_province";
     public static final String SP_COLUMN_USER_PROVINCE_ID = "user_province_id";
     public static final String SP_COLUMN_NEED_TO_UPDATE = "need_to_update";

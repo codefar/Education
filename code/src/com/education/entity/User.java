@@ -211,7 +211,7 @@ public class User {
                 .putString(Constants.SP_COLUMN_USER_ACCOUNTID, user.accountId)
                 .putString(Constants.SP_COLUMN_USER_XM, user.xm)
                 .putString(Constants.SP_COLUMN_USER_SFZH, user.sfzh)
-                .putFloat(Constants.SP_COLUMN_USER_KSCJ, user.kscj)
+                .putInt(Constants.SP_COLUMN_USER_KSCJ, user.kscj)
                 .putInt(Constants.SP_COLUMN_USER_KSPW, user.kspw)
                 .putInt(Constants.SP_COLUMN_USER_KSKL, user.kskl)
                 .putString(Constants.SP_COLUMN_USER_KSKLNAME, user.ksklName)
@@ -225,7 +225,6 @@ public class User {
                 .putLong(Constants.SP_COLUMN_USER_EXPIRE_TIME, user.mExpireTime)
                 .putString(Constants.SP_COLUMN_USER_PROVINCE, "")
                 .putString(Constants.SP_COLUMN_USER_PROVINCE_ID, "")
-                .putFloat(Constants.SP_COLUMN_USER_SCORE, 0f)
         .apply();
     }
 
@@ -235,7 +234,7 @@ public class User {
                 .putString(Constants.SP_COLUMN_USER_ACCOUNTID, "")
                 .putString(Constants.SP_COLUMN_USER_XM, "")
                 .putString(Constants.SP_COLUMN_USER_SFZH, "")
-                .putFloat(Constants.SP_COLUMN_USER_KSCJ, -1)
+                .putInt(Constants.SP_COLUMN_USER_KSCJ, -1)
                 .putInt(Constants.SP_COLUMN_USER_KSPW, -1)
                 .putInt(Constants.SP_COLUMN_USER_KSKL, -1)
                 .putString(Constants.SP_COLUMN_USER_KSKLNAME, "")
@@ -249,7 +248,6 @@ public class User {
                 .putString(Constants.SP_COLUMN_USER_PHONE_ID5, "")
                 .putString(Constants.SP_COLUMN_USER_PROVINCE, "")
                 .putString(Constants.SP_COLUMN_USER_PROVINCE_ID, "")
-                .putFloat(Constants.SP_COLUMN_USER_SCORE, 0f)
                 .putLong(Constants.SP_COLUMN_USER_PHONE_NUMBER, -1)
                 .putLong(Constants.SP_COLUMN_USER_LOGIN_TIME, -1)
                 .putLong(Constants.SP_COLUMN_USER_EXPIRE_TIME, -1)

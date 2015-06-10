@@ -39,10 +39,10 @@ public class TestActivity extends CommonBaseActivity {
         User user = User.getInstance();
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(user.getId());
-        userInfo.setXm("苏");
-        userInfo.setSfzh("123456789012345678");
-        userInfo.setKscj(601);
-        userInfo.setKspw(10001);
+        userInfo.setXm("苏"); //姓名
+        userInfo.setSfzh("123456789012345678"); //身份证
+        userInfo.setKscj(601); //分数
+        userInfo.setKspw(10001); //排名
         userInfo.setKskl(2); //理工
         userInfo.setKqdh(3); //天津
         return userInfo;

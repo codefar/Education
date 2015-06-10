@@ -73,7 +73,7 @@ public class PersonCenterFragment extends CommonFragment {
         View v = inflater.inflate(R.layout.fragment_main_center, container, false);
 
         mInflater = inflater;
-        mListView = (ListView) v.findViewById(R.id.list);
+        mListView = (ListView) v.findViewById(R.id.list_);
         mItemAdapter = new ItemAdapter();
         mListView.setAdapter(mItemAdapter);
         mListView.setOnItemClickListener(mItemAdapter);
@@ -103,8 +103,7 @@ public class PersonCenterFragment extends CommonFragment {
                 AbsListView.LayoutParams lp = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
                         mResources.getDimensionPixelSize(R.dimen.dimen_34_dip));
                 convertView.setLayoutParams(lp);
-            }
-            else {
+            } else {
                 holder = (ViewHolder) convertView.getTag();
             }
             convertView.setTag(holder);
@@ -121,22 +120,22 @@ public class PersonCenterFragment extends CommonFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             User user = User.getInstance();
             if (position == 0) {
-                if (TextUtils.isEmpty(user.getAccountId())) {
+                if (TextUtils.isEmpty(user.getAccountId())) { //设置昵称
                     nicknameDialog(view);
                 }
-            } else if (position == 1) {
+            } else if (position == 1) { //修改密码
                 startActivity(new Intent(mActivity, ChangePasswordActivity.class));
-            } else if (position == 2) {
+            } else if (position == 2) { //个人信息
+                personalDialog();
+            } else if (position == 3) { // 关于
 
-            } else if (position == 3) {
-
-            } else if (position == 4) {
+            } else if (position == 4) { //分享
                 Share share = new Share();
                 share.setTitle("测试");
                 share.setUrl("www.baidu.com");
                 share.setDescription("这里可以多写一些字啊多写一些字啊多写一些字!");
                 AppHelper.showShareDialog(mActivity, share);
-            } else if (position == 5) {
+            } else if (position == 5) { //测试用的
                 User.clearUser();
                 mActivity.finish();
                 startActivity(new Intent(mActivity, LoginActivity.class));
@@ -146,6 +145,20 @@ public class PersonCenterFragment extends CommonFragment {
         public Object getItem(int position) {
             return mItemList.get(position);
         }
+    }
+
+    private void personalDialog() {
+        User user = User.getInstance();
+        new AlertDialog.Builder(mActivity)
+                .setTitle("考生信息")
+                .setMessage("考生姓名:" + user.getXm() + "\n"
+                        + "身份证号:" + user.getSfzh() + "\n"
+                        + "考生成绩:" + user.getKscj() + "\n"
+                        + "考生排名:" + user.getKspw() + "\n"
+                        + "考生科类:" + user.getKsklName() + "\n"
+                        + "考生考区:" + user.getKskqName())
+                .setPositiveButton("", null)
+                .show();
     }
 
     private void nicknameDialog(final View view) {
@@ -174,7 +187,7 @@ public class PersonCenterFragment extends CommonFragment {
     }
 
     private void setNickname(final String uid, final String nickname, final View parent) {
-        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SET_NICKNAME
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SET_ACCOUNT
                 , null, new VolleyResponseListener(mActivity) {
             @Override
             public void onSuccessfulResponse(JSONObject response, boolean success) {
