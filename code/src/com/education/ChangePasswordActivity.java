@@ -151,13 +151,19 @@ public class ChangePasswordActivity extends CommonBaseActivity implements View.O
             @Override
             public void onSuccessfulResponse(JSONObject response, boolean success) {
                 if (success) {
-                    Toast.makeText(ChangePasswordActivity.this, "密码修改成功", Toast.LENGTH_LONG).show();
-                    finish();
+                    JSONObject result = response.getJSONObject("result");
+                    int status = result.getInteger("status");
+                    if (status == 1) {
+                        Toast.makeText(ChangePasswordActivity.this, "密码修改成功", Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(ChangePasswordActivity.this, result.getString("msgText"), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     ErrorData errorData = AppHelper.getErrorData(response);
-                    mBlockedDialogFragment.dismissAllowingStateLoss();
                     Toast.makeText(ChangePasswordActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
                 }
+                mBlockedDialogFragment.dismissAllowingStateLoss();
             }
         }, new VolleyErrorListener() {
             @Override
@@ -171,8 +177,8 @@ public class ChangePasswordActivity extends CommonBaseActivity implements View.O
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("userId", uid);
-                params.put("oldpsw", LogUtil.md5Hex(oldpassword));
-                params.put("newpsw", LogUtil.md5Hex(newpassword));
+                params.put("oldpsw", oldpassword);
+                params.put("newpsw", newpassword);
                 return AppHelper.makeSimpleData("setpassword", params);
             }
         };

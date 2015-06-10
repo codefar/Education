@@ -30,7 +30,7 @@ import java.io.File;
 public class EduApp extends Application {
 
     public static final boolean DEBUG = true;
-    public static final String TAG = "SydApp";
+    public static final String TAG = "EduApp";
 
     public static RequestQueue sRequestQueue;
     public static String sHost;
@@ -126,6 +126,9 @@ public class EduApp extends Application {
                 sVersionName = pi.versionName;
                 sVersionCode = pi.versionCode;
                 sPackageName = pi.packageName;
+
+                PackageInfo packageInfo = pm.getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+                Log.v(TAG, "signatures: " + packageInfo.signatures[0].toCharsString());
                 ApplicationInfo applicationInfo = pm.getApplicationInfo(getPackageName(), PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
                 sApplicationLabel = pm.getApplicationLabel(applicationInfo).toString();
                 ApplicationInfo appInfo = pm.getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
@@ -140,7 +143,7 @@ public class EduApp extends Application {
         if (sInit) {
             defaultSP.edit().putBoolean(Constants.SP_COLUMN_INIT, false).apply();
         }
-        
+
         String userId = defaultSP.getString(Constants.SP_COLUMN_USER_ID, "-1");
 
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);

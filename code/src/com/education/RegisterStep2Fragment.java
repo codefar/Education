@@ -133,6 +133,7 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 mSimpleBlockedDialogFragment.updateMessage("获取中...");
                 mSimpleBlockedDialogFragment.show(ft, "block_dialog");
+                fetchCode(mCellNumber);
                 break;
             default:
                 break;
@@ -239,6 +240,41 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
                 params.put("phoneNum", phoneNumber);
                 params.put("SMCode", smsCode);
                 return AppHelper.makeSimpleData("chkSMCode", params);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
+
+
+    private void fetchCode(final String mobile) {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.REGISTER_GET_SMS_CODE
+                , null, new VolleyResponseListener(mActivity) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    mCountDown = mInitCountDownTime;
+                    mFetchSmsCodeButton.setEnabled(false);
+                    mHandler.sendEmptyMessageDelayed(ACTION_COUNT_DOWN, 1000);
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
+                Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("phoneNum", mobile);
+                return AppHelper.makeSimpleData("regChkPN", params);
             }
         };
         EduApp.sRequestQueue.add(request);

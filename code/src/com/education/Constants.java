@@ -34,7 +34,18 @@ public class Constants {
     public static final String SP_COLUMN_INIT = "init";
     public static final String SP_COLUMN_UUID = "uuid";
     public static final String SP_COLUMN_USER_ID = "user_id";
-    public static final String SP_COLUMN_USER_NAME = "user_name";
+
+    public static final String SP_COLUMN_USER_ACCOUNTID = "user_accountId";
+    public static final String SP_COLUMN_USER_XM = "user_xm";
+    public static final String SP_COLUMN_USER_SFZH = "user_sfzh";
+    public static final String SP_COLUMN_USER_KSCJ = "user_kscj";
+    public static final String SP_COLUMN_USER_KSPW = "user_kspw";
+    public static final String SP_COLUMN_USER_KSKL = "user_kskl";
+    public static final String SP_COLUMN_USER_KSKLNAME = "user_ksklName";
+    public static final String SP_COLUMN_USER_KQDH = "user_kqdh";
+    public static final String SP_COLUMN_USER_KSKQNAME = "user_kskqName";
+
+
     public static final String SP_COLUMN_USER_SESSION = "user_session";
     public static final String SP_COLUMN_USER_LOGIN_TIME = "user_login_time";
     public static final String SP_COLUMN_USER_PHONE_NUMBER = "user_phone_number";

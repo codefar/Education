@@ -1,12 +1,14 @@
 package com.education;
 
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
@@ -14,12 +16,17 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.education.common.AppHelper;
 import com.education.common.FastJsonRequest;
+import com.education.common.VolleyErrorListener;
+import com.education.common.VolleyResponseListener;
+import com.education.entity.ErrorData;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created by su on 2014/9/19.
@@ -34,7 +41,9 @@ public class FindPasswordStep2Fragment extends CommonFragment implements View.On
     private SimpleBlockedDialogFragment mSimpleBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
     private String mCellNumber;
 
-    private RegisterActivity mActivity;
+    private FindPasswordActivity mActivity;
+    private EditText mNewPasswordEditText;
+    private EditText mConfirmEditText;
 
     public static FindPasswordStep2Fragment create(String cellNumber, int countDownTime) {
         FindPasswordStep2Fragment fragment = new FindPasswordStep2Fragment();
@@ -48,21 +57,57 @@ public class FindPasswordStep2Fragment extends CommonFragment implements View.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivity = (RegisterActivity) getActivity();
+        mActivity = (FindPasswordActivity) getActivity();
         mCellNumber = getArguments().getString(ARG_CELL_NUMBER);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_find_password_step2, null);
+        mNewPasswordEditText = (EditText) layout.findViewById(R.id.new_password);
+        mConfirmEditText = (EditText) layout.findViewById(R.id.confirm);
+        layout.findViewById(R.id.commit).setOnClickListener(this);
         return layout;
     }
 
+    private boolean checkPassword() {
+        String password = mNewPasswordEditText.getText().toString();
+        if (!Pattern.matches(".{6,20}", password)) {
+            new AlertDialog.Builder(mActivity)
+                    .setMessage(R.string.password_length_error)
+                    .setPositiveButton(R.string.confirm, null)
+                    .show();
+            return false;
+        }
+
+        if (!password.equals(mConfirmEditText.getText().toString())) {
+            new AlertDialog.Builder(mActivity)
+                    .setMessage("两次密码需输入一致")
+                    .setPositiveButton(R.string.confirm, null)
+                    .show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkInput() {
+        if (!checkPassword()) {
+            return false;
+        }
+
+        return true;
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.commit:
+                if (checkInput()) {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    mSimpleBlockedDialogFragment.updateMessage("提交中...");
+                    mSimpleBlockedDialogFragment.show(ft, "block_dialog");
+                    changePassword(mCellNumber, mNewPasswordEditText.getText().toString());
+                }
                 break;
             default:
                 break;
@@ -74,10 +119,50 @@ public class FindPasswordStep2Fragment extends CommonFragment implements View.On
         super.onDestroy();
     }
 
+    private void changePassword(final String phoneNum, final String smsCode) {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.RESET_PASSWORD
+                , null, new VolleyResponseListener(mActivity) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    JSONObject result = response.getJSONObject("result");
+                    int status = result.getInteger("status");
+                    if (status == 1) {
+                        successful();
+                        mActivity.finish();
+                    } else {
+                        Toast.makeText(mActivity, result.getString("msgText"), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
+                Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("phoneNum", phoneNum);
+                params.put("password", smsCode);
+                return AppHelper.makeSimpleData("resetPassword", params);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
+
     private void successful() {
         AlertDialog alertDialog = new AlertDialog.Builder(mActivity)
                 .setMessage("修改密码成功")
-                .setPositiveButton("进入应用", null)
+                .setPositiveButton("请重新登录", null)
                 .show();
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override

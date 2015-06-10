@@ -30,13 +30,21 @@ public class User {
                 return sUser;
             } else {
                 sUser.mId = sp.getString(Constants.SP_COLUMN_USER_ID, "");
-                sUser.mName = sp.getString(Constants.SP_COLUMN_USER_NAME, "");
+                sUser.accountId = sp.getString(Constants.SP_COLUMN_USER_ACCOUNTID, "");
+                sUser.xm = sp.getString(Constants.SP_COLUMN_USER_XM, "");
+                sUser.sfzh = sp.getString(Constants.SP_COLUMN_USER_SFZH, "");
+                sUser.kscj = sp.getFloat(Constants.SP_COLUMN_USER_KSCJ, -1);
+                sUser.kspw = sp.getInt(Constants.SP_COLUMN_USER_KSPW, -1);
+                sUser.kskl = sp.getInt(Constants.SP_COLUMN_USER_KSKL, -1);
+                sUser.ksklName = sp.getString(Constants.SP_COLUMN_USER_KSKLNAME, "");
+                sUser.kqdh = sp.getInt(Constants.SP_COLUMN_USER_KQDH, -1);
+                sUser.kskqName = sp.getString(Constants.SP_COLUMN_USER_KSKQNAME, "");
+
                 sUser.mUserSession = sp.getString(Constants.SP_COLUMN_USER_SESSION, "");
                 sUser.mLoginTime = sp.getLong(Constants.SP_COLUMN_USER_LOGIN_TIME, -1);
                 sUser.mExpireTime = sp.getLong(Constants.SP_COLUMN_USER_EXPIRE_TIME, -1);
                 sUser.mPhoneNumber = sp.getLong(Constants.SP_COLUMN_USER_PHONE_NUMBER, -1);
                 sUser.mEmail = sp.getString(Constants.SP_COLUMN_USER_PHONE_EMAIL, "");
-                sUser.setNickName(sp.getString(Constants.SP_COLUMN_USER_PHONE_NICKNAME, ""));
             }
         } else {
             if (!TextUtils.isEmpty(sUser.mId) && !isValid()) {
@@ -48,53 +56,104 @@ public class User {
     }
 
     private String mId;
-    private String mName;
-    private String mId5;
-    private int mRank;
-    private String mNickName;
+    private String accountId; //昵称/账户
+    private String xm; //姓名
+    private String sfzh; //身份证号
+    private float kscj; //成绩
+    private int kspw; //排位
+    private int kskl; //科类
+    private String ksklName; //科类名称
+    private int kqdh; //考区代号
+    private String kskqName; //考区名称
+
     private String mUserSession = "";
     private long mLoginTime;
     private long mPhoneNumber;
     private String mEmail;
     private long mExpireTime;
 
-    private String mProvince;
-    private String mProvinceId;
-    private float mScore;
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getXm() {
+        return xm;
+    }
+
+    public void setXm(String xm) {
+        this.xm = xm;
+    }
+
+    public String getSfzh() {
+        return sfzh;
+    }
+
+    public void setSfzh(String sfzh) {
+        this.sfzh = sfzh;
+    }
+
+    public float getKscj() {
+        return kscj;
+    }
+
+    public void setKscj(float kscj) {
+        this.kscj = kscj;
+    }
+
+    public int getKspw() {
+        return kspw;
+    }
+
+    public void setKspw(int kspw) {
+        this.kspw = kspw;
+    }
+
+    public int getKskl() {
+        return kskl;
+    }
+
+    public void setKskl(int kskl) {
+        this.kskl = kskl;
+    }
+
+    public String getKsklName() {
+        return ksklName;
+    }
+
+    public void setKsklName(String ksklName) {
+        this.ksklName = ksklName;
+    }
+
+    public int getKqdh() {
+        return kqdh;
+    }
+
+    public void setKqdh(int kqdh) {
+        this.kqdh = kqdh;
+    }
+
+    public String getKskqName() {
+        return kskqName;
+    }
+
+    public void setKskqName(String kskqName) {
+        this.kskqName = kskqName;
+    }
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Id: " + mId + "\n");
-        sb.append("Name: " + mName + "\n");
+        sb.append("Name: " + xm + "\n");
         sb.append("UserSession: " + mUserSession + "\n");
         sb.append("PhoneNumber: " + mPhoneNumber + "\n");
         sb.append("LoginTime: " + Constants.SDF_YYYY_MM_DD_HH_MM_SS.format(new Date(mLoginTime)));
         sb.append("ExpireTime: " + Constants.SDF_YYYY_MM_DD_HH_MM_SS.format(new Date(mExpireTime)));
         return sb.toString();
-    }
-
-    public float getScore() {
-        return mScore;
-    }
-
-    public void setScore(float mScore) {
-        this.mScore = mScore;
-    }
-
-    public String getProvinceId() {
-        return mProvinceId;
-    }
-
-    public void setProvinceId(String mProvinceId) {
-        this.mProvinceId = mProvinceId;
-    }
-
-    public String getProvince() {
-        return mProvince;
-    }
-
-    public void setProvince(String mProvince) {
-        this.mProvince = mProvince;
     }
 
     public String getId() {
@@ -105,29 +164,6 @@ public class User {
         this.mId = id;
     }
 
-    public String getName() {
-        return mName;
-    }
-
-    public void setName(String name) {
-        this.mName = name;
-    }
-
-    public String getId5() {
-        return mId5;
-    }
-
-    public void setId5(String id5) {
-        this.mId5 = id5;
-    }
-
-    public int getRank() {
-        return mRank;
-    }
-
-    public void setRank(int rank) {
-        this.mRank = rank;
-    }
 
     public String getUserSession() {
         return mUserSession;
@@ -161,14 +197,6 @@ public class User {
         this.mPhoneNumber = phoneNumber;
     }
 
-    public String getNickName() {
-        return mNickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.mNickName = nickName;
-    }
-
     public String getEmail() {
         return mEmail;
     }
@@ -180,10 +208,18 @@ public class User {
     public static synchronized void saveUser(User user) {
         SharedPreferences sp = SpHelper.sDefaultSharedPreferences;
         sp.edit().putString(Constants.SP_COLUMN_USER_ID, user.mId)
-                .putString(Constants.SP_COLUMN_USER_NAME, user.mName)
+                .putString(Constants.SP_COLUMN_USER_ACCOUNTID, user.accountId)
+                .putString(Constants.SP_COLUMN_USER_XM, user.xm)
+                .putString(Constants.SP_COLUMN_USER_SFZH, user.sfzh)
+                .putFloat(Constants.SP_COLUMN_USER_KSCJ, user.kscj)
+                .putInt(Constants.SP_COLUMN_USER_KSPW, user.kspw)
+                .putInt(Constants.SP_COLUMN_USER_KSKL, user.kskl)
+                .putString(Constants.SP_COLUMN_USER_KSKLNAME, user.ksklName)
+                .putInt(Constants.SP_COLUMN_USER_KQDH, user.kqdh)
+                .putString(Constants.SP_COLUMN_USER_KSKQNAME, user.kskqName)
+
                 .putString(Constants.SP_COLUMN_USER_SESSION, user.mUserSession)
                 .putLong(Constants.SP_COLUMN_USER_PHONE_NUMBER, user.mPhoneNumber)
-                .putString(Constants.SP_COLUMN_USER_PHONE_NICKNAME, user.mNickName)
                 .putString(Constants.SP_COLUMN_USER_PHONE_EMAIL, user.mEmail)
                 .putLong(Constants.SP_COLUMN_USER_LOGIN_TIME, user.mLoginTime)
                 .putLong(Constants.SP_COLUMN_USER_EXPIRE_TIME, user.mExpireTime)
@@ -196,7 +232,16 @@ public class User {
     public static synchronized void clearUser() {
         SharedPreferences sp = SpHelper.sDefaultSharedPreferences;
         sp.edit().putString(Constants.SP_COLUMN_USER_ID, "") //不删除temp_user_id，用于检测手势密码
-                .putString(Constants.SP_COLUMN_USER_NAME, "")
+                .putString(Constants.SP_COLUMN_USER_ACCOUNTID, "")
+                .putString(Constants.SP_COLUMN_USER_XM, "")
+                .putString(Constants.SP_COLUMN_USER_SFZH, "")
+                .putFloat(Constants.SP_COLUMN_USER_KSCJ, -1)
+                .putInt(Constants.SP_COLUMN_USER_KSPW, -1)
+                .putInt(Constants.SP_COLUMN_USER_KSKL, -1)
+                .putString(Constants.SP_COLUMN_USER_KSKLNAME, "")
+                .putInt(Constants.SP_COLUMN_USER_KQDH, -1)
+                .putString(Constants.SP_COLUMN_USER_KSKQNAME, "")
+
                 .putString(Constants.SP_COLUMN_USER_SESSION, "")
                 .putBoolean(Constants.SP_COLUMN_NICKNAME_STATUS, false)
                 .putString(Constants.SP_COLUMN_USER_PHONE_NICKNAME, "")

@@ -121,7 +121,7 @@ public class PersonCenterFragment extends CommonFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             User user = User.getInstance();
             if (position == 0) {
-                if (TextUtils.isEmpty(user.getNickName())) {
+                if (TextUtils.isEmpty(user.getAccountId())) {
                     nicknameDialog(view);
                 }
             } else if (position == 1) {
@@ -136,6 +136,10 @@ public class PersonCenterFragment extends CommonFragment {
                 share.setUrl("www.baidu.com");
                 share.setDescription("这里可以多写一些字啊多写一些字啊多写一些字!");
                 AppHelper.showShareDialog(mActivity, share);
+            } else if (position == 5) {
+                User.clearUser();
+                mActivity.finish();
+                startActivity(new Intent(mActivity, LoginActivity.class));
             }
         }
 
@@ -177,7 +181,7 @@ public class PersonCenterFragment extends CommonFragment {
                 mBlockedDialogFragment.dismissAllowingStateLoss();
                 if (success) {
                     User user = User.getInstance();
-                    user.setNickName(nickname);
+                    user.setAccountId(nickname);
                     TextView tv = (TextView) parent.findViewById(R.id.desc);
                     tv.setText(nickname);
                 } else {
@@ -218,7 +222,7 @@ public class PersonCenterFragment extends CommonFragment {
         Item item1 = new Item();
         item1.title = "昵称";
         item1.icon = R.drawable.nickname;
-        item1.desc = user.getNickName();
+        item1.desc = user.getAccountId();
         mItemList.add(item1);
 
         Item item2 = new Item();
@@ -240,6 +244,11 @@ public class PersonCenterFragment extends CommonFragment {
         item5.title = "分享";
         item5.icon = R.drawable.about;
         mItemList.add(item5);
+
+        Item item6 = new Item();
+        item6.title = "退出(测试用)";
+        item6.icon = R.drawable.about;
+        mItemList.add(item6);
 
         mItemAdapter.notifyDataSetChanged();
     }
