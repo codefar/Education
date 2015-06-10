@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--省份/直辖市代号-->
+    <array name="province_id">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+    </array>
+    <array name="province_name">
+        <item>北京市</item>
+        <item>上海市</item>
+        <item>天津市</item>
+        <item>重庆市</item>
+        <item>广东省</item>
+        <item>吉林省</item>
+        <item>江苏省</item>
+        <item>浙江省</item>
+        <item>湖北省</item>
+        <item>河南省</item>
+        <item>湖南省</item>
+        <item>河北省</item>
+        <item>山东省</item>
+        <item>辽宁省</item>
+        <item>黑龙江省</item>
+        <item>安徽省</item>
+        <item>江西省</item>
+        <item>福建省</item>
+        <item>四川省</item>
+        <item>海南省</item>
+        <item>陕西省</item>
+        <item>山西省</item>
+        <item>贵州省</item>
+        <item>云南省</item>
+        <item>甘肃省</item>
+        <item>青海省</item>
+        <item>内蒙古自治区</item>
+        <item>广西壮族自治区</item>
+        <item>西藏自治区</item>
+        <item>宁夏回族自治区</item>
+        <item>新疆维吾尔自治区</item>
+        <item>香港</item>
+        <item>澳门</item>
+    </array>
+
+    <!--院校类别-->
+    <array name="college_type_id">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+    </array>
+    <array name="college_type_name">
+        <item>综合</item>
+        <item>理工</item>
+        <item>财经</item>
+        <item>医药</item>
+        <item>师范</item>
+        <item>政法</item>
+        <item>农业</item>
+        <item>工科</item>
+        <item>林业</item>
+        <item>艺术</item>
+        <item>体育</item>
+        <item>语言</item>
+        <item>民族</item>
+        <item>军事</item>
+    </array>
+
+    <!--院校性质-->
+    <array name="college_property_id">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </array>
+    <array name="college_property_name">
+        <item>985</item>
+        <item>211</item>
+        <item>研究生院</item>
+        <item>卓越计划</item>
+        <item>创新引智计划</item>
+    </array>
+
+    <!--录取批次-->
+    <array name="luqu_pici_id">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </array>
+    <array name="luqu_pici_name">
+        <item>特殊批</item>
+        <item>提前批</item>
+        <item>第一批A段</item>
+        <item>第一批B段</item>
+        <item>第二批A段</item>
+        <item>第二批B段</item>
+        <item>第三批</item>
+    </array>
+</resources>
