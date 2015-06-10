@@ -33,7 +33,7 @@ public class User {
                 sUser.accountId = sp.getString(Constants.SP_COLUMN_USER_ACCOUNTID, "");
                 sUser.xm = sp.getString(Constants.SP_COLUMN_USER_XM, "");
                 sUser.sfzh = sp.getString(Constants.SP_COLUMN_USER_SFZH, "");
-                sUser.kscj = sp.getFloat(Constants.SP_COLUMN_USER_KSCJ, -1);
+                sUser.kscj = sp.getInt(Constants.SP_COLUMN_USER_KSCJ, -1);
                 sUser.kspw = sp.getInt(Constants.SP_COLUMN_USER_KSPW, -1);
                 sUser.kskl = sp.getInt(Constants.SP_COLUMN_USER_KSKL, -1);
                 sUser.ksklName = sp.getString(Constants.SP_COLUMN_USER_KSKLNAME, "");
@@ -59,7 +59,7 @@ public class User {
     private String accountId; //昵称/账户
     private String xm; //姓名
     private String sfzh; //身份证号
-    private float kscj; //成绩
+    private int kscj; //成绩
     private int kspw; //排位
     private int kskl; //科类
     private String ksklName; //科类名称
@@ -97,11 +97,11 @@ public class User {
         this.sfzh = sfzh;
     }
 
-    public float getKscj() {
+    public int getKscj() {
         return kscj;
     }
 
-    public void setKscj(float kscj) {
+    public void setKscj(int kscj) {
         this.kscj = kscj;
     }
 

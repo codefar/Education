@@ -17,12 +17,12 @@ public class UserInfo {
     private String accountId;
     private String xm;
     private String sfzh;
-    private float kscj;
+    private int kscj;
     private int kspw;
     private int kskl;
     private String ksklName;
-    private int kqdh;
-    private String kskqName;
+    private int kqdh; //考区代号
+    private String kskqName; //考区名称
 
     public String getUserId() {
         return userId;
@@ -64,11 +64,11 @@ public class UserInfo {
         this.sfzh = sfzh;
     }
 
-    public float getKscj() {
+    public int getKscj() {
         return kscj;
     }
 
-    public void setKscj(float kscj) {
+    public void setKscj(int kscj) {
         this.kscj = kscj;
     }
 

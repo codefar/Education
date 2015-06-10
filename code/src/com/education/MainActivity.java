@@ -70,7 +70,7 @@ public class MainActivity extends FragmentBaseActivity {
                     user.setKsklName(userInfo.getKsklName());//科类名称
                     user.setKqdh(userInfo.getKqdh());//考区代号
                     user.setKskqName(userInfo.getKskqName());
-
+                    User.saveUser(user);
                     if (TextUtils.isEmpty(user.getXm())) {
                         //需要用户录入信息
                     } else {
