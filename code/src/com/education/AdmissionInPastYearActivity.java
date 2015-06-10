@@ -72,7 +72,7 @@ public class AdmissionInPastYearActivity extends CommonBaseActivity implements V
     private void reset() {
         User user = User.getInstance();
         isSortByScore = true;
-        float score = user.getScore();
+        float score = user.getKscj();
         mMinTextView.setText(String.valueOf(score - 20));
         mMaxTextView.setText(String.valueOf(score + 20));
         mSegmented.check(R.id.score);

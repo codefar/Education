@@ -121,7 +121,7 @@ public class PersonCenterFragment extends CommonFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             User user = User.getInstance();
             if (position == 0) {
-                if (TextUtils.isEmpty(user.getNickName())) {
+                if (TextUtils.isEmpty(user.getAccountId())) {
                     nicknameDialog(view);
                 }
             } else if (position == 1) {
@@ -181,7 +181,7 @@ public class PersonCenterFragment extends CommonFragment {
                 mBlockedDialogFragment.dismissAllowingStateLoss();
                 if (success) {
                     User user = User.getInstance();
-                    user.setNickName(nickname);
+                    user.setAccountId(nickname);
                     TextView tv = (TextView) parent.findViewById(R.id.desc);
                     tv.setText(nickname);
                 } else {
@@ -222,7 +222,7 @@ public class PersonCenterFragment extends CommonFragment {
         Item item1 = new Item();
         item1.title = "昵称";
         item1.icon = R.drawable.nickname;
-        item1.desc = user.getNickName();
+        item1.desc = user.getAccountId();
         mItemList.add(item1);
 
         Item item2 = new Item();

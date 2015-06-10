@@ -1,13 +1,35 @@
 package com.education;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentTabHost;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.education.common.AppHelper;
+import com.education.common.FastJsonRequest;
+import com.education.common.VolleyErrorListener;
+import com.education.common.VolleyResponseListener;
+import com.education.entity.ErrorData;
+import com.education.entity.User;
+import com.education.entity.UserInfo;
+import com.education.utils.LogUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends FragmentBaseActivity {
 
+    private static final String TAG = "MainActivity";
 	private FragmentTabHost mTabHost;
     public static final int TAB_SMART = 0;
     public static final int TAB_MANUAL = 1;
@@ -18,8 +40,64 @@ public class MainActivity extends FragmentBaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		initTabs();
+        fetchUserInfo();
 	}
+
+    private void fetchUserInfo() {
+        User user = User.getInstance();
+        if (user.getXm() == null) { // 如果用户没有填写真实姓名,那么从后台读取
+            fetch(user.getId());
+        }
+    }
+
+    private void fetch(final String userId) {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.KAO_SHENG_XIN_XI
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    String ksxx = response.getString("ksxx");
+                    UserInfo userInfo = JSON.parseObject(ksxx, UserInfo.class);
+                    User user = User.getInstance();
+                    user.setAccountId(userInfo.getAccountId());
+                    user.setXm(userInfo.getXm());
+                    user.setSfzh(userInfo.getSfzh());
+                    user.setKscj(userInfo.getKscj());
+                    user.setKspw(userInfo.getKspw());
+                    user.setKskl(userInfo.getKskl());
+                    user.setKsklName(userInfo.getKsklName());//科类名称
+                    user.setKqdh(userInfo.getKqdh());//考区代号
+                    user.setKskqName(userInfo.getKskqName());
+
+                    if (TextUtils.isEmpty(user.getXm())) {
+                        //需要用户录入信息
+                    } else {
+                        //打开首页
+//                        startActivity(new Intent());
+                    }
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(MainActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(MainActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userId", userId);
+                return AppHelper.makeSimpleData("ksxxQuery", params);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
 
 	private void initTabs() {
 		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
