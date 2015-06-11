@@ -1,6 +1,7 @@
 package com.education;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -12,12 +13,16 @@ import com.education.common.FastJsonRequest;
 import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
 import com.education.entity.ErrorData;
+import com.education.entity.Questions;
 import com.education.entity.User;
 import com.education.entity.UserInfo;
 import com.education.utils.LogUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by su on 15-6-10.
@@ -31,7 +36,170 @@ public class TestActivity extends CommonBaseActivity {
         super.onCreate(savedInstanceState);
 
         UserInfo userInfo = makeUserInfo();
-        updateKsxx(userInfo);
+//        updateKsxx(userInfo);
+        getQuestions();
+    }
+
+
+    public List<Answer> makeAnswers() {
+        List<Answer> answerList = new ArrayList<Answer>();
+        Answer answer1 = new Answer();
+        answer1.setDm(mQuestions.getTmDatas().get(0).getDm());
+        answer1.setAns("A");
+        answerList.add(answer1);
+
+        Answer answer2 = new Answer();
+        answer2.setDm(mQuestions.getTmDatas().get(1).getDm());
+        answer2.setAns("A");
+        answerList.add(answer2);
+
+        Answer answer3 = new Answer();
+        answer3.setDm(mQuestions.getTmDatas().get(2).getDm());
+        answer3.setAns("A");
+        answerList.add(answer3);
+
+        Answer answer4 = new Answer();
+        answer4.setDm(mQuestions.getTmDatas().get(3).getDm());
+        answer4.setAns("B");
+        answerList.add(answer4);
+
+        Answer answer5 = new Answer();
+        answer5.setDm(mQuestions.getTmDatas().get(4).getDm());
+        answer5.setAns("B");
+        answerList.add(answer5);
+
+        Answer answer6 = new Answer();
+        answer6.setDm(mQuestions.getTmDatas().get(5).getDm());
+        answer6.setAns("B");
+        answerList.add(answer6);
+
+        Answer answer7 = new Answer();
+        answer7.setDm(mQuestions.getTmDatas().get(6).getDm());
+        answer7.setAns("C");
+        answerList.add(answer7);
+
+        Answer answer8 = new Answer();
+        answer8.setDm(mQuestions.getTmDatas().get(7).getDm());
+        answer8.setAns("D");
+        answerList.add(answer8);
+
+        Answer answer9 = new Answer();
+        answer9.setDm(mQuestions.getTmDatas().get(8).getDm());
+        answer9.setAns("D");
+        answerList.add(answer9);
+
+        Answer answer10 = new Answer();
+        answer10.setDm(mQuestions.getTmDatas().get(9).getDm());
+        answer10.setAns("D");
+        answerList.add(answer10);
+        return answerList;
+    }
+
+    public static class Answer {
+        private String dm;
+        private String ans;
+
+        public String getDm() {
+            return dm;
+        }
+
+        public void setDm(String dm) {
+            this.dm = dm;
+        }
+
+        public String getAns() {
+            return ans;
+        }
+
+        public void setAns(String ans) {
+            this.ans = ans;
+        }
+    }
+
+    private void answerQuestions(final List<Answer> answerList) {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.XING_GE_CE_SHI_HUI_DA
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                User user = User.getInstance();
+                Map<String, String> map = new HashMap<String, String>();
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("request", "tmhd");
+                int size = answerList.size();
+                List<JSONObject> array = new ArrayList<JSONObject>();
+                for (int i = 0; i < size; i++) {
+                    Answer a = answerList.get(i);
+                    JSONObject item = new JSONObject();
+                    item.put("dm", a.getDm());
+                    item.put("ans", a.getAns());
+                    array.add(item);
+                }
+
+                JSONObject params = new JSONObject();
+                params.put("userId", user.getId());
+                params.put("count", String.valueOf(10));
+                params.put("hdDatas", array);
+                jsonObject.put("params", params);
+                map.put("userData", jsonObject.toJSONString());
+                if (EduApp.DEBUG) {
+                    Log.d(TAG, "map: " + map);
+                }
+                return map;
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
+
+    private Questions mQuestions = new Questions();
+    private void getQuestions() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.XING_GE_CE_SHI_TI_MU
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    String tmList = response.getString("tmList");
+                    Questions questions = JSON.parseObject(tmList, Questions.class);
+                    mQuestions = questions;
+                    Log.v(TAG, "count: " + questions.getTmDatas().size());
+
+
+                    List<Answer> answerList = makeAnswers();
+                    answerQuestions(answerList);
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return AppHelper.makeSimpleData("getTms", null);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
     }
 
 

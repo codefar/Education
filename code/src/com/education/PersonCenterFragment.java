@@ -130,11 +130,7 @@ public class PersonCenterFragment extends CommonFragment {
             } else if (position == 3) { // 关于
 
             } else if (position == 4) { //分享
-                Share share = new Share();
-                share.setTitle("测试");
-                share.setUrl("www.baidu.com");
-                share.setDescription("这里可以多写一些字啊多写一些字啊多写一些字!");
-                AppHelper.showShareDialog(mActivity, share);
+                fetchShareData();
             } else if (position == 5) { //测试用的
                 User.clearUser();
                 mActivity.finish();
@@ -145,6 +141,46 @@ public class PersonCenterFragment extends CommonFragment {
         public Object getItem(int position) {
             return mItemList.get(position);
         }
+    }
+
+    private void fetchShareData() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        mBlockedDialogFragment.updateMessage("");
+        mBlockedDialogFragment.show(ft, "block_dialog");
+
+        final User user = User.getInstance();
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.GET_SHARE_URL
+                , null, new VolleyResponseListener(mActivity) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
+                if (success) {
+                    Share share = new Share();
+                    share.setTitle("测试");
+                    share.setUrl("www.baidu.com");
+                    share.setDescription("这里可以多写一些字啊多写一些字啊多写一些字!");
+                    AppHelper.showShareDialog(mActivity, share);
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                mBlockedDialogFragment.dismiss();
+                Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userId", user.getId());
+                return AppHelper.makeSimpleData("getShareUrl", params);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
     }
 
     private void personalDialog() {

@@ -519,13 +519,15 @@ public class AppHelper {
 
     public static Map<String, String> makeSimpleData(String request, Map<String, String> data) {
         Map<String, String> map = new HashMap<String, String>();
-        Set<String> set = data.keySet();
         JSONObject jsonObject = new JSONObject();
-        JSONObject params = new JSONObject();
-        for (String key : set) {
-            params.put(key, data.get(key));
+        if (data != null) {
+            Set<String> set = data.keySet();
+            JSONObject params = new JSONObject();
+            for (String key : set) {
+                params.put(key, data.get(key));
+            }
+            jsonObject.put("params", params);
         }
-        jsonObject.put("params", params);
         jsonObject.put("request", request);
         map.put("userData", jsonObject.toJSONString());
         if (EduApp.DEBUG) {
