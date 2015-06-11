@@ -12,7 +12,7 @@ code/project.properties
 code/project.properties
 
 code/.settings/org.eclipse.jdt.core.prefs
-
+code/code.apk
 project_libs/Android-PullToRefresh/library/project.properties
 
 project_libs/Android-PullToRefresh/extras/PullToRefreshViewPager/project.properties
