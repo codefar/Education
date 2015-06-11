@@ -1,46 +1,54 @@
 package com.education;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.education.entity.User;
-
-public class SmartRecommentResultActivity extends CommonBaseActivity implements
+public class SmartRecommentResultActivity extends FragmentBaseActivity implements
 		View.OnClickListener {
 
-	private TextView mNameTextView,mPiciTextView;
-	private ListView mResultListView;
-	
+	ViewPager mViewPager;
+	TabsAdapter mTabsAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_smart_recomment_result);
-		
-		mNameTextView = (TextView) findViewById(R.id.name);
-		mPiciTextView = (TextView) findViewById(R.id.pici);
-		mResultListView = (ListView) findViewById(R.id.listView);
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+
+		mTabsAdapter = new TabsAdapter(getFragmentManager());
+		mViewPager.setAdapter(mTabsAdapter);
 	}
 
 	@Override
 	public void onClick(View v) {
 	}
 
-	@Override
-	protected void unLoginForward(User user) {
-	}
+	public static class TabsAdapter extends FragmentPagerAdapter{
 
-	@Override
-	protected void forceUpdateForward() {
-	}
+		public TabsAdapter(FragmentManager fm)  {
+			super(fm);
+		}
 
-	@Override
-	protected void setupTitleBar() {
-	}
+		@Override
+		public int getCount() {
+			return 4;
+		}
 
-	@Override
-	protected String getTag() {
-		return null;
+		@Override
+		public Fragment getItem(int position) {
+			if(position == 0){
+				return new SmartRecomentResult1Fragment();
+			} else if(position == 1){
+				return new SmartRecomentResult2Fragment();
+			} else if(position == 2){
+				return new SmartRecomentResult3Fragment();
+			} else {
+				return new SmartRecomentResult4Fragment();
+			}
+		}
 	}
 }

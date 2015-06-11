@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/content_bg1"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dimen_17_dip"
+    android:paddingRight="@dimen/dimen_17_dip"
+    tools:context="com.education.SmartRecommentResultActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:background="@color/bg_gray"
+            android:gravity="center"
+            android:text="1、性格分析"
+            android:textStyle="bold"
+            android:textSize="@dimen/dimen_14_dip"
+            android:textColor="@color/first_text" />
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>

@@ -8,6 +8,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -99,6 +100,9 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements OnClic
 			public void run() {
 				mLoading.setVisibility(View.GONE);
 		        mResult.setVisibility(View.VISIBLE);
+		        Intent intent = new Intent(getActivity(), SmartRecommentResultActivity.class);
+		        startActivity(intent);
+		        getActivity().finish();
 			}
 		},1000);
 	}

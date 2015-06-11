@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_gray"
     android:orientation="vertical"
     tools:context="com.education.SmartRecommentResultActivity" >
 
@@ -43,24 +42,15 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/dimen_17_dip"
-        android:paddingRight="@dimen/dimen_17_dip"
+        android:background="@color/content_bg"
         android:paddingTop="@dimen/dimen_9_dip" >
 
-        <TextView
-            android:id="@+id/textView1"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_34_dip"
-            android:background="#F5F5F5"
-            android:gravity="center"
-            android:text="1、性格分析"
-            android:textColor="@color/first_text" />
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </ListView>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
 </LinearLayout>
+
+        
