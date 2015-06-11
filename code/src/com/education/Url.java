@@ -23,5 +23,6 @@ public class Url {
     public static final String XING_GE_CE_SHI_TI_MU = SCHEME + "/zntj/getTms";
     public static final String XING_GE_CE_SHI_HUI_DA = SCHEME + "/zntj/tmhd";
     public static final String SHAI_XUAN = SCHEME + "/sgsx/search"; //筛选接口(搜索默认页的接口和正常的筛选接口)
+    public static final String SHOU_CANG_ZHUAN_YE = SCHEME + "/zysc/collectmajor"; //收藏专业
 }
 

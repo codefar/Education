@@ -39,8 +39,51 @@ public class TestActivity extends CommonBaseActivity {
         UserInfo userInfo = makeUserInfo();
 //        updateKsxx(userInfo);
 //        getQuestions();
-        shaiXuan();
+//        shaiXuan();
+        shouCangZhuanYe();
     }
+
+    private void shouCangZhuanYe() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SHOU_CANG_ZHUAN_YE
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    JSONObject result = response.getJSONObject("result");
+                    int status = result.getInteger("status");
+                    if (status == 1) {
+
+                    }
+                    Toast.makeText(TestActivity.this, result.getString("msgText"), Toast.LENGTH_SHORT).show();
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                User user = User.getInstance();
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", user.getId());
+                map.put("yxdh", "1001"); //院校代号
+                map.put("zydh", "01"); //专业代号
+                map.put("zymc", "计算机科学及应用"); //专业名称
+                map.put("lqpc", "1"); //录取批次
+                map.put("source", "1"); //收藏来源 1为手工筛选 2为智能推荐
+
+                return AppHelper.makeSimpleData("search", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
 
     private void shaiXuan() {
         final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SHAI_XUAN
