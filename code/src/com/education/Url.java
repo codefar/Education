@@ -14,7 +14,6 @@ public class Url {
     public static final String SET_ACCOUNT = SCHEME + "/my/setaccount"; //设置账户
     public static final String RESET_PASSWORD = SCHEME + "/my/resetPassword";
     public static final String GET_SHARE_URL = SCHEME + "/share/getShareUrl"; //获取分享链接
-    public static final String SHOU_CANG_YUAN_XIAO_LIE_BIAO = "/zysc/getYx";
     public static final String GET_QUESTION = "http://www.benshijy.com:8018/zntj/getTms";
 
     public static final String KAO_SHENG_XIN_XI = SCHEME + "/my/ksxxQuery"; //考生信息查询
@@ -24,5 +23,6 @@ public class Url {
     public static final String XING_GE_CE_SHI_HUI_DA = SCHEME + "/zntj/tmhd";
     public static final String SHAI_XUAN = SCHEME + "/sgsx/search"; //筛选接口(搜索默认页的接口和正常的筛选接口)
     public static final String SHOU_CANG_ZHUAN_YE = SCHEME + "/zysc/collectmajor"; //收藏专业
+    public static final String SHOU_CANG_YUAN_XIAO_LIE_BIAO = SCHEME + "/zysc/getcollectschool"; //收藏院校列表
 }
 

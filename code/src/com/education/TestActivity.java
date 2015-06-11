@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -40,7 +41,46 @@ public class TestActivity extends CommonBaseActivity {
 //        updateKsxx(userInfo);
 //        getQuestions();
 //        shaiXuan();
-        shouCangZhuanYe();
+//        shouCangZhuanYe();
+        shouCangYuanXiaoLieBiao();
+    }
+
+    private void shouCangYuanXiaoLieBiao() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SHOU_CANG_YUAN_XIAO_LIE_BIAO
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    List<CollegeItem> resultList = new ArrayList<CollegeItem>();
+                    JSONArray array = response.getJSONArray("datas");
+                    int size = array.size();
+                    for (int i = 0; i < size; i++) {
+                        String item = array.getString(i);
+                        CollegeItem collegeItem = JSON.parseObject(item, CollegeItem.class);
+                        resultList.add(collegeItem);
+                    }
+                    Toast.makeText(TestActivity.this, "size: " + resultList.size(), Toast.LENGTH_SHORT).show();
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                User user = User.getInstance();
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", user.getId());
+                return AppHelper.makeSimpleData("getcollectschool", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
     }
 
     private void shouCangZhuanYe() {
@@ -83,7 +123,6 @@ public class TestActivity extends CommonBaseActivity {
         };
         EduApp.sRequestQueue.add(request);
     }
-
 
     private void shaiXuan() {
         final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SHAI_XUAN
