@@ -14,6 +14,7 @@ import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
 import com.education.entity.ErrorData;
 import com.education.entity.Questions;
+import com.education.entity.ShaiXuanJieGuo;
 import com.education.entity.User;
 import com.education.entity.UserInfo;
 import com.education.utils.LogUtil;
@@ -37,9 +38,61 @@ public class TestActivity extends CommonBaseActivity {
 
         UserInfo userInfo = makeUserInfo();
 //        updateKsxx(userInfo);
-        getQuestions();
+//        getQuestions();
+        shaiXuan();
     }
 
+    private void shaiXuan() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SHAI_XUAN
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    String datas = response.getString("datas");
+                    ShaiXuanJieGuo result = JSON.parseObject(datas, ShaiXuanJieGuo.class);
+                    Log.d(TAG, "shaixuan jieguo size: " + result.getYxzydata().size());
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                User user = User.getInstance();
+                Map<String, String> map = new HashMap<String, String>();
+//                map.put("pageno", String.valueOf(1));
+//                map.put("skey", "哈尔滨"); //搜索关键词
+//                map.put("yxss", String.valueOf(7)); //院校省市 江苏省
+//                map.put("yxlx", String.valueOf(9)); //院校类型 林业
+//                map.put("yxxz", String.valueOf(2)); //院校性质 211
+//                map.put("lqpc", String.valueOf(1)); //录取批次 特殊批
+//                map.put("lqqk", "2013|1|500|550"); //历年录取情况 年份|查询类型|最低值|最高值 （2013年，按分数，最低500,最高550）
+//                map.put("kskl", String.valueOf(2/*文史*/)); //科类代号 user.getKskl()
+//                map.put("kqdh", String.valueOf(2/*上海*/)); //考区代号 user.getKqdh()
+
+
+                map.put("pageno", String.valueOf(1));
+                map.put("skey", "清华");
+                map.put("yxss", "1|2|3");
+                map.put("yxlx", "");
+                map.put("yxxz", "1|2");
+                map.put("lqpc", "3");
+                map.put("lqqk", "2013|1|688|720");
+                map.put("kskl", String.valueOf(1/*文史*/));
+                map.put("kqdh", String.valueOf(2/*上海*/));
+
+                return AppHelper.makeSimpleData("search", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
 
     public List<Answer> makeAnswers() {
         List<Answer> answerList = new ArrayList<Answer>();

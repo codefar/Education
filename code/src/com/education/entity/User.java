@@ -61,7 +61,7 @@ public class User {
     private String sfzh; //身份证号
     private int kscj; //成绩
     private int kspw; //排位
-    private int kskl; //科类
+    private int kskl; //科类 理工:1   文史:2
     private String ksklName; //科类名称
     private int kqdh; //考区代号
     private String kskqName; //考区名称
