@@ -22,6 +22,10 @@ public class Url {
     public static final String XING_GE_CE_SHI_TI_MU = SCHEME + "/zntj/getTms";
     public static final String XING_GE_CE_SHI_HUI_DA = SCHEME + "/zntj/tmhd";
     public static final String SHAI_XUAN = SCHEME + "/sgsx/search"; //筛选接口(搜索默认页的接口和正常的筛选接口)
+    public static final String SHAI_XUAN_BY_COLLEGE = SCHEME + "/sgsx/searchmajor"; //根据院校筛选专业
+    public static final String SHAI_XUAN_BY_MAJOR = SCHEME + "/sgsx/admission"; //专业历年录取情况 (手工筛选-专业录取情况)
+
+
     public static final String SHOU_CANG_ZHUAN_YE = SCHEME + "/zysc/collectmajor"; //收藏专业
     public static final String SHOU_CANG_YUAN_XIAO_LIE_BIAO = SCHEME + "/zysc/getcollectschool"; //收藏院校列表
     public static final String SHOU_CANG_ZHUAN_YE_LIE_BIAO = SCHEME + "/zysc/getcollectmajor"; //收藏专业列表

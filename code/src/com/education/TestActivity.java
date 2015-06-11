@@ -15,6 +15,7 @@ import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
 import com.education.entity.CollegeItem;
 import com.education.entity.ErrorData;
+import com.education.entity.HistoryMajor;
 import com.education.entity.MajorItem;
 import com.education.entity.Questions;
 import com.education.entity.ShaiXuanJieGuo;
@@ -44,7 +45,162 @@ public class TestActivity extends CommonBaseActivity {
 //        shaiXuan();
 //        shouCangZhuanYe();
 //        shouCangYuanXiaoLieBiao();
-        shouCangZhuanYeLieBiao();
+//        shouCangZhuanYeLieBiao();
+//        shaiXuanByCollege();
+        shaiXuanByMajor();
+    }
+
+    public static class Item3 {
+        private String yxmc;
+        private String zymc;
+        private String yxpc;
+        private List<HistoryMajor> lssj = new ArrayList<HistoryMajor>();
+
+        public String getYxmc() {
+            return yxmc;
+        }
+
+        public void setYxmc(String yxmc) {
+            this.yxmc = yxmc;
+        }
+
+        public String getZymc() {
+            return zymc;
+        }
+
+        public void setZymc(String zymc) {
+            this.zymc = zymc;
+        }
+
+        public String getYxpc() {
+            return yxpc;
+        }
+
+        public void setYxpc(String yxpc) {
+            this.yxpc = yxpc;
+        }
+
+        public List<HistoryMajor> getLssj() {
+            return lssj;
+        }
+
+        public void setLssj(List<HistoryMajor> lssj) {
+            this.lssj = lssj;
+        }
+    }
+
+
+
+//    手工筛选-专业录取情况
+    private void shaiXuanByMajor() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SHAI_XUAN_BY_MAJOR
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    String zyfxdata = response.getString("zyfxdata");
+                    Item3 item = JSON.parseObject(zyfxdata, Item3.class);
+                    Toast.makeText(TestActivity.this, "size: " + item.getLssj().size(), Toast.LENGTH_SHORT).show();
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("yxdh", "清华大学");
+                map.put("zydh", "计算机科学与技术");
+                map.put("lqpc", "3");
+                map.put("kskl", "1");
+                map.put("kqdh", "2");
+                return AppHelper.makeSimpleData("searchmajor", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
+
+
+    public static class Item2 {
+        private String yxdh;
+        private String zy;
+        private String yxmc;
+        private List<MajorItem> zydata = new ArrayList<MajorItem>();
+
+        public String getYxdh() {
+            return yxdh;
+        }
+
+        public void setYxdh(String yxdh) {
+            this.yxdh = yxdh;
+        }
+
+        public String getZy() {
+            return zy;
+        }
+
+        public void setZy(String zy) {
+            this.zy = zy;
+        }
+
+        public String getYxmc() {
+            return yxmc;
+        }
+
+        public void setYxmc(String yxmc) {
+            this.yxmc = yxmc;
+        }
+
+        public List<MajorItem> getZydata() {
+            return zydata;
+        }
+
+        public void setZydata(List<MajorItem> zydata) {
+            this.zydata = zydata;
+        }
+    }
+
+    private void shaiXuanByCollege() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SHAI_XUAN_BY_COLLEGE
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    String datas = response.getString("datas");
+                    Item2 item = JSON.parseObject(datas, Item2.class);
+                    Toast.makeText(TestActivity.this, "size: " + item.getZydata().size(), Toast.LENGTH_SHORT).show();
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("yxdh", "清华大学");
+                map.put("lqpc", "1");
+                map.put("lqqk", "2014|1|688|702");
+                map.put("kskl", "1");
+                map.put("kqdh", "2");
+                return AppHelper.makeSimpleData("searchmajor", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
     }
 
     public static class Item {

@@ -9,6 +9,11 @@ public class MajorItem {
     private String lqpc; //录取批次
     private int source; //收藏来源
 
+    private int lqrs; //录取人数
+    private int min; //录取成绩最低
+    private int max; //录取成绩最高
+    private int pjz; //录取成绩平均值
+
     public String getZydh() {
         return zydh;
     }
@@ -39,5 +44,37 @@ public class MajorItem {
 
     public void setSource(int source) {
         this.source = source;
+    }
+
+    public int getLqrs() {
+        return lqrs;
+    }
+
+    public void setLqrs(int lqrs) {
+        this.lqrs = lqrs;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
+
+    public int getPjz() {
+        return pjz;
+    }
+
+    public void setPjz(int pjz) {
+        this.pjz = pjz;
     }
 }
