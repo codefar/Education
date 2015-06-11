@@ -24,5 +24,6 @@ public class Url {
     public static final String SHAI_XUAN = SCHEME + "/sgsx/search"; //筛选接口(搜索默认页的接口和正常的筛选接口)
     public static final String SHOU_CANG_ZHUAN_YE = SCHEME + "/zysc/collectmajor"; //收藏专业
     public static final String SHOU_CANG_YUAN_XIAO_LIE_BIAO = SCHEME + "/zysc/getcollectschool"; //收藏院校列表
+    public static final String SHOU_CANG_ZHUAN_YE_LIE_BIAO = SCHEME + "/zysc/getcollectmajor"; //收藏专业列表
 }
 

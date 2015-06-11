@@ -1,8 +1,5 @@
 package com.education.entity;
 
-import com.education.CollectionListActivity;
-import com.education.CollegeItem;
-
 import java.util.ArrayList;
 import java.util.List;
 

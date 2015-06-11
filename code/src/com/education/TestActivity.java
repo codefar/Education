@@ -13,7 +13,9 @@ import com.education.common.AppHelper;
 import com.education.common.FastJsonRequest;
 import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
+import com.education.entity.CollegeItem;
 import com.education.entity.ErrorData;
+import com.education.entity.MajorItem;
 import com.education.entity.Questions;
 import com.education.entity.ShaiXuanJieGuo;
 import com.education.entity.User;
@@ -24,7 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by su on 15-6-10.
@@ -42,7 +43,71 @@ public class TestActivity extends CommonBaseActivity {
 //        getQuestions();
 //        shaiXuan();
 //        shouCangZhuanYe();
-        shouCangYuanXiaoLieBiao();
+//        shouCangYuanXiaoLieBiao();
+        shouCangZhuanYeLieBiao();
+    }
+
+    public static class Item {
+        private String yxdh;
+        private String yxmc;
+        private List<MajorItem> sczyDatas = new ArrayList<MajorItem>();
+
+        public String getYxdh() {
+            return yxdh;
+        }
+
+        public void setYxdh(String yxdh) {
+            this.yxdh = yxdh;
+        }
+
+        public String getYxmc() {
+            return yxmc;
+        }
+
+        public void setYxmc(String yxmc) {
+            this.yxmc = yxmc;
+        }
+
+        public List<MajorItem> getSczyDatas() {
+            return sczyDatas;
+        }
+
+        public void setSczyDatas(List<MajorItem> sczyDatas) {
+            this.sczyDatas = sczyDatas;
+        }
+    }
+
+    private void shouCangZhuanYeLieBiao() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SHOU_CANG_ZHUAN_YE_LIE_BIAO
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    String datas = response.getString("datas");
+                    Item item = JSON.parseObject(datas, Item.class);
+                    Toast.makeText(TestActivity.this, "size: " + item.getSczyDatas().size(), Toast.LENGTH_SHORT).show();
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                User user = User.getInstance();
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", "8a8a92f34dce12a0014dce1b97b90000"); //user.getId()
+                map.put("yxdh", "清华大学");
+                return AppHelper.makeSimpleData("getcollectmajor", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
     }
 
     private void shouCangYuanXiaoLieBiao() {
