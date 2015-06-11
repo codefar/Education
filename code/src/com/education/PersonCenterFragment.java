@@ -73,7 +73,7 @@ public class PersonCenterFragment extends CommonFragment {
         View v = inflater.inflate(R.layout.fragment_main_center, container, false);
 
         mInflater = inflater;
-        mListView = (ListView) v.findViewById(R.id.list_);
+        mListView = (ListView) v.findViewById(R.id.list);
         mItemAdapter = new ItemAdapter();
         mListView.setAdapter(mItemAdapter);
         mListView.setOnItemClickListener(mItemAdapter);

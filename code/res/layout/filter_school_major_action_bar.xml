@@ -17,7 +17,7 @@
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_alignStart="@id/search_school_major_edit"
+        android:layout_alignLeft="@id/search_school_major_edit"
         android:layout_centerVertical="true"
         android:scaleType="fitXY"
         android:layout_marginLeft="10dp"
@@ -26,8 +26,8 @@
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_alignEnd="@id/search_school_major_edit"
-        android:layout_centerVertical="true"
+        android:layout_alignRight="@id/search_school_major_edit"
+        android:layout_centerVertical="true" 
         android:scaleType="fitXY"
         android:layout_marginRight="10dp"
         android:src="@drawable/top_yuyin" />

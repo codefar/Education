@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray"
+    android:orientation="vertical"
+    tools:context="com.education.SmartRecommentResultActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_34_dip"
+        android:background="@color/action_bar_bg"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dimen_17_dip"
+            android:paddingRight="@dimen/dimen_17_dip"
+            android:text="计算机"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_14_dip" />
+
+        <TextView
+            android:id="@+id/pici"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dimen_17_dip"
+            android:paddingRight="@dimen/dimen_17_dip"
+            android:text="一批次"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_14_dip" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dimen_17_dip"
+        android:paddingRight="@dimen/dimen_17_dip"
+        android:paddingTop="@dimen/dimen_9_dip" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:background="#F5F5F5"
+            android:gravity="center"
+            android:text="1、性格分析"
+            android:textColor="@color/first_text" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>

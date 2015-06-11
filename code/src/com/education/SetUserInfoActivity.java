@@ -1,18 +1,12 @@
 package com.education;
 
-import com.education.entity.User;
-
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.os.Build;
+
+import com.education.entity.User;
 
 public class SetUserInfoActivity extends CommonBaseActivity implements OnClickListener {
 

@@ -81,23 +81,26 @@
             android:exported="true"
             android:label="ShaiXuanActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name=".DetailConditionActivity"
             android:exported="true"
             android:label="多选条件"
-            android:theme="@style/bklistDialog"
-            android:screenOrientation="portrait" />
-         
+            android:screenOrientation="portrait"
+            android:theme="@style/bklistDialog" />
         <activity
             android:name=".AdmissionInPastYearActivity"
             android:exported="true"
             android:label="AdmissionInPastYearActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".MinAdmissionScoreActivity"
+            android:exported="true"
+            android:label="MinAdmissionScoreActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".SetUserInfoActivity"
             android:exported="true"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
                 android:name=".TestActivity"
                 android:label="TestActivity"
@@ -109,6 +112,11 @@
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTop" />
+        <activity
+            android:name=".SmartRecommentResultActivity"
+            android:exported="true"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
