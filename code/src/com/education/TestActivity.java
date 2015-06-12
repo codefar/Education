@@ -47,8 +47,113 @@ public class TestActivity extends CommonBaseActivity {
 //        shouCangYuanXiaoLieBiao();
 //        shouCangZhuanYeLieBiao();
 //        shaiXuanByCollege();
-        shaiXuanByMajor();
+//        shaiXuanByMajor();
+        tuiJianXinXi();
     }
+
+    public static class Item4 {
+        private int count;
+        private List<Item5> tjData = new ArrayList<Item5>(); //推荐数据
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        public List<Item5> getTjData() {
+            return tjData;
+        }
+
+        public void setTjData(List<Item5> tjData) {
+            this.tjData = tjData;
+        }
+    }
+
+    public static class Item5 {
+        private String yxdh; //院校代号
+        private String yxmc; //院校名称
+        private String yxDesc; //综合描述
+        private int yxpc; //录取批次代号
+        private List<MajorItem> tjzy = new ArrayList<MajorItem>(); //推荐专业
+
+        public String getYxdh() {
+            return yxdh;
+        }
+
+        public void setYxdh(String yxdh) {
+            this.yxdh = yxdh;
+        }
+
+        public String getYxmc() {
+            return yxmc;
+        }
+
+        public void setYxmc(String yxmc) {
+            this.yxmc = yxmc;
+        }
+
+        public String getYxDesc() {
+            return yxDesc;
+        }
+
+        public void setYxDesc(String yxDesc) {
+            this.yxDesc = yxDesc;
+        }
+
+        public int getYxpc() {
+            return yxpc;
+        }
+
+        public void setYxpc(int yxpc) {
+            this.yxpc = yxpc;
+        }
+
+        public List<MajorItem> getTjzy() {
+            return tjzy;
+        }
+
+        public void setTjzy(List<MajorItem> tjzy) {
+            this.tjzy = tjzy;
+        }
+    }
+
+    //获取推荐信息
+    private void tuiJianXinXi() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.TUI_JIAN_XIN_XI
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    String tjList = response.getString("tjList");
+                    Item4 item = JSON.parseObject(tjList, Item4.class);
+                    Toast.makeText(TestActivity.this, "size: " + item.getTjData().size(), Toast.LENGTH_SHORT).show();
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                User user = User.getInstance();
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", user.getId());
+                return AppHelper.makeSimpleData("recommenreport", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
+
 
     public static class Item3 {
         private String yxmc;
@@ -88,8 +193,6 @@ public class TestActivity extends CommonBaseActivity {
             this.lssj = lssj;
         }
     }
-
-
 
 //    手工筛选-专业录取情况
     private void shaiXuanByMajor() {

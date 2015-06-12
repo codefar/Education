@@ -5,7 +5,7 @@ package com.education;
  */
 public class Url {
 
-    public static final String SCHEME = "http://www.benshijy.com:8018";
+    public static final String SCHEME = "http://10.10.18.7:8018";
     public static final String LOGIN = SCHEME + "/login"; //登录
     public static final String REGISTER_GET_SMS_CODE = SCHEME + "/register/getSMCode"; //获取短信
     public static final String REGISTER_CHECK_SMS_CODE = SCHEME + "/register/chkSMCode"; //检查短信
@@ -19,8 +19,12 @@ public class Url {
     public static final String KAO_SHENG_XIN_XI = SCHEME + "/my/ksxxQuery"; //考生信息查询
     public static final String KAO_SHENG_XIN_XI_XIU_GAI = SCHEME + "/my/ksxxUpdate"; //考生信息修改
 
-    public static final String XING_GE_CE_SHI_TI_MU = SCHEME + "/zntj/getTms";
-    public static final String XING_GE_CE_SHI_HUI_DA = SCHEME + "/zntj/tmhd";
+    public static final String XING_GE_CE_SHI_TI_MU = SCHEME + "/zntj/getTms"; //获取题目
+    public static final String XING_GE_CE_SHI_HUI_DA = SCHEME + "/zntj/tmhd"; //题目回答
+    public static final String TUI_JIAN_XIN_XI = SCHEME + "/zntj/recommenreport"; //智能推荐-获取推荐信息
+    public static final String ZHUAN_YE_FEN_XI_BAO_GAO = SCHEME + "/zntj/zyfx"; //智能推荐-单专业分析报告
+
+
     public static final String SHAI_XUAN = SCHEME + "/sgsx/search"; //筛选接口(搜索默认页的接口和正常的筛选接口)
     public static final String SHAI_XUAN_BY_COLLEGE = SCHEME + "/sgsx/searchmajor"; //根据院校筛选专业
     public static final String SHAI_XUAN_BY_MAJOR = SCHEME + "/sgsx/admission"; //专业历年录取情况 (手工筛选-专业录取情况)

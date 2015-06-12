@@ -14,6 +14,8 @@ public class MajorItem {
     private int max; //录取成绩最高
     private int pjz; //录取成绩平均值
 
+    private String lqgl;
+
     public String getZydh() {
         return zydh;
     }
@@ -76,5 +78,13 @@ public class MajorItem {
 
     public void setPjz(int pjz) {
         this.pjz = pjz;
+    }
+
+    public String getLqgl() {
+        return lqgl;
+    }
+
+    public void setLqgl(String lqgl) {
+        this.lqgl = lqgl;
     }
 }
