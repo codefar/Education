@@ -50,11 +50,8 @@
     <string name="errcode_deny">发送被拒绝</string>
     <string name="errcode_unknown">发送返回</string>
     <string name="title_activity_detail_condition">DetailConditionActivity</string>
-<<<<<<< Updated upstream
     <string name="title_activity_smart_recomment_result">SmartRecommentResultActivity</string>
 	<string name="remment_tip">请务必填写真实信息，否则会严重影响推荐结果</string>
-=======
->>>>>>> Stashed changes
 
 	<string name="about_content">搜易贷由搜狐畅游（NASDAQ：CYOU）原CFO何捷先生创建， 核心管理团队均来自于知名IT企业及金融机构， 拥有丰富的互联网及金融行业经验。 搜易贷聚焦民间小微借贷， 致力于推动中国信贷行业的市场化、 平民化及高效化， 搭建中国最大、 用户体验最好的个人及中小企业的互联网信贷平台。 </string>
 	<string name="website">微信公众号</string>
