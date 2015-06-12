@@ -40,11 +40,13 @@
         android:id="@+id/luqu_score_year_spinner"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_bg_focused"
         android:gravity="center"
         android:text="2014年"
         android:textSize="@dimen/dimen_11_dip" />
 
-    <LinearLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,9 +55,9 @@
         <EditText
             android:id="@+id/editText2"
             style="@style/EditText.SingleLine"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_alignParentLeft="true"
             android:layout_marginTop="@dimen/dimen_8_dip"
             android:gravity="center_vertical"
             android:hint="560分"
@@ -67,15 +69,16 @@
 
         <TextView
             style="@style/filter_school_and_major_down_text"
-            android:layout_gravity="center_vertical"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:text="至" />
 
         <EditText
             android:id="@+id/editText2"
             style="@style/EditText.SingleLine"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/dimen_8_dip"
             android:gravity="center_vertical"
             android:hint="560分"
@@ -84,7 +87,7 @@
             android:paddingTop="@dimen/dimen_10_dip"
             android:textColorHint="@color/third_text"
             android:textSize="@dimen/dimen_9_dip" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <Button
         android:layout_width="fill_parent"

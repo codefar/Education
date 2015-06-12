@@ -165,8 +165,12 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 					mResources, ConditionItem.getSchoolImg()));
 			holder.conditionNameTextView.setText(ConditionItem
 					.getConditionName());
-			if (isReset)
-				holder.detailConditionTextView.setText("全部");
+			if (isReset) {
+				if (position == getCount() - 1)
+					holder.detailConditionTextView.setText("默认值");
+				else
+					holder.detailConditionTextView.setText("全部");
+			}
 			else {
 				if (TextUtils.isEmpty(ConditionItem.getDetailCondition()))
 					holder.detailConditionTextView.setText("全部");

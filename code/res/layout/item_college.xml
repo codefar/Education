@@ -39,6 +39,7 @@
             android:textSize="@dimen/dimen_10_dip"
             android:textColor="@color/third_text"
             android:includeFontPadding="false"/>
+    
     <View
             android:layout_width="match_parent"
             android:layout_height="1px"

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.education.entity.User;
 
-public class LuQuScore extends BaseActivity implements OnClickListener {
+public class LuQuScore extends CommonBaseActivity implements OnClickListener {
 
 	private TextView mLuquYearTextView;
 	String[] mKaoQu;
@@ -19,6 +19,7 @@ public class LuQuScore extends BaseActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.luqu_score);
+		setupTitleBar();
 		mLuquYearTextView = (TextView) findViewById(R.id.luqu_score_year_spinner);
 		mKaoQu = getResources().getStringArray(R.array.exam_year);
 		mLuquYearTextView.setOnClickListener(this);
