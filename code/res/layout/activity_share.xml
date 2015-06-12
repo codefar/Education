@@ -15,17 +15,19 @@
             android:textColor="@color/second_text"
             android:layout_centerHorizontal="true"
             android:id="@+id/title"/>
-    <FrameLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dimen_60_dip"
-            android:paddingRight="@dimen/dimen_60_dip"
+            android:paddingLeft="@dimen/dimen_17_dip"
+            android:paddingRight="@dimen/dimen_17_dip"
             android:orientation="horizontal"
             android:layout_below="@id/title"
             android:id="@+id/main_layout">
         <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="微信好友"
                 android:textSize="@dimen/dimen_13_dip"
                 android:textColor="@color/second_text"
@@ -33,16 +35,28 @@
                 android:drawablePadding="@dimen/dimen_9_dip"
                 android:id="@+id/webchat_friend"/>
         <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:gravity="center"
                 android:text="微信朋友圈"
                 android:textSize="@dimen/dimen_13_dip"
                 android:textColor="@color/second_text"
                 android:drawableTop="@drawable/webchat_friend"
                 android:drawablePadding="@dimen/dimen_9_dip"
                 android:id="@+id/webchat_friend_circle"/>
-    </FrameLayout>
+        <TextView
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="短信"
+                android:textSize="@dimen/dimen_13_dip"
+                android:textColor="@color/second_text"
+                android:drawableTop="@drawable/sms"
+                android:drawablePadding="@dimen/dimen_9_dip"
+                android:id="@+id/sms"/>
+    </LinearLayout>
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_51_dip"

@@ -52,6 +52,14 @@ public class ShareDialog extends Dialog {
                 dismiss();
             }
         });
+
+        view.findViewById(R.id.sms).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mType = SHARE_SMS;
+                dismiss();
+            }
+        });
         setContentView(view);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 

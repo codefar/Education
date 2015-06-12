@@ -5,7 +5,7 @@ package com.education;
  */
 public class Url {
 
-    public static final String SCHEME = "http://www.benshijy.com:8018";
+    public static final String SCHEME = "http://10.10.18.7:8018";
     public static final String LOGIN = SCHEME + "/login"; //登录
     public static final String REGISTER_GET_SMS_CODE = SCHEME + "/register/getSMCode"; //获取短信
     public static final String REGISTER_CHECK_SMS_CODE = SCHEME + "/register/chkSMCode"; //检查短信
