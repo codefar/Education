@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -88,7 +87,7 @@ public class LauncherActivity extends FragmentBaseActivity {
             View mainLayout = inflater.inflate(R.layout.fragment_launcher, container, false);
             ImageView iv = (ImageView) mainLayout.findViewById(R.id.img);
 
-            int id = mResources.getIdentifier("supported_bank_" + mPosition, "drawable", getActivity().getPackageName());
+            int id = mResources.getIdentifier("launcher_" + mPosition, "drawable", getActivity().getPackageName());
             iv.setImageBitmap(BitmapFactory.decodeResource(mResources, id));
             if (mPosition == 2) {
                 iv.setOnClickListener(new View.OnClickListener() {
