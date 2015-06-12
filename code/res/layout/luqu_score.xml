@@ -6,10 +6,13 @@
     android:paddingLeft="@dimen/dimen_17_dip"
     android:paddingRight="@dimen/dimen_17_dip" >
 
-    <Spinner
+    <TextView
         android:id="@+id/luqu_score_year_spinner"
         android:layout_width="fill_parent"
-        android:layout_height="60dp" />
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:text="2014年"
+        android:textSize="@dimen/dimen_11_dip" />
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,20 +21,39 @@
         android:gravity="center_horizontal" >
 
         <EditText
+            android:id="@+id/editText2"
+            style="@style/EditText.SingleLine"
             android:layout_width="150dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:hint="200分" />
+            android:layout_marginTop="@dimen/dimen_8_dip"
+            android:gravity="center_vertical"
+            android:hint="560分"
+            android:paddingBottom="@dimen/dimen_10_dip"
+            android:paddingLeft="@dimen/dimen_17_dip"
+            android:paddingTop="@dimen/dimen_10_dip"
+            android:textColorHint="@color/third_text"
+            android:textSize="@dimen/dimen_9_dip" />
 
         <TextView
             style="@style/filter_school_and_major_down_text"
+            android:layout_gravity="center_vertical"
             android:text="至" />
 
         <EditText
+            android:id="@+id/editText2"
+            style="@style/EditText.SingleLine"
             android:layout_width="150dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="500分" />
+            android:layout_marginTop="@dimen/dimen_8_dip"
+            android:gravity="center_vertical"
+            android:hint="560分"
+            android:paddingBottom="@dimen/dimen_10_dip"
+            android:paddingLeft="@dimen/dimen_17_dip"
+            android:paddingTop="@dimen/dimen_10_dip"
+            android:textColorHint="@color/third_text"
+            android:textSize="@dimen/dimen_9_dip" />
     </LinearLayout>
 
     <Button

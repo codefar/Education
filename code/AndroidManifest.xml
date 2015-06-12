@@ -77,6 +77,12 @@
             android:exported="true"
             android:label="FilterSchoolAndMajorActivity"
             android:screenOrientation="portrait" />
+         <activity
+            android:name=".LuQuScore"
+            android:exported="true"
+            android:label="LuQuScore"
+            android:screenOrientation="portrait" />
+         
         <activity
             android:name=".ShaiXuanActivity"
             android:exported="true"

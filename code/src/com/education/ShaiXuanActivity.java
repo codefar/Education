@@ -222,8 +222,8 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 
 		ConditionItem item5 = new ConditionItem();
 		item5.setSchoolImg(R.drawable.sx_fenshu);
-		item5.setConditionName("历年录取分数");
-		item5.setDetailCondition("全部");
+		item5.setConditionName("历年录取情况");
+		item5.setDetailCondition("默认值");
 		mItemList.add(item5);
 	}
 

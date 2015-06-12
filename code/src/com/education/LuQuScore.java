@@ -1,30 +1,46 @@
 package com.education;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.education.entity.User;
 
-public class LuQuScore extends BaseActivity {
+public class LuQuScore extends BaseActivity implements OnClickListener {
 
-	private Spinner mLuquYearSpinner;
+	private TextView mLuquYearTextView;
+	String[] mKaoQu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.luqu_score);
+		mLuquYearTextView = (TextView) findViewById(R.id.luqu_score_year_spinner);
+		mKaoQu = getResources().getStringArray(R.array.exam_year);
+		mLuquYearTextView.setOnClickListener(this);
+	}
 
-		// 初始化控件
-		mLuquYearSpinner = (Spinner) findViewById(R.id.luqu_score_year_spinner);
-		// 建立数据源
-		String[] mItems = { "2012年", "2013年", "2014年", "2015年" };
-		// 建立Adapter并且绑定数据源
-		ArrayAdapter<String> _Adapter = new ArrayAdapter<String>(this,
-				R.layout.year_spinner_item, mItems);
-		// 绑定 Adapter到控件
-		mLuquYearSpinner.setAdapter(_Adapter);
+	/**
+	 * 单选Dialogs
+	 */
+	private void simpleDialog() {
+		AlertDialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("选择年份");
+		builder.setSingleChoiceItems(mKaoQu, 0,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+						mLuquYearTextView.setText(mKaoQu[which]);
+					}
+				});
+		dialog = builder.create();
+		dialog.show();
 	}
 
 	@Override
@@ -44,7 +60,6 @@ public class LuQuScore extends BaseActivity {
 		bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
 				| ActionBar.DISPLAY_SHOW_TITLE);
 		bar.setHomeButtonEnabled(true);
-
 	}
 
 	@Override
@@ -52,4 +67,10 @@ public class LuQuScore extends BaseActivity {
 		return null;
 	}
 
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.luqu_score_year_spinner) {
+			simpleDialog();
+		}
+	}
 }
