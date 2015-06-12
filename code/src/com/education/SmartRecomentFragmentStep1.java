@@ -1,18 +1,30 @@
 package com.education;
 
+import android.text.TextUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.education.common.AppHelper;
+import com.education.common.FastJsonRequest;
+import com.education.common.VolleyErrorListener;
+import com.education.common.VolleyResponseListener;
+import com.education.entity.ErrorData;
+import com.education.entity.User;
+import com.education.entity.UserInfo;
+import com.education.utils.LogUtil;
+import com.education.widget.SimpleBlockedDialogFragment;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 import com.education.utils.MenuHelper;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,11 +38,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SmartRecomentFragmentStep1 extends CommonFragment implements
 		OnClickListener, RadioGroup.OnCheckedChangeListener {
 
 	private static final String TAG = SmartRecomentFragmentStep1.class
 			.getSimpleName();
+    private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
 
 	private Button mNextBtn;
 	private EditText mNameEditText;
@@ -64,19 +80,37 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_smart_recomment_step1,
-				container, false);
-		mNextBtn = (Button) v.findViewById(R.id.btn_next);
-		mNextBtn.setOnClickListener(this);
-		mScoreEditText = (EditText) v.findViewById(R.id.editText1);
-		mPostionEditText = (EditText) v.findViewById(R.id.editText2);
-		mNameEditText = (EditText) v.findViewById(R.id.name);
-		mIdEditText = (EditText) v.findViewById(R.id.id);
-		mZoneTextView = (TextView) v.findViewById(R.id.editText3);
-		mZoneTextView.setOnClickListener(this);
-		mSegmentedGroup = (SegmentedGroup) v.findViewById(R.id.segmented);
-		mSegmentedGroup.setOnCheckedChangeListener(this);
-		return v;
+        View v = inflater.inflate(R.layout.fragment_smart_recomment_step1,
+                container, false);
+        mNextBtn = (Button) v.findViewById(R.id.btn_next);
+        mNextBtn.setOnClickListener(this);
+        mScoreEditText = (EditText) v.findViewById(R.id.editText1);
+        mPostionEditText = (EditText) v.findViewById(R.id.editText2);
+        mNameEditText = (EditText) v.findViewById(R.id.name);
+        mIdEditText = (EditText) v.findViewById(R.id.id);
+        mZoneTextView = (TextView) v.findViewById(R.id.editText3);
+        mZoneTextView.setOnClickListener(this);
+        mSegmentedGroup = (SegmentedGroup) v.findViewById(R.id.segmented);
+        User user = User.getInstance();
+        if (user.getXm() != null) {
+            mNameEditText.setText(user.getXm());
+            mIdEditText.setText(user.getSfzh());
+            mScoreEditText.setText(String.valueOf(user.getKscj()));
+            mPostionEditText.setText(String.valueOf(user.getKspw()));
+            mZoneTextView.setText(user.getKskqName());
+            mSegmentedGroup.check(user.getKskl() == 1 ? R.id.btn_li_ke : R.id.btn_wen_ke);
+            v.findViewById(R.id.btn_li_ke).setEnabled(false);
+            v.findViewById(R.id.btn_wen_ke).setEnabled(false);
+
+            mNameEditText.setEnabled(false);
+            mIdEditText.setEnabled(false);
+            mScoreEditText.setEnabled(false);
+            mPostionEditText.setEnabled(false);
+            mZoneTextView.setEnabled(false);
+        }
+
+        mSegmentedGroup.setOnCheckedChangeListener(this);
+        return v;
 	}
 
 	@Override
@@ -99,22 +133,123 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btn_next) {
-			if (goSmartRecomnetStep2) {
-				FragmentTransaction ft = getActivity().getFragmentManager()
-						.beginTransaction();
-				ft.replace(R.id.container, new SmartRecomentFragmentStep2(),
-						"step2");
-				ft.addToBackStack(null);
-				ft.commit();
-			} else {
-				// whet to do
+			if (checkInput()) {
+                updateKsxx(makeUserInfo());
 			}
 		} else if (v.getId() == R.id.editText3) {
 			simpleDialog();
 		}
 	}
 
-	@Override
+    private boolean checkInput() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setPositiveButton(R.string.confirm, null);
+        if (TextUtils.isEmpty(mNameEditText.getText().toString())) {
+            builder.setMessage("请填写姓名");
+            builder.show();
+            return false;
+        } else if (mIdEditText.getText().toString().trim().length() != 15
+                && mIdEditText.getText().toString().trim().length() != 18) {
+            builder.setMessage("请填写正确身份证号");
+            builder.show();
+            return false;
+        } else if (TextUtils.isEmpty(mScoreEditText.getText().toString())) {
+            builder.setMessage("请填写总分数");
+            builder.show();
+            return false;
+        } else if (TextUtils.isEmpty(mPostionEditText.getText().toString())) {
+            builder.setMessage("请填写排名");
+            builder.show();
+            return false;
+        } else if (TextUtils.isEmpty(mZoneTextView.getText().toString())) {
+            builder.setMessage("请填写考区");
+            builder.show();
+            return false;
+        }
+
+        return true;
+    }
+
+    private UserInfo makeUserInfo() {
+        User user = User.getInstance();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(user.getId());
+        userInfo.setXm(user.getXm()); //姓名
+        userInfo.setSfzh(user.getSfzh()); //身份证
+        userInfo.setKscj(user.getKscj()); //分数
+        userInfo.setKspw(user.getKspw()); //排名
+        userInfo.setKskl(user.getKskl()); //理工
+        userInfo.setKqdh(user.getKqdh()); //天津
+        return userInfo;
+    }
+
+    private void updateKsxx(final UserInfo userInfo) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        mBlockedDialogFragment.updateMessage("");
+        mBlockedDialogFragment.show(ft, "block_dialog");
+
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.KAO_SHENG_XIN_XI_XIU_GAI
+                , null, new VolleyResponseListener(getActivity()) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
+                if (success) {
+                    String ksxx = response.getString("ksxx");
+                    UserInfo ui = JSON.parseObject(ksxx, UserInfo.class);
+                    User user = User.getInstance();
+                    user.setAccountId(ui.getAccountId());
+                    user.setXm(ui.getXm());
+                    user.setSfzh(ui.getSfzh());
+                    user.setKscj(ui.getKscj());
+                    user.setKspw(ui.getKspw());
+                    user.setKskl(ui.getKskl());
+                    user.setKsklName(ui.getKsklName());//科类名称
+                    user.setKqdh(ui.getKskq());//考区代号
+                    user.setKskqName(ui.getKskqName());
+                    User.saveUser(user);
+
+                    if (goSmartRecomnetStep2) {
+                        next();
+                    }
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(getActivity(), errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(getActivity(), getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userId", userInfo.getUserId());
+                params.put("xm", userInfo.getXm());
+                params.put("sfzh", userInfo.getSfzh());
+                params.put("kscj", String.valueOf(userInfo.getKscj()));
+                params.put("kspw", String.valueOf(userInfo.getKspw()));
+                params.put("kskl", String.valueOf(userInfo.getKskl()));
+                params.put("kskq", String.valueOf(userInfo.getKqdh()));
+                return AppHelper.makeSimpleData("ksxxUpdate", params);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
+    private void next() {
+        FragmentTransaction ft = getActivity().getFragmentManager()
+                .beginTransaction();
+        ft.replace(R.id.container, new SmartRecomentFragmentStep2(),
+                "step2");
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    @Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.main, menu);
 		super.onCreateOptionsMenu(menu, inflater);

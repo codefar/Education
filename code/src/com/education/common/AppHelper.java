@@ -74,11 +74,11 @@ public class AppHelper {
     private static final String TAG = "AppHelper";
     private static final boolean DEBUG = EduApp.DEBUG;
 
-//    public static Intent makeLogoutIntent(Context context) {
-//        Intent intent = new Intent(context, MainActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        return intent;
-//    }
+    public static Intent mainActivityIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return intent;
+    }
 
     public static void startLauncher(Context context) {
         Intent intent = new Intent();

@@ -32,6 +32,7 @@ public class Constants {
     public static final String PRODUCT_ID = "T";
 
     public static final String SP_COLUMN_INIT = "init";
+    public static final String SP_COLUMN_INIT_GUIDE_PAGE = "init_guide_page";
     public static final String SP_COLUMN_UUID = "uuid";
     public static final String SP_COLUMN_USER_ID = "user_id";
 

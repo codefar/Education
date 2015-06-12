@@ -43,7 +43,7 @@ public class EduApp extends Application {
     public static int sScreenHeight;
     public static String sApplicationLabel;
     public static String sDeviceId;
-    private static boolean sInit;
+    public static boolean sInit;
 
     public static final String sRootDirPath;
     public static final String sTempDirPath;

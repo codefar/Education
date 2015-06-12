@@ -10,12 +10,15 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import com.education.common.AppHelper;
+import com.education.entity.User;
 
-public class LauncherActivity extends FragmentBaseActivity {
+public class GuideActivity extends FragmentBaseActivity {
 
     private static final String TAG = "LauncherActivity";
     private static final int FRAGMENT_COUNT = 3;
@@ -93,8 +96,18 @@ public class LauncherActivity extends FragmentBaseActivity {
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        User user = User.getInstance();
+                        if (TextUtils.isEmpty(user.getId())) {
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                        } else {
+                            if (TextUtils.isEmpty(user.getXm())) {
+                                startActivity(new Intent(getActivity(), SetUserInfoActivity.class));
+                            } else {
+                                startActivity(AppHelper.mainActivityIntent(mActivity));
+                            }
+                        }
                         getActivity().finish();
-                        startActivity(new Intent(getActivity(), MainActivity.class));
+
                     }
                 });
             }
@@ -106,4 +119,7 @@ public class LauncherActivity extends FragmentBaseActivity {
             return "LauncherFragment";
         }
     }
+
+    @Override
+    public void onBackPressed() {}
 }

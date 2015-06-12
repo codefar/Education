@@ -29,7 +29,7 @@
                 android:hint="用户名/邮箱/手机号"
                 android:layout_marginTop="@dimen/dimen_17_dip"
                 android:textSize="@dimen/dimen_12_dip"
-                style="@style/EditText"
+                style="@style/EditText.SingleLine"
                 android:id="@+id/user_name"/>
         <!--密码-->
         <EditText
@@ -39,7 +39,7 @@
                 android:inputType="textPassword"
                 android:hint="请输入密码"
                 android:textSize="@dimen/dimen_12_dip"
-                style="@style/EditText"
+                style="@style/EditText.SingleLine"
                 android:id="@+id/password"/>
         <!--登录-->
         <Button

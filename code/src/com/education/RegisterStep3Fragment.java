@@ -188,7 +188,7 @@ public class RegisterStep3Fragment extends CommonFragment implements View.OnClic
                     user.setId(userInfo.getUserId());
                     user.setUserSession(userInfo.getUserSession());
                     User.saveUser(user);
-                    startActivity(new Intent(mActivity, MainActivity.class));
+                    startActivity(AppHelper.mainActivityIntent(mActivity));
                     mActivity.finish();
                 } else {
                     ErrorData errorData = AppHelper.getErrorData(response);
