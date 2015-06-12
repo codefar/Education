@@ -21,6 +21,7 @@ import com.education.entity.Questions;
 import com.education.entity.ShaiXuanJieGuo;
 import com.education.entity.User;
 import com.education.entity.UserInfo;
+import com.education.entity.XingGe;
 import com.education.utils.LogUtil;
 
 import java.util.ArrayList;
@@ -48,8 +49,103 @@ public class TestActivity extends CommonBaseActivity {
 //        shouCangZhuanYeLieBiao();
 //        shaiXuanByCollege();
 //        shaiXuanByMajor();
-        tuiJianXinXi();
+//        tuiJianXinXi();
+
+        zhuanYeFenXiBaoGao();
     }
+
+
+    public static class Item6 {
+        private String yxmc;
+        private String zymc;
+        private String yxpc;
+        private List<XingGe> xgfx = new ArrayList<XingGe>();
+        private List<HistoryMajor> lssj = new ArrayList<HistoryMajor>();
+
+        public String getYxmc() {
+            return yxmc;
+        }
+
+        public void setYxmc(String yxmc) {
+            this.yxmc = yxmc;
+        }
+
+        public String getZymc() {
+            return zymc;
+        }
+
+        public void setZymc(String zymc) {
+            this.zymc = zymc;
+        }
+
+        public String getYxpc() {
+            return yxpc;
+        }
+
+        public void setYxpc(String yxpc) {
+            this.yxpc = yxpc;
+        }
+
+        public List<XingGe> getXgfx() {
+            return xgfx;
+        }
+
+        public void setXgfx(List<XingGe> xgfx) {
+            this.xgfx = xgfx;
+        }
+
+        public List<HistoryMajor> getLssj() {
+            return lssj;
+        }
+
+        public void setLssj(List<HistoryMajor> lssj) {
+            this.lssj = lssj;
+        }
+    }
+
+    //单专业分析报告
+    private void zhuanYeFenXiBaoGao() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.ZHUAN_YE_FEN_XI_BAO_GAO
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    String zyfxdata = response.getString("zyfxdata");
+                    Item6 item = JSON.parseObject(zyfxdata, Item6.class);
+                    Toast.makeText(TestActivity.this, "size: " + item.getXgfx().size(), Toast.LENGTH_SHORT).show();
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("yxdh", "哈尔滨理工大学");
+                map.put("zydh", "微电子科学与工程");
+                map.put("yxpc", String.valueOf(5));
+                map.put("kskl", String.valueOf(1));
+                map.put("kqdh", String.valueOf(6));
+                return AppHelper.makeSimpleData("zyfx", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
+
+
+
+
+
+
+
 
     public static class Item4 {
         private int count;
