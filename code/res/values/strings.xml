@@ -28,7 +28,7 @@
     <string name="input_right_phone_number">请输入正确的手机号</string>
     <string name="set_login_password">设置登录密码</string>
     <string name="major_collected_in_college">已收藏%1$s的专业</string>
-    <string name="smart_recomment_tip">智能志愿推荐功能结合性格测试，考生分数、所在考区、近五年的各高校和专业录取的人数、最高分、最低分分等条件利用大数据分析算法给你智能推荐最适合你的专业和院校。</string>
+    <string name="smart_recomment_tip">智能推荐功能结合性格测试、考生今年的分数及排位，利用近5年各高校的录取信息，如各专业录取人数、所有考生的详细分数和排位等数据，进行大数据分析及智能算法预测，为您推荐最适合志愿填报的参考院校及专业。</string>
     <string name="title_activity_smart_recomment">智能推荐</string>
     <string name="annalyse">正在使用大数据分析算法进行智能计算，请等待...</string>
     <string name="smart_recomment_smart1">第一步:输入考生信息</string>
@@ -51,5 +51,15 @@
     <string name="errcode_unknown">发送返回</string>
     <string name="title_activity_detail_condition">DetailConditionActivity</string>
     <string name="title_activity_smart_recomment_result">SmartRecommentResultActivity</string>
+	<string name="remment_tip">请务必填写真实信息，否则会严重影响推荐结果</string>
 
+	<string name="about_content">搜易贷由搜狐畅游（NASDAQ：CYOU）原CFO何捷先生创建， 核心管理团队均来自于知名IT企业及金融机构， 拥有丰富的互联网及金融行业经验。 搜易贷聚焦民间小微借贷， 致力于推动中国信贷行业的市场化、 平民化及高效化， 搭建中国最大、 用户体验最好的个人及中小企业的互联网信贷平台。 </string>
+	<string name="website">微信公众号</string>
+    <string name="sina_weibo">新浪微博</string>
+    <string name="webchat">QQ交流群</string>
+	<string name="website_content">本是教育</string>
+    <string name="sina_weibo_content">本是教育</string>
+    <string name="webchat_content">293443273</string>
+    <string name="already_copy_to_clipboard">已将“%1$s”复制到粘贴板中</string>
+    
 </resources>

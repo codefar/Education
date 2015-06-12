@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/red_dot"
+            android:background="@drawable/blue_dot"
             android:gravity="center"
             android:text="01"
             android:textColor="@color/white"
@@ -58,6 +58,18 @@
                 android:text="第一批 A段"
                 android:textColor="@color/third_text"
                 android:textSize="@dimen/dimen_12_dip" />
+            
+            <TextView
+                android:id="@+id/luqu_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignBaseline="@id/buck"
+                android:layout_below="@id/type"
+                android:text="录取率 98%"
+                android:textColor="@color/first_text"
+                android:textSize="@dimen/dimen_12_dip" />
+            
         </RelativeLayout>
     </RelativeLayout>
 

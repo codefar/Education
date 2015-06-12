@@ -2,16 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/action_bar_bg">
+    android:background="@color/action_bar_bg" >
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
+        android:background="@drawable/index_shan"
         android:cropToPadding="true"
-        android:scaleType="matrix"
-        android:background="@drawable/index_shan" />
+        android:scaleType="matrix" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,12 +19,25 @@
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/start_btn"
+        <FrameLayout
             android:layout_width="@dimen/dimen_159_dip"
             android:layout_height="@dimen/dimen_159_dip"
-            android:layout_marginTop="@dimen/dimen_27_dip"
-            android:background="@drawable/index_nav" />
+            android:layout_marginTop="@dimen/dimen_27_dip" >
+
+            <ImageView
+                android:id="@+id/guang"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/index_guang" />
+
+            <Button
+                android:id="@+id/start_btn"
+                android:layout_width="@dimen/dimen_159_dip"
+                android:layout_height="@dimen/dimen_159_dip"
+                android:padding="12px"
+                android:layout_gravity="center"
+                android:background="@drawable/index_nav" />
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/sanjiao"
@@ -41,6 +54,7 @@
             android:background="@drawable/suru2_02"
             android:gravity="left|center_vertical"
             android:padding="@dimen/dimen_17_dip"
+            android:lineSpacingExtra="@dimen/dimen_5_dip"
             android:text="@string/smart_recomment_tip"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_12_dip" />

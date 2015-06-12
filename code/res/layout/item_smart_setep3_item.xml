@@ -46,7 +46,7 @@
         android:layout_toLeftOf="@id/arrow"
         android:includeFontPadding="false"
         android:text="收藏"
-        android:textColor="@color/third_text"
+        android:textColor="@color/first_text"
         android:textSize="@dimen/dimen_10_dip" />
 
     <View

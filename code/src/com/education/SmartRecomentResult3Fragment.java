@@ -1,12 +1,7 @@
 package com.education;
 
-import com.education.utils.MenuHelper;
-
 import android.app.ActionBar;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,9 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+
+import com.education.utils.MenuHelper;
 
 public class SmartRecomentResult3Fragment extends CommonFragment implements OnClickListener{
 

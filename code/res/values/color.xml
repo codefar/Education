@@ -24,5 +24,10 @@
     <color name="action_bar_bg">#178FFE</color>
     <color name="line_divider">#1580E4</color>
     <color name="share_bg_transparent">#50000000</color>
-
+	<color name="about_content">#666666</color>
+	<color name="announcement_divider">#DBDBDB</color>
+    <color name="announcement_bg">#FFF4D6</color>
+    <color name="my_account_preference_title">#333333</color>
+    <color name="my_account_preference_bg_pressed">#0D000000</color>
+    <color name="preference_item_bg">@color/white</color>
 </resources>

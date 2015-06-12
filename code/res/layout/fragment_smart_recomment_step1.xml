@@ -21,6 +21,13 @@
             android:src="@drawable/jindu" />
     </LinearLayout>
 
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/remment_tip"
+            android:textColor="@color/first_text"
+            android:textSize="@dimen/dimen_12_dip" />
+    
     <EditText
         android:id="@+id/name"
         style="@style/EditText.SingleLine"
@@ -110,7 +117,7 @@
             android:text="@string/wen_ke" />
     </info.hoang8f.android.segmented.SegmentedGroup>
 
-    <EditText
+    <TextView
         android:id="@+id/editText3"
         style="@style/EditText.SingleLine"
         android:layout_width="match_parent"
@@ -122,8 +129,9 @@
         android:paddingLeft="@dimen/dimen_17_dip"
         android:paddingTop="@dimen/dimen_10_dip"
         android:textColorHint="@color/third_text"
+        android:clickable="true"
         android:textSize="@dimen/dimen_12_dip" >
-    </EditText>
+    </TextView>
 
     <Button
         android:id="@+id/btn_next"

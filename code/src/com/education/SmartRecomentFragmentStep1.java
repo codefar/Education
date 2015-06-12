@@ -5,7 +5,10 @@ import info.hoang8f.android.segmented.SegmentedGroup;
 import com.education.utils.MenuHelper;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -20,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SmartRecomentFragmentStep1 extends CommonFragment implements
@@ -33,12 +37,13 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 	private EditText mIdEditText;
 	private EditText mScoreEditText;
 	private EditText mPostionEditText;
-	private EditText mZoneEditText;
+	private TextView mZoneTextView;
 	private SegmentedGroup mSegmentedGroup;
 
 	private boolean goSmartRecomnetStep2 = false;
 	public static final String GO_SMART_RECOMNET_STEP2 = "GO_SMART_RECOMNET_STEP2";
 
+	String[] mKaoQu;
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
 	 */
@@ -50,6 +55,7 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 			goSmartRecomnetStep2 = getArguments().getBoolean(
 					GO_SMART_RECOMNET_STEP2, true);
 		}
+		mKaoQu = getResources().getStringArray(R.array.kaoqu_name);
 	}
 
 	/**
@@ -66,7 +72,8 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 		mPostionEditText = (EditText) v.findViewById(R.id.editText2);
 		mNameEditText = (EditText) v.findViewById(R.id.name);
 		mIdEditText = (EditText) v.findViewById(R.id.id);
-		mZoneEditText = (EditText) v.findViewById(R.id.editText3);
+		mZoneTextView = (TextView) v.findViewById(R.id.editText3);
+		mZoneTextView.setOnClickListener(this);
 		mSegmentedGroup = (SegmentedGroup) v.findViewById(R.id.segmented);
 		mSegmentedGroup.setOnCheckedChangeListener(this);
 		return v;
@@ -102,6 +109,8 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 			} else {
 				// whet to do
 			}
+		} else if (v.getId() == R.id.editText3) {
+			simpleDialog();
 		}
 	}
 
@@ -131,6 +140,24 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 			// Nothing to do
 			break;
 		}
+	}
 
+	/**
+	 * 单选Dialogs
+	 */
+	private void simpleDialog() {
+		AlertDialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("选择考区");
+		builder.setSingleChoiceItems(mKaoQu, 0,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+						mZoneTextView.setText(mKaoQu[which]);
+					}
+				});
+		dialog = builder.create();
+		dialog.show();
 	}
 }

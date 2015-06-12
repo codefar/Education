@@ -2,6 +2,7 @@ package com.education;
 
 import com.education.utils.MenuHelper;
 
+import android.animation.ObjectAnimator;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,12 +16,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 public class SmartRecomentFragment extends CommonFragment implements OnClickListener{
 
     private static final String TAG = SmartRecomentFragment.class.getSimpleName();
 
     private Button mStartBtn;
+    private ImageView mGuang;
+    ObjectAnimator animator3;
 	/**
      * When creating, retrieve this instance's number from its arguments.
      */
@@ -40,9 +44,17 @@ public class SmartRecomentFragment extends CommonFragment implements OnClickList
         View v = inflater.inflate(R.layout.fragment_main_smart, container, false);
         mStartBtn  = (Button) v.findViewById(R.id.start_btn);
         mStartBtn.setOnClickListener(this);
+        mGuang = (ImageView)v.findViewById(R.id.guang);
+        animator3 = ObjectAnimator.ofFloat(mGuang, "rotation", 0F, 360F);
+        animator3.start();
         return v;
     }
     
+    @Override
+    public void onDestroyView() {
+    	animator3.cancel();
+    	super.onDestroyView();
+    }
 	@Override
 	protected String getLogTag() {
 		return TAG;
