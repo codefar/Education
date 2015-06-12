@@ -6,7 +6,9 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -33,8 +36,18 @@ import com.education.entity.ErrorData;
 import com.education.entity.Share;
 import com.education.entity.User;
 import com.education.utils.LogUtil;
+import com.education.widget.ShareDialog;
 import com.education.widget.SimpleBlockedDialogFragment;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +56,7 @@ import java.util.Map;
 public class PersonCenterFragment extends CommonFragment {
 	
 	private static final String TAG = PersonCenterFragment.class.getSimpleName();
+
     private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
 
     private LayoutInflater mInflater;
@@ -52,6 +66,7 @@ public class PersonCenterFragment extends CommonFragment {
     private ItemAdapter mItemAdapter;
     private Activity mActivity;
 
+    private IWXAPI api;
 
     /**
      * When creating, retrieve this instance's number from its arguments.
@@ -72,6 +87,7 @@ public class PersonCenterFragment extends CommonFragment {
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main_center, container, false);
 
+        api = WXAPIFactory.createWXAPI(mActivity, EduApp.WX_APP_ID);
         mInflater = inflater;
         mListView = (ListView) v.findViewById(R.id.list);
         mItemAdapter = new ItemAdapter();
@@ -130,7 +146,14 @@ public class PersonCenterFragment extends CommonFragment {
             } else if (position == 3) { // 关于
 
             } else if (position == 4) { //分享
-                fetchShareData();
+                ShareDialog dialog = new ShareDialog(mActivity);
+                dialog.setOnDismissListener(new ShareDialog.OnDismissListener() {
+                    @Override
+                    public void onDismiss(int type) {
+                        fetchShareData(type);
+                    }
+                });
+                dialog.show();
             } else if (position == 5) { //测试用的
                 User.clearUser();
                 mActivity.finish();
@@ -143,7 +166,7 @@ public class PersonCenterFragment extends CommonFragment {
         }
     }
 
-    private void fetchShareData() {
+    private void fetchShareData(final int type) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         mBlockedDialogFragment.updateMessage("");
         mBlockedDialogFragment.show(ft, "block_dialog");
@@ -155,11 +178,16 @@ public class PersonCenterFragment extends CommonFragment {
             public void onSuccessfulResponse(JSONObject response, boolean success) {
                 mBlockedDialogFragment.dismissAllowingStateLoss();
                 if (success) {
-                    Share share = new Share();
-                    share.setTitle("测试");
-                    share.setUrl("www.baidu.com");
-                    share.setDescription("这里可以多写一些字啊多写一些字啊多写一些字!");
-                    AppHelper.showShareDialog(mActivity, share);
+                    String data = response.getString("urls");
+                    Share share = JSON.parseObject(data, Share.class);
+
+                    if (type == ShareDialog.SHARE_WEBCHAT_FRIEND_CIRCLE) {
+                        webchatShare(type, share);
+                    } else if (type == ShareDialog.SHARE_WEBCHAT_FRIEND) {
+                        webchatShare(type, share);
+                    } else if (type == ShareDialog.SHARE_SMS) {
+                        smsShare(share);
+                    }
                 } else {
                     ErrorData errorData = AppHelper.getErrorData(response);
                     Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
@@ -177,10 +205,84 @@ public class PersonCenterFragment extends CommonFragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("userId", user.getId());
+                params.put("type", String.valueOf(type));
                 return AppHelper.makeSimpleData("getShareUrl", params);
             }
         };
         EduApp.sRequestQueue.add(request);
+    }
+
+    private void webchatShare(final int type, final Share share) {
+        new Thread() {
+            public void run() {
+                if (type == ShareDialog.SHARE_WEBCHAT_FRIEND_CIRCLE) {
+                    SendMessageToWX.Req req = new SendMessageToWX.Req();
+                    req.transaction = buildTransaction("webpage");
+                    req.message = makeWXMediaMessage(share);
+                    req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                    api.sendReq(req);
+                } else {
+                    SendMessageToWX.Req req = new SendMessageToWX.Req();
+                    req.transaction = buildTransaction("webpage");
+                    req.message = makeWXMediaMessage(share);
+                    req.scene = SendMessageToWX.Req.WXSceneSession;
+                    api.sendReq(req);
+                }
+            }
+        }.start();
+    }
+
+    private void smsShare(Share share) {
+        String content = share.getDesc();
+        Uri smsToUri = Uri.parse("smsto:");
+        Intent mIntent = new Intent(Intent.ACTION_SENDTO, smsToUri);
+        mIntent.putExtra("sms_body", content);
+        startActivity( mIntent );
+    }
+
+
+    private static final int THUMB_SIZE = 150;
+    private WXMediaMessage makeWXMediaMessage(Share share) {
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = share.getShareUrl();
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = share.getTitle();
+        msg.description = share.getDesc();
+        if (share.getIconUrl() != null) {
+            try {
+                URL url = new URL(share.getIconUrl());
+                Bitmap bmp = BitmapFactory.decodeStream(url.openStream());
+                Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
+                bmp.recycle();
+                msg.thumbData = bmpToByteArray(thumbBmp, true);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return msg;
+    }
+
+    private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
+
+    public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 80, output);
+        if (needRecycle) {
+            bmp.recycle();
+        }
+
+        byte[] result = output.toByteArray();
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     private void personalDialog() {

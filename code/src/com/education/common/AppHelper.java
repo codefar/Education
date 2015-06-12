@@ -386,20 +386,6 @@ public class AppHelper {
         }
     }
 
-
-    public static void showShareDialog(Context context, final Share share) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.activity_share, null);
-        final ShareDialog dialog = new ShareDialog(context, share);
-        view.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
-
     public static String encodeString(String str) {
         if (str == null) {
             return null;
