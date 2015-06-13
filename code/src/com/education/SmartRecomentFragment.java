@@ -73,7 +73,7 @@ public class SmartRecomentFragment extends CommonFragment implements OnClickList
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.main, menu);
+//		inflater.inflate(R.menu.main, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 }

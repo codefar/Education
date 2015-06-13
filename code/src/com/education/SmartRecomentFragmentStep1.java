@@ -270,27 +270,18 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
         ft.commit();
     }
 
-    @Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.main, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		MenuHelper.menuItemSelected(getActivity(), 0, item);
+//		MenuHelper.menuItemSelected(getActivity(), 0, item);
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		Log.i(TAG, "理科" + checkedId);
 		switch (checkedId) {
 		case R.id.btn_li_ke:
-			Toast.makeText(getActivity(), "理科", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.btn_wen_ke:
-			Toast.makeText(getActivity(), "文科", Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			// Nothing to do
