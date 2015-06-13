@@ -1,6 +1,7 @@
 package com.education;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,7 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 	private View mResult;
 	private Item4 item;
 	private String[] mPici;
+	private int[] mPiciID;
 
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
@@ -68,6 +70,7 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 				Context.LAYOUT_INFLATER_SERVICE);
 		mResources = getResources();
 		mPici = mResources.getStringArray(R.array.luqu_pici_name);
+		mPiciID = mResources.getIntArray(R.array.luqu_pici_id);
 	}
 
 	/**
@@ -184,7 +187,7 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 			holder.rankTextView.setText(String.valueOf(position + 1));
 			holder.nameTextView.setText(ii.getYxmc());
 			holder.typeTextView.setText(ii.getYxDesc());
-			holder.buckTextView.setText(mPici[ii.getYxpc()]);
+			holder.buckTextView.setText(mPici[ii.getYxpc()-1]);
 			// holder.luquTextView.setText(mPici[ii.getYxpc()]);
 
 			holder.itemContainer.removeAllViews();
@@ -205,12 +208,14 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 				mItemTitle1.setText("专业" + String.valueOf(i + 1));
 				mItemTitle2.setText(majorItem.getZymc());
 
+				mItemDesc.setOnClickListener(null);
 				mItemDesc.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						// 收藏
+						Log.i(TAG, majorItem.toString());
 						shouCangZhuanYe(ii.getYxdh(), majorItem.getZydh(),
-								ii.getYxmc(), majorItem.getLqpc());
+								ii.getYxmc(),mPiciID[ii.getYxpc()-1]);
 					}
 				});
 				item.setOnClickListener(new OnClickListener() {
@@ -248,27 +253,16 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 		ViewGroup itemContainer;
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.main, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		MenuHelper.menuItemSelected(getActivity(), 0, item);
-		return super.onOptionsItemSelected(item);
-	}
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void shouCangZhuanYe(final String yxdh, final String zydh,
-			final String zymc, final String lqpc) {
+			final String zymc, final int lqpc) {
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.SHOU_CANG_ZHUAN_YE, null,
 				new VolleyResponseListener(getActivity()) {
 					@Override
 					public void onSuccessfulResponse(JSONObject response,
 							boolean success) {
+						Log.i(TAG, response.toJSONString());
 						if (success) {
 							JSONObject result = response
 									.getJSONObject("result");
@@ -305,8 +299,9 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 				map.put("yxdh", yxdh); // 院校代号
 				map.put("zydh", zydh); // 专业代号
 				map.put("zymc", zymc); // 专业名称
-				map.put("lqpc", lqpc); // 录取批次
+				map.put("lqpc", String.valueOf(lqpc)); // 录取批次
 				map.put("source", "2");// 收藏来源 1为手工筛选 2为智能推荐
+				Log.i(TAG, Arrays.toString(map.entrySet().toArray()));
 				return AppHelper.makeSimpleData("search", map);
 			}
 		};

@@ -238,12 +238,10 @@ public class VolunteerCollectionFragment extends CommonFragment {
 				Intent intent = new Intent(getActivity(),
 						MajorDetailActivity.class);
 				intent.putExtra("yxdh", mCurrentCollegeItem.getYxdh());
-				intent.putExtra(
-						"zydh",
-						((MajorItem) parent.getAdapter().getItem(position)).getZydh());
-				intent.putExtra(
-						"yxpc",
-						((MajorItem) parent.getAdapter().getItem(position)).getLqpc());
+				MajorItem item = ((MajorItem) parent.getAdapter().getItem(
+						position));
+				intent.putExtra("zydh", item.getZydh());
+				intent.putExtra("yxpc", item.getLqpc());
 				startActivity(intent);
 			} else {
 				mType = TYPE_MAJOR;

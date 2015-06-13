@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/dimen_189_dip"
     android:layout_height="@dimen/dimen_26_dip"
-    android:layout_gravity="center_vertical" >
+    android:layout_gravity="center" >
 
     <EditText
         android:id="@+id/search_school_major_edit"
