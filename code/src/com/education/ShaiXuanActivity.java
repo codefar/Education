@@ -214,7 +214,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 
 		ConditionItem item3 = new ConditionItem();
 		item3.setSchoolImg(R.drawable.sx_zhuanye);
-		item3.setConditionName("专业");
+		item3.setConditionName("院校性质");
 		item3.setDetailCondition("全部");
 		mItemList.add(item3);
 

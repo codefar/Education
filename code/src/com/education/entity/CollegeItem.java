@@ -31,4 +31,12 @@ public class CollegeItem {
     public void setZysl(String zysl) {
         this.zysl = zysl;
     }
+
+	@Override
+	public String toString() {
+		return "CollegeItem [yxdh=" + yxdh + ", yxmc=" + yxmc + ", zysl="
+				+ zysl + "]";
+	}
+    
+    
 }

@@ -1,15 +1,35 @@
 package com.education.entity;
 
+import com.education.R;
+
 public class ConditionItem {
 
-	protected int conditionItemSelected;
+	protected int conditionItemSelected=R.drawable.arrow_right;
 	protected String detailConditionName;
+	protected String proviceId;
 
-	public ConditionItem(int imgSelected, String detailConditionName) {
-		this.conditionItemSelected = imgSelected;
+	
+	public ConditionItem(String detailConditionName,
+			String proviceId) {
+		super();
 		this.detailConditionName = detailConditionName;
+		this.proviceId = proviceId;
+	}
+	public void setProviceId(String proviceId) {
+		this.proviceId = proviceId;
+	}
+	public String getProviceId() {
+		return proviceId;
 	}
 
+	public ConditionItem(int conditionItemSelected, String detailConditionName,
+			String proviceId) {
+		super();
+		this.conditionItemSelected = conditionItemSelected;
+		this.detailConditionName = detailConditionName;
+		this.proviceId = proviceId;
+	}
+	
 	public void setDetailConditionName(String detailConditionName) {
 		this.detailConditionName = detailConditionName;
 	}

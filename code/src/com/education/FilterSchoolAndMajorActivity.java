@@ -1,7 +1,9 @@
 package com.education;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -9,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -21,8 +24,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.education.common.AppHelper;
+import com.education.common.FastJsonRequest;
+import com.education.common.VolleyErrorListener;
+import com.education.common.VolleyResponseListener;
+import com.education.entity.CollegeItem;
+import com.education.entity.ErrorData;
 import com.education.entity.ShaiXuanInfo;
+import com.education.entity.ShaiXuanJieGuo;
 import com.education.entity.User;
+import com.education.utils.LogUtil;
 
 public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 		View.OnClickListener {
@@ -32,10 +48,14 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 	protected LayoutInflater mInflater;
 	protected Resources mResources;
 	private ItemAdapter mItemAdapter;
-	private TextView mFilterTextView, mScoreRankText, mSchoolRankText;
+	private TextView mFilterTextView, mScoreRankText, mSchoolRankText,
+			mUserScoreText, mUserRankText, mUserTypeText, mUserLocation,mSchoolNumbersText,mMajorNumbersText;
 	private Intent mShaixuanIntent;
 	private ImageView mScoreRankImg, mSchoolRankImg;
 	private int clickPinyinNumbers, clickSchoolNumbers;
+	private User mUser;
+	private String mSchoolNumbers;
+	private int mMajorNumbers;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +65,8 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 
 		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mResources = getResources();
-		mSearchResulListView = (ListView) findViewById(R.id.filter_school_result_list);
-		mFilterTextView = (TextView) findViewById(R.id.filter_textview);
-		mScoreRankText = (TextView) findViewById(R.id.paixu_pinyin);
-		mSchoolRankText = (TextView) findViewById(R.id.paiming_school);
-		mScoreRankImg = (ImageView) findViewById(R.id.paixu_pinyin_img);
-		mSchoolRankImg = (ImageView) findViewById(R.id.paiming_school_img);
+		initView();
+
 		mItemAdapter = new ItemAdapter();
 		mShaixuanIntent = new Intent(this, ShaiXuanActivity.class);
 		mSearchResulListView.setAdapter(mItemAdapter);
@@ -58,7 +74,128 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 		mFilterTextView.setOnClickListener(this);
 		mScoreRankText.setOnClickListener(this);
 		mSchoolRankText.setOnClickListener(this);
+		shaiXuan();
+	}
 
+	private void initView() {
+		mSearchResulListView = (ListView) findViewById(R.id.filter_school_result_list);
+		mFilterTextView = (TextView) findViewById(R.id.filter_textview);
+		mScoreRankText = (TextView) findViewById(R.id.paixu_pinyin);
+		mSchoolRankText = (TextView) findViewById(R.id.paiming_school);
+		mScoreRankImg = (ImageView) findViewById(R.id.paixu_pinyin_img);
+		mSchoolRankImg = (ImageView) findViewById(R.id.paiming_school_img);
+		mUserScoreText = (TextView) findViewById(R.id.user_score);
+		mUserRankText = (TextView) findViewById(R.id.user_rank);
+		mUserTypeText = (TextView) findViewById(R.id.user_type);
+		mUserLocation = (TextView) findViewById(R.id.user_location);
+		mSchoolNumbersText=(TextView) findViewById(R.id.school_numbers);
+		mMajorNumbersText=(TextView) findViewById(R.id.major_numbers);
+
+		mUser = User.getInstance();
+		if (mUser != null) {
+			Log.w("wutl", mUser.toString());
+			mUserScoreText.setText(mUser.getKscj() + "");
+			mUserRankText.setText(mUser.getKspw() + "");
+			mUserTypeText.setText(mUser.getKskl() + "");
+			mUserLocation.setText(mUser.getKskqName() + "");
+		}
+	}
+
+	private void shaiXuan() {
+		final FastJsonRequest request = new FastJsonRequest(Request.Method.GET,
+				Url.SHAI_XUAN, null, new VolleyResponseListener(this) {
+					@Override
+					public void onSuccessfulResponse(JSONObject response,
+							boolean success) {
+						if (success) {
+							String datas = response.getString("datas");
+							ShaiXuanJieGuo result = JSON.parseObject(datas,
+									ShaiXuanJieGuo.class);
+							if (result != null)
+								setDataSource(result);
+							Log.d("wutl", "resutl=" + result.toString());
+						} else {
+							ErrorData errorData = AppHelper
+									.getErrorData(response);
+							Toast.makeText(FilterSchoolAndMajorActivity.this,
+									errorData.getText(), Toast.LENGTH_SHORT)
+									.show();
+						}
+					}
+				}, new VolleyErrorListener() {
+					@Override
+					public void onVolleyErrorResponse(VolleyError volleyError) {
+						LogUtil.logNetworkResponse(volleyError, "wutl");
+						Toast.makeText(
+								FilterSchoolAndMajorActivity.this,
+								getResources().getString(
+										R.string.internet_exception),
+								Toast.LENGTH_SHORT).show();
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				User user = User.getInstance();
+				Map<String, String> map = new HashMap<String, String>();
+				// map.put("pageno", String.valueOf(1));
+				// map.put("skey", "哈尔滨"); //搜索关键词
+				// map.put("yxss", String.valueOf(7)); //院校省市 江苏省
+				// map.put("yxlx", String.valueOf(9)); //院校类型 林业
+				// map.put("yxxz", String.valueOf(2)); //院校性质 211
+				// map.put("lqpc", String.valueOf(1)); //录取批次 特殊批
+				// map.put("lqqk", "2013|1|500|550"); //历年录取情况 年份|查询类型|最低值|最高值
+				// （2013年，按分数，最低500,最高550）
+				// map.put("kskl", String.valueOf(2/*文史*/)); //科类代号
+				// user.getKskl()
+				// map.put("kqdh", String.valueOf(2/*上海*/)); //考区代号
+				// user.getKqdh()
+
+				map.put("pageno", String.valueOf(1));
+				map.put("skey", "清华");
+				map.put("yxss", "1|2|3");
+				map.put("yxlx", "");
+				map.put("yxxz", "1|2");
+				map.put("lqpc", "3");
+				map.put("lqqk", "2013|1|688|720");
+				map.put("kskl", String.valueOf(1/* 文史 */));
+				map.put("kqdh", String.valueOf(2/* 上海 */));
+
+				return AppHelper.makeSimpleData("search", map);
+			}
+		};
+		EduApp.sRequestQueue.add(request);
+	}
+
+	private void setDataSource(ShaiXuanJieGuo result) {
+		mSchoolNumbers = String.valueOf(result.getYxzydata().size());
+		List<CollegeItem> schoolList = result.getYxzydata();
+		for (int i = 0; i < schoolList.size(); i++) {
+			SchoolItem localItem = new SchoolItem(schoolList.get(i).getZysl(),
+					schoolList.get(i).getYxmc());
+			mMajorNumbers+=Integer.valueOf(schoolList.get(i).getZysl()).intValue();
+			setSchoolImg(localItem, i % 3);
+			mItemList.add(localItem);
+		}
+		mItemAdapter.notifyDataSetChanged();
+		mSchoolNumbersText.setText(String.format(getResources().getString(R.string.school_numbers), mSchoolNumbers));
+		mMajorNumbersText.setText(String.format(getResources().getString(R.string.major_numbers), String.valueOf(mMajorNumbers)));
+	}
+
+	private void setSchoolImg(SchoolItem localItem, int position) {
+		switch (position) {
+		case 0:
+			localItem.setSchoolImg(R.drawable.xuexiao_1);
+			break;
+		case 1:
+			localItem.setSchoolImg(R.drawable.xuexiao_2);
+			break;
+		case 2:
+			localItem.setSchoolImg(R.drawable.xuexiao_3);
+			break;
+		default:
+			localItem.setSchoolImg(R.drawable.xuexiao_2);
+			break;
+		}
 	}
 
 	@Override
@@ -92,7 +229,6 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 	}
 
 	private void displayCollege() {
-		fetchCollege();
 		mSearchResulListView.setOnItemClickListener(mItemAdapter);
 		mItemAdapter.notifyDataSetChanged();
 	}
@@ -164,30 +300,16 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 		}
 	}
 
-	private void fetchCollege() {
-		SchoolItem item1 = new SchoolItem();
-		item1.setSchoolImg(R.drawable.xuexiao_1);
-		item1.setSchoolName("北京大学");
-		item1.setMarjorNumber("5");
-		mItemList.add(item1);
-
-		SchoolItem item2 = new SchoolItem();
-		item2.setSchoolImg(R.drawable.xuexiao_2);
-		item2.setSchoolName("清华大学");
-		item2.setMarjorNumber("4");
-		mItemList.add(item2);
-
-		SchoolItem item3 = new SchoolItem();
-		item3.setSchoolImg(R.drawable.xuexiao_3);
-		item3.setSchoolName("中国人民大学");
-		item3.setMarjorNumber("6");
-		mItemList.add(item3);
-	}
-
 	private class SchoolItem {
 		protected int schoolImg;
 		protected String marjorNumber;
 		protected String schoolName;
+
+		public SchoolItem(String marjorNumber, String schoolName) {
+			super();
+			this.marjorNumber = marjorNumber;
+			this.schoolName = schoolName;
+		}
 
 		public String getMarjorNumber() {
 			return marjorNumber;

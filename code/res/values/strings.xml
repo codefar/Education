@@ -61,5 +61,7 @@
     <string name="sina_weibo_content">本是教育</string>
     <string name="webchat_content">293443273</string>
     <string name="already_copy_to_clipboard">已将“%1$s”复制到粘贴板中</string>
+     <string name="school_numbers">符合条件学校 %1$s</string>
+      <string name="major_numbers">符合条件专业 %1$s</string>
     
 </resources>

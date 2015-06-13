@@ -87,4 +87,13 @@ public class MajorItem {
     public void setLqgl(String lqgl) {
         this.lqgl = lqgl;
     }
+
+	@Override
+	public String toString() {
+		return "MajorItem [zydh=" + zydh + ", zymc=" + zymc + ", lqpc=" + lqpc
+				+ ", source=" + source + ", lqrs=" + lqrs + ", min=" + min
+				+ ", max=" + max + ", pjz=" + pjz + ", lqgl=" + lqgl + "]";
+	}
+    
+    
 }

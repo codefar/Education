@@ -35,4 +35,12 @@ public class ShaiXuanJieGuo {
     public void setYxzydata(List<CollegeItem> yxzydata) {
         this.yxzydata = yxzydata;
     }
+
+	@Override
+	public String toString() {
+		return "ShaiXuanJieGuo [totalPage=" + totalPage + ", curPage="
+				+ curPage + ", yxzydata=" + yxzydata + "]";
+	}
+    
+    
 }

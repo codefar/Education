@@ -3,6 +3,7 @@ package com.education;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.education.entity.ConditionItem;
 
 public class DetailConditionActivity extends Activity implements
@@ -66,27 +68,43 @@ public class DetailConditionActivity extends Activity implements
 		switch (mCurrentCondition) {
 		// 省
 		case DetailConditionConstants.PROVINCE:
-			mItemList = Arrays.asList(DetailConditionConstants.provinces);
+			mItemList = generateItem(
+					getResources().getStringArray(R.array.province_name),
+					getResources().getStringArray(R.array.province_id));
 			break;
 		// 类型
 		case DetailConditionConstants.SCHOOL_TYPE:
-			mItemList = Arrays.asList(DetailConditionConstants.school_type);
+			mItemList = generateItem(
+					getResources().getStringArray(R.array.college_type_name),
+					getResources().getStringArray(R.array.college_type_id));
 			break;
-		// 专业
+		// 院校性质
 		case DetailConditionConstants.MAJOR:
-			mItemList = Arrays.asList(DetailConditionConstants.major);
+			mItemList = generateItem(
+					getResources().getStringArray(R.array.college_property_name),
+					getResources().getStringArray(R.array.college_property_id));
 			break;
 		// 录取批次
 		case DetailConditionConstants.LUQU_PICI:
-			mItemList = Arrays.asList(DetailConditionConstants.luqu_grade);
+			mItemList = generateItem(
+					getResources().getStringArray(R.array.luqu_pici_name),
+					getResources().getStringArray(R.array.luqu_pici_id));
 			break;
 		// 历年分数
 		case DetailConditionConstants.LUQU_SCORE:
-			mItemList = Arrays.asList(DetailConditionConstants.provinces);
+		//	mItemList = Arrays.asList(DetailConditionConstants.provinces);
 			break;
 		}
 	}
 
+	private List<ConditionItem> generateItem(String provicename[],String provinceId[]){
+		List<ConditionItem> itemList=new ArrayList<ConditionItem>();
+		for(int i=0;i<provicename.length;i++){
+			itemList.add(new ConditionItem(provicename[i],provinceId[i]));
+		}
+		return itemList;
+	}
+	
 	private class ItemAdapter extends BaseAdapter implements
 			AdapterView.OnItemClickListener {
 		public int getCount() {

@@ -365,6 +365,13 @@ public class TestActivity extends CommonBaseActivity {
         public void setZydata(List<MajorItem> zydata) {
             this.zydata = zydata;
         }
+
+		@Override
+		public String toString() {
+			return "Item2 [yxdh=" + yxdh + ", zy=" + zy + ", yxmc=" + yxmc
+					+ ", zydata=" + zydata + "]";
+		}
+        
     }
 
     private void shaiXuanByCollege() {
