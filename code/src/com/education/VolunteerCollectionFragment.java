@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,12 +33,6 @@ import com.education.entity.MajorItem;
 import com.education.entity.User;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,8 +48,6 @@ public class VolunteerCollectionFragment extends CommonFragment {
 
 	protected LayoutInflater mInflater;
 	protected Resources mResources;
-	protected ImageLoader imageLoader = ImageLoader.getInstance();
-	private DisplayImageOptions mDisplayImageOptions;
 
 	private static final int TYPE_COLLEGE = 0;
 	private static final int TYPE_MAJOR = 1;
@@ -77,15 +69,6 @@ public class VolunteerCollectionFragment extends CommonFragment {
 		super.onCreate(savedInstanceState);
 		mResources = getResources();
 		mActivity = getActivity();
-		mDisplayImageOptions = new DisplayImageOptions.Builder()
-				.cacheInMemory(true)// 设置下载的图片是否缓存在内存中
-				.cacheOnDisk(true)// 设置下载的图片是否缓存在SD卡中
-				.considerExifParams(true) // 是否考虑JPEG图像EXIF参数（旋转，翻转）
-				.imageScaleType(ImageScaleType.NONE)// 设置图片以如何的编码方式显示
-				.bitmapConfig(Bitmap.Config.RGB_565)// 设置图片的解码类型
-				.resetViewBeforeLoading(true)// 设置图片在下载前是否重置，复位
-				.displayer(new FadeInBitmapDisplayer(100))// 是否图片加载好后渐入的动画时间
-				.build();// 构建完成
 	}
 
 	/**
@@ -160,33 +143,10 @@ public class VolunteerCollectionFragment extends CommonFragment {
 			Object item = mItemList.get(position);
 			if (mType == TYPE_COLLEGE) {
 				CollegeItem collegeItem = (CollegeItem) item;
-
 				holder.descTextView.setText(collegeItem.getZysl());
-				// imageLoader.displayImage(item.getIcon(),
-				// holder.iconImageView, mDisplayImageOptions, new
-				// ImageLoadingListener() {
-				// @Override
-				// public void onLoadingStarted(String imageUri, View view) {
-				// }
-				//
-				// @Override
-				// public void onLoadingFailed(String imageUri, View view,
-				// FailReason failReason) {
-				// }
-				//
-				// @Override
-				// public void onLoadingComplete(String imageUri, View view,
-				// Bitmap loadedImage) {
-				// ImageView imageView = (ImageView) view;
-				// imageView.setImageBitmap(loadedImage);
-				// }
-				//
-				// @Override
-				// public void onLoadingCancelled(String imageUri, View view) {
-				// }
-				// });
-
 				holder.titleTextView.setText(collegeItem.getYxmc());
+                holder.iconImageView.setImageBitmap(BitmapFactory.decodeResource(
+                        mResources, getImgId(position)));
 			} else {
 				MajorItem majorItem = (MajorItem) item;
 				int source = majorItem.getSource();
@@ -197,31 +157,9 @@ public class VolunteerCollectionFragment extends CommonFragment {
 				} else if (source == 2) {
 					holder.descTextView.setText("智能推荐");
 				}
-				// imageLoader.displayImage(item.getIcon(),
-				// holder.iconImageView, mDisplayImageOptions, new
-				// ImageLoadingListener() {
-				// @Override
-				// public void onLoadingStarted(String imageUri, View view) {
-				// }
-				//
-				// @Override
-				// public void onLoadingFailed(String imageUri, View view,
-				// FailReason failReason) {
-				// }
-				//
-				// @Override
-				// public void onLoadingComplete(String imageUri, View view,
-				// Bitmap loadedImage) {
-				// ImageView imageView = (ImageView) view;
-				// imageView.setImageBitmap(loadedImage);
-				// }
-				//
-				// @Override
-				// public void onLoadingCancelled(String imageUri, View view) {
-				// }
-				// });
-
 				holder.titleTextView.setText(majorItem.getZymc());
+                holder.iconImageView.setImageBitmap(BitmapFactory.decodeResource(
+                        mResources, getImgId(position - 1)));
 			}
 
 			return convertView;
@@ -235,6 +173,9 @@ public class VolunteerCollectionFragment extends CommonFragment {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			if (mType == TYPE_MAJOR) {
+                if (position == 0) {
+                    return; // header
+                }
 				Intent intent = new Intent(getActivity(),
 						MajorDetailActivity.class);
 				intent.putExtra("yxdh", mCurrentCollegeItem.getYxdh());
@@ -251,6 +192,19 @@ public class VolunteerCollectionFragment extends CommonFragment {
 			}
 		}
 	}
+
+    private int getImgId(int position) {
+        switch (position) {
+            case 0:
+                return R.drawable.xuexiao_1;
+            case 1:
+                return R.drawable.xuexiao_2;
+            case 2:
+                return R.drawable.xuexiao_3;
+            default:
+                return R.drawable.xuexiao_2;
+        }
+    }
 
 	public static class Item {
 		private String yxdh;
