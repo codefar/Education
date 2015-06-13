@@ -5,6 +5,7 @@ import com.education.entity.User;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 
 /**
  * Created by su on 15-6-13.
@@ -28,23 +29,27 @@ public class MajorDetailActivity extends CommonBaseActivity {
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return true;
+	}
+
+	@Override
 	protected void unLoginForward(User user) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void forceUpdateForward() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-    protected void setupTitleBar() {
-        ActionBar bar = getActionBar();
-        bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
-        bar.setHomeButtonEnabled(true);
-    }
+	protected void setupTitleBar() {
+		ActionBar bar = getActionBar();
+		bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
+				| ActionBar.DISPLAY_SHOW_TITLE);
+		bar.setHomeButtonEnabled(true);
+	}
 
 	@Override
 	protected String getTag() {

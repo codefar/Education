@@ -131,7 +131,8 @@ public class MainActivity extends FragmentBaseActivity {
     protected void setupTitleBar() {
         ActionBar bar = getActionBar();
         bar.setDisplayHomeAsUpEnabled(false); 
-        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE|ActionBar.DISPLAY_SHOW_CUSTOM);
+        bar.setTitle(R.string.smart_recomment);
         bar.setCustomView(R.layout.filter_school_major_action_bar);
         bar.setDisplayShowCustomEnabled(false);
     }
@@ -163,12 +164,26 @@ public class MainActivity extends FragmentBaseActivity {
 		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			@Override
 			public void onTabChanged(String tabId) {
-				if(mTabHost.getCurrentTab() == TAB_MANUAL){
-					ActionBar bar = getActionBar();
-			        bar.setDisplayShowCustomEnabled(true);
-				} else {
-					ActionBar bar = getActionBar();
+				ActionBar bar = getActionBar();
+				switch (mTabHost.getCurrentTab()) {
+				case TAB_MANUAL:
+					bar.setDisplayShowCustomEnabled(true);
+			        bar.setTitle(R.string.manual_tim);
+					break;
+				case TAB_SMART:
 					bar.setDisplayShowCustomEnabled(false);
+					bar.setTitle(R.string.smart_recomment);
+					break;
+				case TAB_VOLUNTEER:
+					bar.setDisplayShowCustomEnabled(false);
+					bar.setTitle(R.string.volunteer_collection);
+					break;
+				case TAB_CENTER:
+					bar.setDisplayShowCustomEnabled(false);
+					bar.setTitle(R.string.person_center);
+					break;
+				default:
+					break;
 				}
 			}
 		});
