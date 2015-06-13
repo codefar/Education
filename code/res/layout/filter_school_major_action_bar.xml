@@ -11,16 +11,17 @@
         android:background="#FFFFFF"
         android:ellipsize="end"
         android:hint="请输入学校 、专业信息"
-        android:paddingLeft="@dimen/dimen_15_dip"
-        android:singleLine="true" />
+        android:paddingLeft="@dimen/dimen_25_dip"
+        android:textSize="@dimen/dimen_12_dip"
+        android:textColor="@color/third_text"
+        style="@style/EditText.SingleLine"/>
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/dimen_26_dip"
+        android:layout_height="@dimen/dimen_26_dip"
         android:layout_alignLeft="@id/search_school_major_edit"
         android:layout_centerVertical="true"
-        android:scaleType="fitXY"
-        android:layout_marginLeft="10dp"
+        android:scaleType="centerInside"
         android:src="@drawable/top_sousuo" />
 
 </RelativeLayout>

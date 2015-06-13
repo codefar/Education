@@ -183,7 +183,6 @@ public class VolunteerCollectionFragment extends CommonFragment {
                 } else if (source == 2) {
                     holder.descTextView.setText("智能推荐");
                 }
-                holder.descTextView.setText(majorItem.getZymc());
 //                imageLoader.displayImage(item.getIcon(), holder.iconImageView, mDisplayImageOptions, new ImageLoadingListener() {
 //                    @Override
 //                    public void onLoadingStarted(String imageUri, View view) {
