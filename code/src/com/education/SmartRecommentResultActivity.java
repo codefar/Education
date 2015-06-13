@@ -33,6 +33,7 @@ import com.education.entity.MajorItem;
 import com.education.entity.User;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
+import com.viewpagerindicator.TabPageIndicator;
 
 public class SmartRecommentResultActivity extends FragmentBaseActivity
 		implements View.OnClickListener {
@@ -43,21 +44,38 @@ public class SmartRecommentResultActivity extends FragmentBaseActivity
 			.newInstance();
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
+	TabPageIndicator indicator;
+
 	private TextView mNameTextView, mPiciTextView;
 
 	private Item5 mXueXiaoItem;
 	private MajorItem mMajorItem;
+	Item6 item;
+
+	public Item6 getItem() {
+		return item;
+	}
+
+	public static final String TAB_RESULT1 = "TAB1";
+	public static final String TAB_RESULT2 = "TAB2";
+	public static final String TAB_RESULT3 = "TAB3";
+	public static final String TAB_RESULT4 = "TAB4";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_smart_recomment_result);
 		setupTitleBar();
-		mViewPager = (ViewPager) findViewById(R.id.pager);
+
 		mNameTextView = (TextView) findViewById(R.id.name);
 		mPiciTextView = (TextView) findViewById(R.id.pici);
 
+		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mTabsAdapter = new TabsAdapter(getFragmentManager());
+		mViewPager.setAdapter(mTabsAdapter);
+		indicator = (TabPageIndicator) findViewById(R.id.indicator);
+		indicator.setViewPager(mViewPager);
+
 		Intent intent = getIntent();
 		if (intent != null) {
 			mXueXiaoItem = (Item5) intent.getSerializableExtra("xuexiao");
@@ -66,13 +84,8 @@ public class SmartRecommentResultActivity extends FragmentBaseActivity
 		}
 	}
 
-	Item6 item;
-
-	public Item6 getItem() {
-		return item;
-	}
-
 	// 单专业分析报告
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void zhuanYeFenXiBaoGao() {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		mBlockedDialogFragment.show(ft, "block_dialog");
@@ -87,10 +100,10 @@ public class SmartRecommentResultActivity extends FragmentBaseActivity
 						if (success) {
 							String zyfxdata = response.getString("zyfxdata");
 							item = JSON.parseObject(zyfxdata, Item6.class);
-							Toast.makeText(SmartRecommentResultActivity.this,
-									"size: " + item.getXgfx().size(),
-									Toast.LENGTH_SHORT).show();
-							mViewPager.setAdapter(mTabsAdapter);
+
+							mTabsAdapter.notifyDataSetChanged();
+							indicator.notifyDataSetChanged();
+
 							mNameTextView.setText(item.getZymc());
 							mPiciTextView.setText(item.getYxpc());
 
@@ -132,7 +145,7 @@ public class SmartRecommentResultActivity extends FragmentBaseActivity
 	public void onClick(View v) {
 	}
 
-	public static class TabsAdapter extends FragmentPagerAdapter {
+	public class TabsAdapter extends FragmentPagerAdapter {
 
 		public TabsAdapter(FragmentManager fm) {
 			super(fm);
@@ -140,7 +153,7 @@ public class SmartRecommentResultActivity extends FragmentBaseActivity
 
 		@Override
 		public int getCount() {
-			return 4;
+			return item == null ? 0 : 4;
 		}
 
 		@Override
@@ -153,6 +166,19 @@ public class SmartRecommentResultActivity extends FragmentBaseActivity
 				return new SmartRecomentResult3Fragment();
 			} else {
 				return new SmartRecomentResult4Fragment();
+			}
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			if (position == 0) {
+				return "性格分析";
+			} else if (position == 1) {
+				return "历史数据";
+			} else if (position == 2) {
+				return "历史趋势";
+			} else {
+				return "推荐结果";
 			}
 		}
 	}

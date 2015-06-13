@@ -41,9 +41,10 @@ public class SmartRecomentResult1Fragment extends CommonFragment implements
 				container, false);
 		mInflater = inflater;
 		mResultListView = (ListView) v.findViewById(R.id.listView);
-		mAdpter = new ItemAdapter();
-		mResultListView.setAdapter(mAdpter);
-		
+		if (mItem != null) {
+			mAdpter = new ItemAdapter();
+			mResultListView.setAdapter(mAdpter);
+		}
 		return v;
 	}
 

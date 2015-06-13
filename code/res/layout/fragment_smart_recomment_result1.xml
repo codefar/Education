@@ -13,16 +13,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/kuang" >
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_34_dip"
-            android:background="@color/bg_gray"
-            android:gravity="center"
-            android:text="1、性格分析"
-            android:textStyle="bold"
-            android:textSize="@dimen/dimen_14_dip"
-            android:textColor="@color/first_text" />
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"

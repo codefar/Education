@@ -117,7 +117,8 @@
         <activity
             android:name=".SmartRecommentResultActivity"
             android:exported="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/StyledIndicators">
         </activity>
         <activity
                 android:name=".UserInfoActivity"

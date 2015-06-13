@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.education.TestActivity.Item6;
 import com.education.entity.HistoryMajor;
 import com.education.entity.User;
-import com.education.entity.XingGe;
 import com.education.utils.MenuHelper;
 
 public class SmartRecomentResult2Fragment extends CommonFragment implements
@@ -38,8 +37,10 @@ public class SmartRecomentResult2Fragment extends CommonFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mItem = ((SmartRecommentResultActivity) getActivity()).getItem();
-		mHistoryMajorItems.clear();
-		mHistoryMajorItems.addAll(mItem.getLssj());
+		if (mItem != null) {
+			mHistoryMajorItems.clear();
+			mHistoryMajorItems.addAll(mItem.getLssj());
+		}
 	}
 
 	@Override
@@ -105,29 +106,30 @@ public class SmartRecomentResult2Fragment extends CommonFragment implements
 						.findViewById(R.id.score);
 				holder.personNumTextView = (TextView) convertView
 						.findViewById(R.id.person_num);
-				
-				holder.t1TextView  = (TextView) convertView
+
+				holder.t1TextView = (TextView) convertView
 						.findViewById(R.id.text1);
-				holder.t3TextView  = (TextView) convertView
+				holder.t3TextView = (TextView) convertView
 						.findViewById(R.id.text3);
-				holder.t5TextView  = (TextView) convertView
+				holder.t5TextView = (TextView) convertView
 						.findViewById(R.id.text5);
-				
-				holder.t11TextView  = (TextView) convertView
+
+				holder.t11TextView = (TextView) convertView
 						.findViewById(R.id.text11);
-				holder.t13TextView  = (TextView) convertView
+				holder.t13TextView = (TextView) convertView
 						.findViewById(R.id.text13);
-				holder.t15TextView  = (TextView) convertView
+				holder.t15TextView = (TextView) convertView
 						.findViewById(R.id.text15);
-				
-				holder.t21TextView  = (TextView) convertView
+
+				holder.t21TextView = (TextView) convertView
 						.findViewById(R.id.text21);
-				holder.t23TextView  = (TextView) convertView
+				holder.t23TextView = (TextView) convertView
 						.findViewById(R.id.text23);
-				holder.t25TextView  = (TextView) convertView
+				holder.t25TextView = (TextView) convertView
 						.findViewById(R.id.text25);
-				
-				holder.mScrollView = (LinearLayout) convertView.findViewById(R.id.all_score);
+
+				holder.mScrollView = (LinearLayout) convertView
+						.findViewById(R.id.all_score);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -136,33 +138,38 @@ public class SmartRecomentResult2Fragment extends CommonFragment implements
 			HistoryMajor item = mHistoryMajorItems.get(position);
 			holder.yearTextView.setText(String.valueOf(item.getYear()));
 			String type = User.getInstance().getKskl() == 1 ? "理工" : "文史";
-			holder.scoreTextView.setText( type +  mItem.getYxpc() + "分数线:"+String.valueOf(item.getLqline()));
-			holder.personNumTextView.setText("共录取:"+String.valueOf(item.getLqrs())+"人");
-			
+			holder.scoreTextView.setText(type + mItem.getYxpc() + "分数线:"
+					+ String.valueOf(item.getLqline()));
+			holder.personNumTextView.setText("共录取:"
+					+ String.valueOf(item.getLqrs()) + "人");
+
 			holder.t1TextView.setText(String.valueOf(item.getMaxpw()));
 			holder.t3TextView.setText(String.valueOf(item.getMinpw()));
 			holder.t5TextView.setText(String.valueOf(item.getPjpw()));
-			
+
 			holder.t11TextView.setText(String.valueOf(item.getMaxcj()));
 			holder.t13TextView.setText(String.valueOf(item.getMincj()));
 			holder.t15TextView.setText(String.valueOf(item.getPjcj()));
-			
+
 			holder.t21TextView.setText(String.valueOf(item.getMaxxc()));
 			holder.t23TextView.setText(String.valueOf(item.getMinxc()));
 			holder.t25TextView.setText(String.valueOf(item.getPjxc()));
-			
+
 			holder.mScrollView.removeAllViews();
 			ArrayList<Integer> cjList = (ArrayList<Integer>) item.getCjlist();
+
 			for (int i = 0; i < cjList.size(); i++) {
 				View scrollItem = mInflater.inflate(
-						R.layout.item_smart_recomment_result2_sub_item, null, false);
-				int width14 = (int) ((EduApp.sScreenWidth - getResources().getDimensionPixelOffset(R.dimen.dimen_68_dip)) / 4F);
+						R.layout.item_smart_recomment_result2_sub_item, null,
+						false);
+				int width14 = (int) ((EduApp.sScreenWidth - getResources()
+						.getDimensionPixelOffset(R.dimen.dimen_68_dip)) / 4F);
 				scrollItem.setMinimumWidth(width14);
 				TextView sub_score_rank = (TextView) scrollItem
 						.findViewById(R.id.sub_score_rank);
 				TextView sub_score = (TextView) scrollItem
 						.findViewById(R.id.sub_score);
-				sub_score_rank.setText(getString(R.string.rank_index, i+1));
+				sub_score_rank.setText(getString(R.string.rank_index, i + 1));
 				sub_score.setText(String.valueOf(cjList.get(i)));
 				holder.mScrollView.addView(scrollItem);
 			}
