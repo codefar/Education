@@ -27,7 +27,7 @@
     <string name="input_password">请输入登录密码</string>
     <string name="input_right_phone_number">请输入正确的手机号</string>
     <string name="set_login_password">设置登录密码</string>
-    <string name="major_collected_in_college">已收藏%1$s的专业</string>
+    <string name="major_collected_in_college">已收藏%1$d的专业</string>
     <string name="smart_recomment_tip">智能推荐功能结合性格测试、考生今年的分数及排位，利用近5年各高校的录取信息，如各专业录取人数、所有考生的详细分数和排位等数据，进行大数据分析及智能算法预测，为您推荐最适合志愿填报的参考院校及专业。</string>
     <string name="title_activity_smart_recomment">智能推荐</string>
     <string name="annalyse">正在使用大数据分析算法进行智能计算，请等待...</string>

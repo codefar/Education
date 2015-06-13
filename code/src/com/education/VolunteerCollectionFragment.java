@@ -1,5 +1,7 @@
 package com.education;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,6 +15,23 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.education.common.AppHelper;
+import com.education.common.FastJsonRequest;
+import com.education.common.VolleyErrorListener;
+import com.education.common.VolleyResponseListener;
+import com.education.entity.CollegeItem;
+import com.education.entity.ErrorData;
+import com.education.entity.MajorItem;
+import com.education.entity.User;
+import com.education.utils.LogUtil;
+import com.education.widget.SimpleBlockedDialogFragment;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -21,11 +40,14 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class VolunteerCollectionFragment extends CommonFragment {
 
 	private static final String TAG = SmartRecomentFragment.class.getSimpleName();
+    private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
 
     protected LayoutInflater mInflater;
     protected Resources mResources;
@@ -36,12 +58,13 @@ public class VolunteerCollectionFragment extends CommonFragment {
     private static final int TYPE_MAJOR = 1;
     private int mType = TYPE_COLLEGE;
     private ListView mListView;
-    private List<Item> mCollegeItemList;
-    private List<Item> mMajorItemList = new ArrayList<Item>();
-    private List<Item> mItemList = new ArrayList<Item>();
+    private List mCollegeItemList;
+    private List mMajorItemList = new ArrayList();
+    private List mItemList = new ArrayList();
     private ItemAdapter mItemAdapter;
     private RelativeLayout mHeaderLayout;
-    private View mHeaderTitleTextView;
+    private TextView mHeaderTitleTextView;
+    private Activity mActivity;
 
     /**
      * When creating, retrieve this instance's number from its arguments.
@@ -50,6 +73,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mResources = getResources();
+        mActivity = getActivity();
         mDisplayImageOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)//设置下载的图片是否缓存在内存中
                 .cacheOnDisk(true)//设置下载的图片是否缓存在SD卡中
@@ -76,9 +100,9 @@ public class VolunteerCollectionFragment extends CommonFragment {
         mListView.setAdapter(mItemAdapter);
 
         mHeaderLayout = (RelativeLayout) mInflater.inflate(R.layout.header_collection_list, null);
-        mHeaderTitleTextView = mHeaderLayout.findViewById(R.id.header_title);
+        mHeaderTitleTextView = (TextView) mHeaderLayout.findViewById(R.id.header_title);
         if (mType == TYPE_COLLEGE) {
-            displayCollege();
+            shouCangYuanXiaoLieBiao();
         } else {
             displayMajor();
         }
@@ -90,7 +114,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
             return true;
         } else {
             mType = TYPE_COLLEGE;
-            displayCollege();
+            shouCangYuanXiaoLieBiao();
         }
         return false;
     }
@@ -122,32 +146,64 @@ public class VolunteerCollectionFragment extends CommonFragment {
             }
             convertView.setTag(holder);
 
-            Item item = mItemList.get(position);
-            holder.descTextView.setText(item.getDesc());
-            imageLoader.displayImage(item.getIcon(), holder.iconImageView, mDisplayImageOptions, new ImageLoadingListener() {
-                @Override
-                public void onLoadingStarted(String imageUri, View view) {
-                }
-
-                @Override
-                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                }
-
-                @Override
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    ImageView imageView = (ImageView) view;
-                    imageView.setImageBitmap(loadedImage);
-                }
-
-                @Override
-                public void onLoadingCancelled(String imageUri, View view) {
-                }
-            });
+            Object item = mItemList.get(position);
             if (mType == TYPE_COLLEGE) {
                 CollegeItem collegeItem = (CollegeItem) item;
+
+                holder.descTextView.setText(collegeItem.getZysl());
+//                imageLoader.displayImage(item.getIcon(), holder.iconImageView, mDisplayImageOptions, new ImageLoadingListener() {
+//                    @Override
+//                    public void onLoadingStarted(String imageUri, View view) {
+//                    }
+//
+//                    @Override
+//                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+//                    }
+//
+//                    @Override
+//                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                        ImageView imageView = (ImageView) view;
+//                        imageView.setImageBitmap(loadedImage);
+//                    }
+//
+//                    @Override
+//                    public void onLoadingCancelled(String imageUri, View view) {
+//                    }
+//                });
+
+
                 holder.titleTextView.setText(collegeItem.getYxmc());
             } else {
                 MajorItem majorItem = (MajorItem) item;
+                int source = majorItem.getSource();
+                if (source == 0) {
+                    //未收藏
+                } else if (source == 1) {
+                    holder.descTextView.setText("手工筛选");
+                } else if (source == 2) {
+                    holder.descTextView.setText("智能推荐");
+                }
+                holder.descTextView.setText(majorItem.getZymc());
+//                imageLoader.displayImage(item.getIcon(), holder.iconImageView, mDisplayImageOptions, new ImageLoadingListener() {
+//                    @Override
+//                    public void onLoadingStarted(String imageUri, View view) {
+//                    }
+//
+//                    @Override
+//                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+//                    }
+//
+//                    @Override
+//                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                        ImageView imageView = (ImageView) view;
+//                        imageView.setImageBitmap(loadedImage);
+//                    }
+//
+//                    @Override
+//                    public void onLoadingCancelled(String imageUri, View view) {
+//                    }
+//                });
+
                 holder.titleTextView.setText(majorItem.getZymc());
             }
 
@@ -161,83 +217,15 @@ public class VolunteerCollectionFragment extends CommonFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             mType = TYPE_MAJOR;
-            displayMajor();
+            CollegeItem collegeItem = (CollegeItem) mCollegeItemList.get(position);
+            shouCangZhuanYeLieBiao(collegeItem);
         }
     }
 
-    private void fetchCollege() {
-        if (mCollegeItemList == null) {
-            mCollegeItemList = new ArrayList<Item>();
-            CollegeItem item1 = new CollegeItem();
-            item1.setYxdh("123");
-            item1.setYxmc("北京大学");
-            item1.setIcon("http://www.icosky.com/icon/png/Emoticon/Emoticons/Glad.png");
-            item1.setDesc("5");
-
-            CollegeItem item2 = new CollegeItem();
-            item2.setYxdh("124");
-            item2.setYxmc("天津大学");
-            item2.setIcon("http://www.aa25.cn/uploadfile/png/Iconbase/Waterworld/ok.png");
-            item2.setDesc("10");
-
-            CollegeItem item3 = new CollegeItem();
-            item3.setYxdh("1235");
-            item3.setYxmc("复旦大学");
-            item3.setIcon("http://img.sc115.com/uploads/png/110125/201101251607119003.png");
-            item1.setDesc("10");
-
-            mCollegeItemList.add(item1);
-            mCollegeItemList.add(item2);
-            mCollegeItemList.add(item3);
-        }
-    }
-
-    private void fetchMajor() {
-        mMajorItemList.clear();
-        MajorItem item1 = new MajorItem();
-        item1.setZydh("123");
-        item1.setZymc("数学");
-        item1.setIcon("http://www.icosky.com/icon/png/Emoticon/Emoticons/Glad.png");
-
-        MajorItem item2 = new MajorItem();
-        item2.setZydh("124");
-        item2.setZymc("物理");
-        item2.setIcon("http://img2.imgtn.bdimg.com/it/u=2285030123,2126699377&fm=21&gp=0.jpg");
-
-        MajorItem item3 = new MajorItem();
-        item3.setZydh("1235");
-        item3.setZymc("化学");
-        item3.setIcon("http://img.sc115.com/uploads/png/110125/201101251607119003.png");
-
-        mMajorItemList.add(item1);
-        mMajorItemList.add(item2);
-        mMajorItemList.add(item3);
-    }
-
-    public class Item {
-        protected String icon;
-        protected String desc;
-
-        public String getIcon() {
-            return icon;
-        }
-
-        public void setIcon(String icon) {
-            this.icon = icon;
-        }
-
-        public String getDesc() {
-            return desc;
-        }
-
-        public void setDesc(String desc) {
-            this.desc = desc;
-        }
-    }
-
-    public class CollegeItem extends Item {
-        protected String yxdh; //1001
-        protected String yxmc; //北京大学
+    public static class Item {
+        private String yxdh;
+        private String yxmc;
+        private List<MajorItem> sczyDatas = new ArrayList<MajorItem>();
 
         public String getYxdh() {
             return yxdh;
@@ -254,26 +242,13 @@ public class VolunteerCollectionFragment extends CommonFragment {
         public void setYxmc(String yxmc) {
             this.yxmc = yxmc;
         }
-    }
 
-    public class MajorItem extends Item {
-        private String zydh;
-        private String zymc;
-
-        public String getZydh() {
-            return zydh;
+        public List<MajorItem> getSczyDatas() {
+            return sczyDatas;
         }
 
-        public void setZydh(String zydh) {
-            this.zydh = zydh;
-        }
-
-        public String getZymc() {
-            return zymc;
-        }
-
-        public void setZymc(String zymc) {
-            this.zymc = zymc;
+        public void setSczyDatas(List<MajorItem> sczyDatas) {
+            this.sczyDatas = sczyDatas;
         }
     }
 
@@ -284,23 +259,98 @@ public class VolunteerCollectionFragment extends CommonFragment {
         View dividerView;
     }
 
-    private void displayCollege() {
-        fetchCollege();
-        mItemList = mCollegeItemList;
-        mListView.setOnItemClickListener(mItemAdapter);
-        mListView.removeHeaderView(mHeaderLayout);
-        mItemAdapter.notifyDataSetChanged();
-    }
-
     private void displayMajor() {
-        fetchMajor();
         mItemList = mMajorItemList;
         mListView.setOnItemClickListener(null);
         mListView.addHeaderView(mHeaderLayout);
+        mHeaderTitleTextView.setText(mResources.getString(R.string.major_collected_in_college, mMajorItemList.size()));
         mItemAdapter.notifyDataSetChanged();
     }
 
+    private void shouCangYuanXiaoLieBiao() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        mBlockedDialogFragment.show(ft, "block_dialog");
 
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SHOU_CANG_YUAN_XIAO_LIE_BIAO
+                , null, new VolleyResponseListener(mActivity) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
+                if (success) {
+                    mCollegeItemList = new ArrayList<Object>();
+                    JSONArray array = response.getJSONArray("datas");
+                    int size = array.size();
+                    for (int i = 0; i < size; i++) {
+                        String item = array.getString(i);
+                        CollegeItem collegeItem = JSON.parseObject(item, CollegeItem.class);
+                        mCollegeItemList.add(collegeItem);
+                    }
+
+                    mItemList = mCollegeItemList;
+                    mListView.setOnItemClickListener(mItemAdapter);
+                    mListView.removeHeaderView(mHeaderLayout);
+                    mItemAdapter.notifyDataSetChanged();
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                User user = User.getInstance();
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", "8a8a92f34dce12a0014dce1b97b90000"); //user.getId()
+                return AppHelper.makeSimpleData("getcollectschool", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
+    private void shouCangZhuanYeLieBiao(final CollegeItem collegeItem) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        mBlockedDialogFragment.show(ft, "block_dialog");
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.SHOU_CANG_ZHUAN_YE_LIE_BIAO
+                , null, new VolleyResponseListener(mActivity) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
+                if (success) {
+                    String datas = response.getString("datas");
+                    Item item = JSON.parseObject(datas, Item.class);
+                    mMajorItemList = item.getSczyDatas();
+                    displayMajor();
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                User user = User.getInstance();
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", "8a8a92f34dce12a0014dce1b97b90000"); //user.getId()
+                map.put("yxdh", collegeItem.getYxdh());
+                return AppHelper.makeSimpleData("getcollectmajor", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
 
     @Override
 	protected String getLogTag() {
