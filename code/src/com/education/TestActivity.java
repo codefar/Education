@@ -34,6 +34,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,8 +92,45 @@ public class TestActivity extends CommonBaseActivity {
 //        shaiXuanByMajor();
 //        tuiJianXinXi();
 
-        zhuanYeFenXiBaoGao();
+//        zhuanYeFenXiBaoGao();
+        huiDaZhuangTai();
     }
+
+    //回答状态
+    private void huiDaZhuangTai() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.XING_GE_CE_SHI_HUI_DA_ZHUANG_TAI
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    int status = response.getInteger("status");
+                    if (status == 1) {
+                        Toast.makeText(TestActivity.this, "回答完毕", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(TestActivity.this, "未曾回答", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", User.getInstance().getId());
+                return AppHelper.makeSimpleData("start", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
 
     private void setData() {
         int year = 4;
@@ -258,8 +296,12 @@ public class TestActivity extends CommonBaseActivity {
         }
     }
 
-    public static class Item5 {
-        private String yxdh; //院校代号
+    public static class Item5 implements Serializable{
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private String yxdh; //院校代号
         private String yxmc; //院校名称
         private String yxDesc; //综合描述
         private int yxpc; //录取批次代号

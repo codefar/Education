@@ -22,19 +22,20 @@
         <FrameLayout
             android:layout_width="@dimen/dimen_159_dip"
             android:layout_height="@dimen/dimen_159_dip"
-            android:layout_marginTop="@dimen/dimen_27_dip" >
+            android:layout_marginTop="@dimen/dimen_27_dip"
+            android:layout_gravity="center" >
 
             <ImageView
                 android:id="@+id/guang"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/index_guang" />
+                android:layout_width="@dimen/dimen_159_dip"
+                android:layout_height="@dimen/dimen_159_dip"
+                android:layout_gravity="center"
+                android:background="@drawable/index_guang" />
 
             <Button
                 android:id="@+id/start_btn"
                 android:layout_width="@dimen/dimen_159_dip"
                 android:layout_height="@dimen/dimen_159_dip"
-                android:padding="12px"
                 android:layout_gravity="center"
                 android:background="@drawable/index_nav" />
         </FrameLayout>

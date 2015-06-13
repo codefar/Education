@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
@@ -18,19 +19,14 @@ import com.education.common.VolleyResponseListener;
 import com.education.entity.ErrorData;
 import com.education.entity.Questions;
 import com.education.entity.User;
-import com.education.entity.UserInfo;
-import com.education.entity.Questions.Question;
 import com.education.utils.LogUtil;
 import com.education.utils.MenuHelper;
 import com.education.widget.SimpleBlockedDialogFragment;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,15 +49,17 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 	private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment
 			.newInstance();
 	private ArrayList<Answer> answerList = new ArrayList<Answer>();
+    private Activity mActivity;
 
-	/**
+    /**
 	 * When creating, retrieve this instance's number from its arguments.
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setupTitleBar();
-	}
+        mActivity = getActivity();
+        setupTitleBar();
+    }
 
 	/**
 	 * The Fragment's UI is just a simple text view showing its instance number.
@@ -75,7 +73,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		mAnsABtn.setOnClickListener(this);
 		mAnsBBtn = (Button) v.findViewById(R.id.btn_b);
 		mAnsBBtn.setOnClickListener(this);
-		mAnsCBtn = (Button) v.findViewById(R.id.btn_b);
+		mAnsCBtn = (Button) v.findViewById(R.id.btn_c);
 		mAnsCBtn.setOnClickListener(this);
 		mAnsDBtn = (Button) v.findViewById(R.id.btn_d);
 		mAnsDBtn.setOnClickListener(this);
@@ -84,9 +82,55 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		mCurrentNumTextView = (TextView) v.findViewById(R.id.current);
 		mQuestionTextView = (TextView) v.findViewById(R.id.question);
 
-		getQuestions();
+        huiDaZhuangTai();
 		return v;
 	}
+
+    //回答状态
+    private void huiDaZhuangTai() {
+        mBlockedDialogFragment.updateMessage(getString(R.string.get_questions));
+        mBlockedDialogFragment.show(getFragmentManager(), "block_dialog");
+
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.XING_GE_CE_SHI_HUI_DA_ZHUANG_TAI
+                , null, new VolleyResponseListener(mActivity) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    int status = response.getInteger("status");
+                    if (status == 1) {
+                        mBlockedDialogFragment.dismissAllowingStateLoss();
+                        FragmentTransaction ft = mActivity.getFragmentManager()
+                                .beginTransaction();
+//                        ft.remove(SmartRecomentFragmentStep2.this);
+                        SmartRecomentFragmentStep3 fragmentStep3 = new SmartRecomentFragmentStep3();
+                        fragmentStep3.setArguments(new Bundle());
+                        ft.replace(R.id.container, fragmentStep3, "step3");
+                        ft.commit();
+                    } else {
+                        getQuestions();
+                    }
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", User.getInstance().getId());
+                return AppHelper.makeSimpleData("start", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
 
 	@Override
 	public void onResume() {
@@ -100,7 +144,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 	}
 
 	protected void setupTitleBar() {
-		ActionBar bar = getActivity().getActionBar();
+		ActionBar bar = mActivity.getActionBar();
 		bar.setTitle(R.string.smart_recomment_smart2);
 		setHasOptionsMenu(true);
 	}
@@ -112,7 +156,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		switch (v.getId()) {
 		case R.id.btn_a:
 			Answer answera = new Answer();
-			answera.setDm(mQuestions.getTmDatas().get(mCurrentQueston).getDm());
+			answera.setDm(mQuestions.getTmDatas().get(mCurrentQueston - 1).getDm());
 			answera.setAns("A");
 			answerList.add(answera);
 			gotoNextQuestion();
@@ -120,7 +164,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 			break;
 		case R.id.btn_b:
 			Answer answerb = new Answer();
-			answerb.setDm(mQuestions.getTmDatas().get(mCurrentQueston).getDm());
+			answerb.setDm(mQuestions.getTmDatas().get(mCurrentQueston - 1).getDm());
 			answerb.setAns("B");
 			answerList.add(answerb);
 			gotoNextQuestion();
@@ -128,7 +172,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 			break;
 		case R.id.btn_c:
 			Answer answerc = new Answer();
-			answerc.setDm(mQuestions.getTmDatas().get(mCurrentQueston).getDm());
+			answerc.setDm(mQuestions.getTmDatas().get(mCurrentQueston - 1).getDm());
 			answerc.setAns("C");
 			answerList.add(answerc);
 			gotoNextQuestion();
@@ -136,7 +180,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 			break;
 		case R.id.btn_d:
 			Answer answerd = new Answer();
-			answerd.setDm(mQuestions.getTmDatas().get(mCurrentQueston).getDm());
+			answerd.setDm(mQuestions.getTmDatas().get(mCurrentQueston - 1).getDm());
 			answerd.setAns("D");
 			answerList.add(answerd);
 			gotoNextQuestion();
@@ -148,7 +192,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 	}
 
 	private void gotoStep3() {
-		FragmentTransaction ft = getActivity().getFragmentManager()
+		FragmentTransaction ft = mActivity.getFragmentManager()
 				.beginTransaction();
 		SmartRecomentFragmentStep3 fragmentStep3 = new SmartRecomentFragmentStep3();
 		fragmentStep3.setArguments(new Bundle());
@@ -164,7 +208,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		MenuHelper.menuItemSelected(getActivity(), 0, item);
+		MenuHelper.menuItemSelected(mActivity, 0, item);
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -172,24 +216,21 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 
 	private void gotoNextQuestion() {
 		if (mCurrentQueston < mQuestions.getCount()) {
-			mCurrentNumTextView.setText(String.valueOf(mCurrentQueston + 1));
-			mQuestionTextView.setText(mQuestions.getTmDatas()
-					.get(mCurrentQueston).getXm());
-			if (mCurrentQueston == (mQuestions.getCount() - 1)) {
-				answerQuestions(answerList);
-			}
-		}
+            int next = mCurrentQueston + 1;
+            List<Questions.Question> questionList = mQuestions.getTmDatas();
+			mCurrentNumTextView.setText(String.valueOf(next));
+			mQuestionTextView.setText(questionList.get(next - 1).getXm());
+		} else if (mCurrentQueston == mQuestions.getCount()) {
+            answerQuestions(answerList);
+        }
 	}
 
 	private Questions mQuestions = new Questions();
 
 	private void getQuestions() {
-		mCurrentQueston = 0;
-		mBlockedDialogFragment.updateMessage(getString(R.string.get_questions));
-		mBlockedDialogFragment.show(getFragmentManager(), "block_dialog");
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.XING_GE_CE_SHI_TI_MU, null,
-				new VolleyResponseListener(getActivity()) {
+				new VolleyResponseListener(mActivity) {
 					@Override
 					public void onSuccessfulResponse(JSONObject response,
 							boolean success) {
@@ -205,9 +246,11 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 									String.valueOf(mQuestions.getCount())));
 							mCurrentQueston = 0;
 							gotoNextQuestion();
+                            mCurrentQueston++;
 						} else {
 							ErrorData errorData = AppHelper
 									.getErrorData(response);
+                            Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
 						}
 					}
 				}, new VolleyErrorListener() {
@@ -230,7 +273,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		mBlockedDialogFragment.show(getFragmentManager(), "block_dialog");
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.XING_GE_CE_SHI_HUI_DA, null,
-				new VolleyResponseListener(getActivity()) {
+				new VolleyResponseListener(mActivity) {
 					@Override
 					public void onSuccessfulResponse(JSONObject response,
 							boolean success) {
@@ -240,7 +283,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 						} else {
 							ErrorData errorData = AppHelper
 									.getErrorData(response);
-							Toast.makeText(getActivity(), errorData.getText(),
+							Toast.makeText(mActivity, errorData.getText(),
 									Toast.LENGTH_SHORT).show();
 						}
 					}
@@ -250,7 +293,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 						mBlockedDialogFragment.dismissAllowingStateLoss();
 						LogUtil.logNetworkResponse(volleyError, TAG);
 						Toast.makeText(
-								getActivity(),
+								mActivity,
 								getResources().getString(
 										R.string.internet_exception),
 								Toast.LENGTH_SHORT).show();

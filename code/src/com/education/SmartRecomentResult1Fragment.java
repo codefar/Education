@@ -23,20 +23,16 @@ public class SmartRecomentResult1Fragment extends CommonFragment implements
 	private static final String TAG = SmartRecomentResult1Fragment.class
 			.getSimpleName();
 
-	/**
-	 * When creating, retrieve this instance's number from its arguments.
-	 */
+	private ListView mResultListView;
+	protected LayoutInflater mInflater;
+	Item6 mItem;
+	ItemAdapter mAdpter;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mItem = ((SmartRecommentResultActivity) getActivity()).getItem();
 	}
-
-	private TextView mNameTextView, mPiciTextView;
-	private ListView mResultListView;
-	protected LayoutInflater mInflater;
-	Item6 mItem;
-	ItemAdapter mAdpter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,11 +40,10 @@ public class SmartRecomentResult1Fragment extends CommonFragment implements
 		View v = inflater.inflate(R.layout.fragment_smart_recomment_result1,
 				container, false);
 		mInflater = inflater;
-		mNameTextView = (TextView) v.findViewById(R.id.name);
-		mPiciTextView = (TextView) v.findViewById(R.id.pici);
 		mResultListView = (ListView) v.findViewById(R.id.listView);
 		mAdpter = new ItemAdapter();
 		mResultListView.setAdapter(mAdpter);
+		
 		return v;
 	}
 
@@ -103,11 +98,11 @@ public class SmartRecomentResult1Fragment extends CommonFragment implements
 						.findViewById(R.id.item_title);
 				holder.descTextView = (TextView) convertView
 						.findViewById(R.id.item_desc);
+				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			convertView.setTag(holder);
-
+			
 			XingGe item = mItem.getXgfx().get(position);
 			holder.titleTextView.setText(item.getXm());
 			holder.title2TextView.setText(String.valueOf(item.getScore()));

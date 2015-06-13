@@ -19,6 +19,7 @@ public class Url {
     public static final String KAO_SHENG_XIN_XI = SCHEME + "/my/ksxxQuery"; //考生信息查询
     public static final String KAO_SHENG_XIN_XI_XIU_GAI = SCHEME + "/my/ksxxUpdate"; //考生信息修改
 
+    public static final String XING_GE_CE_SHI_HUI_DA_ZHUANG_TAI = SCHEME + "/zntj/start"; //获取题目回答状态
     public static final String XING_GE_CE_SHI_TI_MU = SCHEME + "/zntj/getTms"; //获取题目
     public static final String XING_GE_CE_SHI_HUI_DA = SCHEME + "/zntj/tmhd"; //题目回答
     public static final String TUI_JIAN_XIN_XI = SCHEME + "/zntj/recommenreport"; //智能推荐-获取推荐信息

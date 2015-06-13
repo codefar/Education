@@ -24,7 +24,7 @@ import java.util.Locale;
  * Created by su on 15-6-7.
  */
 public class AdmissionInPastYearActivity extends CommonBaseActivity implements View.OnClickListener {
-    private static final String TAG = "MinAdmissionScoreActivity";
+    private static final String TAG = "AdmissionInPastYearActivity";
     private SegmentedGroup mSegmented;
     private ClearableEditText mMinTextView;
     private ClearableEditText mMaxTextView;

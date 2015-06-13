@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_17_dip"
+            android:text="“考Ing”是本是教育旗下品牌，本是教育致力于发展教育事业和开发教育资源，公司汇集了大量教育和行业精英，通过长期的研究与总结，形成了一系列适用于互联网+的人才培养方法和模式，有助于人才的快速培养和选拔，在保证高质量的行业教材、适应当前教育改革方向的前提下，立志成为行业发展的人才储备库，使行业和教育互为基础，互为促进，未来，看我的！
+\n本是出品，必属精品！"
+            android:textColor="@color/my_account_preference_title"
+            android:textSize="@dimen/dimen_14_dip"
+            android:includeFontPadding="false"/>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dimen_17_dip"
+            android:paddingRight="@dimen/dimen_17_dip">
+        <TextView
+                android:layout_width="@dimen/dimen_125_dip"
+                android:layout_height="@dimen/dimen_145_dip"
+                android:text="微信二维码"
+                android:textColor="@color/my_account_preference_title"
+                android:textSize="@dimen/dimen_14_dip"
+                android:includeFontPadding="false"
+                android:drawableTop="@drawable/wx_qr_code"
+                android:layout_gravity="left"
+                android:gravity="center_horizontal"/>
+
+        <TextView
+                android:layout_width="@dimen/dimen_125_dip"
+                android:layout_height="@dimen/dimen_145_dip"
+                android:text="微信二维码"
+                android:textColor="@color/my_account_preference_title"
+                android:textSize="@dimen/dimen_14_dip"
+                android:includeFontPadding="false"
+                android:drawableTop="@drawable/wx_qr_code"
+                android:layout_gravity="right"
+                android:gravity="center_horizontal"/>
+    </FrameLayout>
+</LinearLayout>

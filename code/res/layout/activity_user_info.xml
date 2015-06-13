@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/content_bg1"
+    android:orientation="vertical" >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/dimen_17_dip"
+        android:background="@color/announcement_divider" />
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_43_dip"
+            android:background="@color/preference_item_bg"
+            android:paddingLeft="@dimen/dimen_17_dip">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="考生姓名"
+                android:textColor="@color/my_account_preference_title"
+                android:textSize="@dimen/dimen_14_dip" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/dimen_17_dip"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:textColor="@color/disable_text"
+                android:textSize="@dimen/dimen_14_dip"
+                android:id="@+id/xm"/>
+    </FrameLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="bottom"
+            android:background="@color/announcement_divider" />
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_43_dip"
+            android:background="@color/preference_item_bg"
+            android:paddingLeft="@dimen/dimen_17_dip">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="身份证号"
+                android:textColor="@color/my_account_preference_title"
+                android:textSize="@dimen/dimen_14_dip" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/dimen_17_dip"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:textColor="@color/disable_text"
+                android:textSize="@dimen/dimen_14_dip"
+                android:id="@+id/sfzh"/>
+    </FrameLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="bottom"
+            android:background="@color/announcement_divider" />
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_43_dip"
+            android:background="@color/preference_item_bg"
+            android:paddingLeft="@dimen/dimen_17_dip">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="考生成绩"
+                android:textColor="@color/my_account_preference_title"
+                android:textSize="@dimen/dimen_14_dip" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/dimen_17_dip"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:textColor="@color/disable_text"
+                android:textSize="@dimen/dimen_14_dip"
+                android:id="@+id/kscj"/>
+    </FrameLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="bottom"
+            android:background="@color/announcement_divider" />
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_43_dip"
+            android:background="@color/preference_item_bg"
+            android:paddingLeft="@dimen/dimen_17_dip">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="考生排位"
+                android:textColor="@color/my_account_preference_title"
+                android:textSize="@dimen/dimen_14_dip" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/dimen_17_dip"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:textColor="@color/disable_text"
+                android:textSize="@dimen/dimen_14_dip"
+                android:id="@+id/kspw"/>
+    </FrameLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="bottom"
+            android:background="@color/announcement_divider" />
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_43_dip"
+            android:background="@color/preference_item_bg"
+            android:paddingLeft="@dimen/dimen_17_dip">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="考生科类"
+                android:textColor="@color/my_account_preference_title"
+                android:textSize="@dimen/dimen_14_dip" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/dimen_17_dip"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:textColor="@color/disable_text"
+                android:textSize="@dimen/dimen_14_dip"
+                android:id="@+id/kskl"/>
+    </FrameLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="bottom"
+            android:background="@color/announcement_divider" />
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_43_dip"
+            android:background="@color/preference_item_bg"
+            android:paddingLeft="@dimen/dimen_17_dip">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="考生考区"
+                android:textColor="@color/my_account_preference_title"
+                android:textSize="@dimen/dimen_14_dip" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/dimen_17_dip"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:textColor="@color/disable_text"
+                android:textSize="@dimen/dimen_14_dip"
+                android:id="@+id/kskq"/>
+
+
+    </FrameLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="bottom"
+            android:background="@color/announcement_divider" />
+</LinearLayout>

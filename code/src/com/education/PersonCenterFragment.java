@@ -142,9 +142,9 @@ public class PersonCenterFragment extends CommonFragment {
             } else if (position == 1) { //修改密码
                 startActivity(new Intent(mActivity, ChangePasswordActivity.class));
             } else if (position == 2) { //个人信息
-                personalDialog();
+                startActivity(new Intent(mActivity, UserInfoActivity.class));
             } else if (position == 3) { // 关于
-
+                startActivity(new Intent(mActivity, AboutUsActivity.class));
             } else if (position == 4) { //分享
                 ShareDialog dialog = new ShareDialog(mActivity);
                 dialog.setOnDismissListener(new ShareDialog.OnDismissListener() {
@@ -283,20 +283,6 @@ public class PersonCenterFragment extends CommonFragment {
         }
 
         return result;
-    }
-
-    private void personalDialog() {
-        User user = User.getInstance();
-        new AlertDialog.Builder(mActivity)
-                .setTitle("考生信息")
-                .setMessage("考生姓名:" + user.getXm() + "\n"
-                        + "身份证号:" + user.getSfzh() + "\n"
-                        + "考生成绩:" + user.getKscj() + "\n"
-                        + "考生排名:" + user.getKspw() + "\n"
-                        + "考生科类:" + user.getKsklName() + "\n"
-                        + "考生考区:" + user.getKskqName())
-                .setPositiveButton("", null)
-                .show();
     }
 
     private void nicknameDialog(final View view) {
