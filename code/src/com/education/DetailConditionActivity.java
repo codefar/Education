@@ -1,5 +1,6 @@
 package com.education;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,25 +72,25 @@ public class DetailConditionActivity extends Activity implements
 		case DetailConditionConstants.PROVINCE:
 			mItemList = generateItem(
 					getResources().getStringArray(R.array.province_name),
-					getResources().getStringArray(R.array.province_id));
+					getResources().getIntArray(R.array.province_id));
 			break;
 		// 类型
 		case DetailConditionConstants.SCHOOL_TYPE:
 			mItemList = generateItem(
 					getResources().getStringArray(R.array.college_type_name),
-					getResources().getStringArray(R.array.college_type_id));
+					getResources().getIntArray(R.array.college_type_id));
 			break;
 		// 院校性质
 		case DetailConditionConstants.MAJOR:
 			mItemList = generateItem(
 					getResources().getStringArray(R.array.college_property_name),
-					getResources().getStringArray(R.array.college_property_id));
+					getResources().getIntArray(R.array.college_property_id));
 			break;
 		// 录取批次
 		case DetailConditionConstants.LUQU_PICI:
 			mItemList = generateItem(
 					getResources().getStringArray(R.array.luqu_pici_name),
-					getResources().getStringArray(R.array.luqu_pici_id));
+					getResources().getIntArray(R.array.luqu_pici_id));
 			break;
 		// 历年分数
 		case DetailConditionConstants.LUQU_SCORE:
@@ -97,7 +99,7 @@ public class DetailConditionActivity extends Activity implements
 		}
 	}
 
-	private List<ConditionItem> generateItem(String provicename[],String provinceId[]){
+	private List<ConditionItem> generateItem(String provicename[],int provinceId[]){
 		List<ConditionItem> itemList=new ArrayList<ConditionItem>();
 		for(int i=0;i<provicename.length;i++){
 			itemList.add(new ConditionItem(provicename[i],provinceId[i]));
@@ -174,9 +176,11 @@ public class DetailConditionActivity extends Activity implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.detail_condition_confirm_bt) {
-			mSelectedItemIntent.putExtra(
-					DetailConditionConstants.SELECTED_ITEM_TAG,
-					getSelectItemText(mSelectedItmeList));
+//			mSelectedItemIntent.putParcelableArrayListExtra(
+//					DetailConditionConstants.SELECTED_ITEM_TAG,
+//					(ArrayList<? extends Parcelable>) mSelectedItmeList);
+			
+			mSelectedItemIntent.putExtra(DetailConditionConstants.SELECTED_ITEM_TAG, (Serializable)mSelectedItmeList);
 			mSelectedItemIntent.putExtra(
 					ShaiXuanActivity.SHAIXUAN_CLICK_POSITION,
 					mCurrentSelectShaixuan);
@@ -186,15 +190,16 @@ public class DetailConditionActivity extends Activity implements
 			finish();
 		}
 	}
-
-	private String[] getSelectItemText(List<ConditionItem> list) {
-		if (list == null)
-			return null;
-		String result[] = new String[list.size()];
-		for (int i = 0; i < list.size(); i++)
-			result[i] = list.get(i).getDetailConditionName();
-		return result;
-	}
+	
+//
+//	private String[ConditionItem] getSelectItemText(List<ConditionItem> list) {
+//		if (list == null)
+//			return null;
+//		String result[] = new String[list.size()];
+//		for (int i = 0; i < list.size(); i++)
+//			result[i] = list.get(i).getDetailConditionName();
+//		return result;
+//	}
 
 	@Override
 	protected void onDestroy() {

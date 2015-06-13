@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,6 +36,7 @@ import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
 import com.education.entity.CollegeItem;
 import com.education.entity.ErrorData;
+import com.education.entity.ShaiXuanConditionItem;
 import com.education.entity.ShaiXuanInfo;
 import com.education.entity.ShaiXuanJieGuo;
 import com.education.entity.User;
@@ -49,13 +51,15 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 	protected Resources mResources;
 	private ItemAdapter mItemAdapter;
 	private TextView mFilterTextView, mScoreRankText, mSchoolRankText,
-			mUserScoreText, mUserRankText, mUserTypeText, mUserLocation,mSchoolNumbersText,mMajorNumbersText;
+			mUserScoreText, mUserRankText, mUserTypeText, mUserLocation,
+			mSchoolNumbersText, mMajorNumbersText;
 	private Intent mShaixuanIntent;
 	private ImageView mScoreRankImg, mSchoolRankImg;
 	private int clickPinyinNumbers, clickSchoolNumbers;
 	private User mUser;
-	private String mSchoolNumbers;
+	private String mSchoolNumbers, mLuquQingkuang;
 	private int mMajorNumbers;
+	private ArrayList<ShaiXuanConditionItem> conditionItemList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +92,8 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 		mUserRankText = (TextView) findViewById(R.id.user_rank);
 		mUserTypeText = (TextView) findViewById(R.id.user_type);
 		mUserLocation = (TextView) findViewById(R.id.user_location);
-		mSchoolNumbersText=(TextView) findViewById(R.id.school_numbers);
-		mMajorNumbersText=(TextView) findViewById(R.id.major_numbers);
+		mSchoolNumbersText = (TextView) findViewById(R.id.school_numbers);
+		mMajorNumbersText = (TextView) findViewById(R.id.major_numbers);
 
 		mUser = User.getInstance();
 		if (mUser != null) {
@@ -137,19 +141,6 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 			protected Map<String, String> getParams() throws AuthFailureError {
 				User user = User.getInstance();
 				Map<String, String> map = new HashMap<String, String>();
-				// map.put("pageno", String.valueOf(1));
-				// map.put("skey", "哈尔滨"); //搜索关键词
-				// map.put("yxss", String.valueOf(7)); //院校省市 江苏省
-				// map.put("yxlx", String.valueOf(9)); //院校类型 林业
-				// map.put("yxxz", String.valueOf(2)); //院校性质 211
-				// map.put("lqpc", String.valueOf(1)); //录取批次 特殊批
-				// map.put("lqqk", "2013|1|500|550"); //历年录取情况 年份|查询类型|最低值|最高值
-				// （2013年，按分数，最低500,最高550）
-				// map.put("kskl", String.valueOf(2/*文史*/)); //科类代号
-				// user.getKskl()
-				// map.put("kqdh", String.valueOf(2/*上海*/)); //考区代号
-				// user.getKqdh()
-
 				map.put("pageno", String.valueOf(1));
 				map.put("skey", "清华");
 				map.put("yxss", "1|2|3");
@@ -169,16 +160,22 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 	private void setDataSource(ShaiXuanJieGuo result) {
 		mSchoolNumbers = String.valueOf(result.getYxzydata().size());
 		List<CollegeItem> schoolList = result.getYxzydata();
+		mItemList.clear();
 		for (int i = 0; i < schoolList.size(); i++) {
 			SchoolItem localItem = new SchoolItem(schoolList.get(i).getZysl(),
 					schoolList.get(i).getYxmc());
-			mMajorNumbers+=Integer.valueOf(schoolList.get(i).getZysl()).intValue();
+			mMajorNumbers += Integer.valueOf(schoolList.get(i).getZysl())
+					.intValue();
 			setSchoolImg(localItem, i % 3);
 			mItemList.add(localItem);
 		}
 		mItemAdapter.notifyDataSetChanged();
-		mSchoolNumbersText.setText(String.format(getResources().getString(R.string.school_numbers), mSchoolNumbers));
-		mMajorNumbersText.setText(String.format(getResources().getString(R.string.major_numbers), String.valueOf(mMajorNumbers)));
+		mSchoolNumbersText.setText(String.format(
+				getResources().getString(R.string.school_numbers),
+				mSchoolNumbers));
+		mMajorNumbersText.setText(String.format(
+				getResources().getString(R.string.major_numbers),
+				String.valueOf(mMajorNumbers)));
 	}
 
 	private void setSchoolImg(SchoolItem localItem, int position) {
@@ -340,11 +337,175 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// 获取筛选条件
 		if (requestCode == 1 && resultCode == 1) {
-			ShaiXuanInfo info = (ShaiXuanInfo) data
-					.getSerializableExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
-			Toast.makeText(this, info.toString(), Toast.LENGTH_SHORT).show();
+
+			Bundle bundle = data
+					.getBundleExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
+			// ArrayList<ShaiXuanConditionItem> conditionItemList =
+			// bundle.getParcelableArrayList(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
+			conditionItemList = (ArrayList<ShaiXuanConditionItem>) bundle
+					.getSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
+			postData2Server(conditionItemList);
+			mLuquQingkuang = getLuquQingkuang(data);
+			Log.w("wutl", "录取情况＝" + mLuquQingkuang);
+			Toast.makeText(this, conditionItemList.toString(),
+					Toast.LENGTH_SHORT).show();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private String getLuquQingkuang(Intent data) {
+		return data.getStringExtra("year_score") + "|"
+				+ data.getIntExtra("score_type", 1) + "|"
+				+ data.getStringExtra("low_score") + "|"
+				+ data.getStringExtra("high_score");
+	}
+
+	private void postData2Server(
+			final ArrayList<ShaiXuanConditionItem> conditionlist) {
+		final FastJsonRequest request = new FastJsonRequest(
+				Request.Method.POST, Url.SHAI_XUAN, null,
+				new VolleyResponseListener(this) {
+					@Override
+					public void onSuccessfulResponse(JSONObject response,
+							boolean success) {
+						if (success) {
+							String datas = response.getString("datas");
+							ShaiXuanJieGuo result = JSON.parseObject(datas,
+									ShaiXuanJieGuo.class);
+							if (result != null)
+								setDataSource(result);
+							Log.d("wutl", "resutl=" + result.toString());
+						} else {
+							ErrorData errorData = AppHelper
+									.getErrorData(response);
+							Toast.makeText(FilterSchoolAndMajorActivity.this,
+									errorData.getText(), Toast.LENGTH_SHORT)
+									.show();
+						}
+					}
+				}, new VolleyErrorListener() {
+					@Override
+					public void onVolleyErrorResponse(VolleyError volleyError) {
+						LogUtil.logNetworkResponse(volleyError, "wutl");
+						Toast.makeText(
+								FilterSchoolAndMajorActivity.this,
+								getResources().getString(
+										R.string.internet_exception),
+								Toast.LENGTH_SHORT).show();
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				User user = User.getInstance();
+				Map<String, String> map = new HashMap<String, String>();
+
+				map.put("pageno", String.valueOf(1));
+				// map.put("skey", "清华");
+				map.put("yxss", getYxss(conditionlist));
+				map.put("yxlx", getYxlx(conditionlist));
+				map.put("yxxz", getYxxz(conditionlist));
+				map.put("lqpc", getLuqupici(conditionlist));
+				map.put("lqqk", mLuquQingkuang);
+				map.put("kskl", String.valueOf(mUser.getKskl()));
+				map.put("kqdh", String.valueOf(mUser.getKqdh()));
+
+				return AppHelper.makeSimpleData("search", map);
+			}
+		};
+		EduApp.sRequestQueue.add(request);
+	}
+
+	private String getYxss(ArrayList<ShaiXuanConditionItem> conditionlist) {
+		StringBuffer buffer = new StringBuffer();
+		if (conditionlist != null) {
+			for (ShaiXuanConditionItem item : conditionlist) {
+				if (item.getConditionName().equals("院校省份")) {
+					if (item.getmSubDetailConditionItemList() != null) {
+						for (int i = 0; i < item
+								.getmSubDetailConditionItemList().size(); i++) {
+							buffer.append(item.getmSubDetailConditionItemList()
+									.get(i).getProviceId());
+							if (i != item.getmSubDetailConditionItemList()
+									.size() - 1)
+								buffer.append("|");
+						}
+					}
+
+					break;
+				}
+			}
+		}
+		Log.w("wutl", "院校省份＝" + buffer.toString());
+		return buffer.toString();
+	}
+
+	private String getYxlx(ArrayList<ShaiXuanConditionItem> conditionlist) {
+		StringBuffer buffer = new StringBuffer();
+		if (conditionlist != null) {
+			for (ShaiXuanConditionItem item : conditionlist) {
+				if (item.getConditionName().equals("院校类型")) {
+					if (item.getmSubDetailConditionItemList() != null) {
+						for (int i = 0; i < item
+								.getmSubDetailConditionItemList().size(); i++) {
+							buffer.append(item.getmSubDetailConditionItemList()
+									.get(i).getProviceId());
+							if (i != item.getmSubDetailConditionItemList()
+									.size() - 1)
+								buffer.append("|");
+						}
+					}
+					break;
+				}
+			}
+		}
+		Log.w("wutl", "院校类型＝" + buffer.toString());
+		return buffer.toString();
+	}
+
+	private String getYxxz(ArrayList<ShaiXuanConditionItem> conditionlist) {
+		StringBuffer buffer = new StringBuffer();
+		if (conditionlist != null) {
+			for (ShaiXuanConditionItem item : conditionlist) {
+				if (item.getConditionName().equals("院校性质")) {
+					if (item.getmSubDetailConditionItemList() != null) {
+						for (int i = 0; i < item
+								.getmSubDetailConditionItemList().size(); i++) {
+							buffer.append(item.getmSubDetailConditionItemList()
+									.get(i).getProviceId());
+							if (i != item.getmSubDetailConditionItemList()
+									.size() - 1)
+								buffer.append("|");
+						}
+					}
+					break;
+				}
+			}
+		}
+		Log.w("wutl", "院校性质＝" + buffer.toString());
+		return buffer.toString();
+	}
+
+	private String getLuqupici(ArrayList<ShaiXuanConditionItem> conditionlist) {
+		StringBuffer buffer = new StringBuffer();
+		if (conditionlist != null) {
+			for (ShaiXuanConditionItem item : conditionlist) {
+				if (item.getConditionName().equals("录取批次")) {
+					if (item.getmSubDetailConditionItemList() != null) {
+						for (int i = 0; i < item
+								.getmSubDetailConditionItemList().size(); i++) {
+							buffer.append(item.getmSubDetailConditionItemList()
+									.get(i).getProviceId());
+							if (i != item.getmSubDetailConditionItemList()
+									.size() - 1)
+								buffer.append("|");
+						}
+					}
+					break;
+				}
+			}
+		}
+		Log.w("wutl", "录取批次＝" + buffer.toString());
+		return buffer.toString();
 	}
 
 	@Override

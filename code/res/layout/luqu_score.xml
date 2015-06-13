@@ -8,6 +8,7 @@
     android:paddingRight="@dimen/dimen_17_dip" >
 
     <info.hoang8f.android.segmented.SegmentedGroup
+        android:id="@+id/score_type_radio_grop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_8_dip"
@@ -19,7 +20,7 @@
         segmentedgroup:tint_color="@color/tab_select" >
 
         <RadioButton
-            android:id="@+id/score_radiobutton"
+            android:id="@+id/fenshu_radiobutton"
             style="@style/RadioButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -28,7 +29,7 @@
             android:text="分数" />
 
         <RadioButton
-            android:id="@+id/rank_radiobutton"
+            android:id="@+id/paiwei_radiobutton"
             style="@style/RadioButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -53,7 +54,7 @@
         android:gravity="center_horizontal" >
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/lowScoreEdit"
             style="@style/EditText.SingleLine"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -74,7 +75,7 @@
             android:text="至" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/highScoreEdit"
             style="@style/EditText.SingleLine"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -107,6 +108,7 @@
     </TextView>
 
     <Button
+        android:id="@+id/luqu_confirm_bt"
         style="@style/MajorButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_34_dip"

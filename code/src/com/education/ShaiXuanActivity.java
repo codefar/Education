@@ -1,15 +1,19 @@
 package com.education;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +30,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.education.entity.ConditionItem;
+import com.education.entity.ShaiXuanConditionItem;
 import com.education.entity.ShaiXuanInfo;
 import com.education.entity.User;
 
@@ -36,13 +42,12 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 	public static final String SHAIXUAN_RESULT_TAG = "shuaixuan_result_tag";
 
 	private ListView mConditionListView;
-	private List<ConditionItem> mItemList = new ArrayList<ConditionItem>();
+	private List<ShaiXuanConditionItem> mItemList = new ArrayList<ShaiXuanConditionItem>();
 	protected LayoutInflater mInflater;
 	protected Resources mResources;
 	private ItemAdapter mItemAdapter;
 	private Intent mDetailConditionItemIntent, mShaixuanIntent;
 	private Button mConfirmBt;
-	private ShaiXuanInfo mShaiXuanInfo;
 	private boolean isReset = false;
 
 	@Override
@@ -59,7 +64,6 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 		mConditionListView = (ListView) findViewById(R.id.shaixuan_condition_list);
 		mConfirmBt = (Button) findViewById(R.id.shaixuan_confirm_bt);
 		mItemAdapter = new ItemAdapter();
-		mShaiXuanInfo = new ShaiXuanInfo();
 		mConditionListView.setAdapter(mItemAdapter);
 		mConfirmBt.setOnClickListener(this);
 		displayCollege();
@@ -160,7 +164,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 			}
 			convertView.setTag(holder);
 
-			ConditionItem ConditionItem = mItemList.get(position);
+			ShaiXuanConditionItem ConditionItem = mItemList.get(position);
 			holder.schoolImg.setImageBitmap(BitmapFactory.decodeResource(
 					mResources, ConditionItem.getSchoolImg()));
 			holder.conditionNameTextView.setText(ConditionItem
@@ -170,8 +174,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 					holder.detailConditionTextView.setText("默认值");
 				else
 					holder.detailConditionTextView.setText("全部");
-			}
-			else {
+			} else {
 				if (TextUtils.isEmpty(ConditionItem.getDetailCondition()))
 					holder.detailConditionTextView.setText("全部");
 				else
@@ -190,76 +193,47 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			if (position == mItemAdapter.getCount() - 1)
-				startActivity(new Intent(ShaiXuanActivity.this, LuQuScore.class));
+				startActivityForResult(new Intent(ShaiXuanActivity.this,
+						LuQuScore.class), 2);
 			else {
 				mDetailConditionItemIntent.putExtra(SHAIXUAN_CLICK_POSITION,
 						position);
+
 				startActivityForResult(mDetailConditionItemIntent, 0);
 			}
 		}
 	}
 
 	private void fetchCollege() {
-		ConditionItem item1 = new ConditionItem();
+		ShaiXuanConditionItem item1 = new ShaiXuanConditionItem();
 		item1.setSchoolImg(R.drawable.sx_shengfen);
 		item1.setConditionName("院校省份");
 		item1.setDetailCondition("全部");
 		mItemList.add(item1);
 
-		ConditionItem item2 = new ConditionItem();
+		ShaiXuanConditionItem item2 = new ShaiXuanConditionItem();
 		item2.setSchoolImg(R.drawable.xuexiao_4);
 		item2.setConditionName("院校类型");
 		item2.setDetailCondition("全部");
 		mItemList.add(item2);
 
-		ConditionItem item3 = new ConditionItem();
+		ShaiXuanConditionItem item3 = new ShaiXuanConditionItem();
 		item3.setSchoolImg(R.drawable.sx_zhuanye);
 		item3.setConditionName("院校性质");
 		item3.setDetailCondition("全部");
 		mItemList.add(item3);
 
-		ConditionItem item4 = new ConditionItem();
+		ShaiXuanConditionItem item4 = new ShaiXuanConditionItem();
 		item4.setSchoolImg(R.drawable.sx_pici);
 		item4.setConditionName("录取批次");
 		item4.setDetailCondition("全部");
 		mItemList.add(item4);
 
-		ConditionItem item5 = new ConditionItem();
+		ShaiXuanConditionItem item5 = new ShaiXuanConditionItem();
 		item5.setSchoolImg(R.drawable.sx_fenshu);
 		item5.setConditionName("历年录取情况");
 		item5.setDetailCondition("默认值");
 		mItemList.add(item5);
-	}
-
-	private class ConditionItem {
-		protected int schoolImg;
-		protected String conditionName;
-		protected String detailCondition;
-
-		public void setConditionName(String conditionName) {
-			this.conditionName = conditionName;
-		}
-
-		public String getConditionName() {
-			return conditionName;
-		}
-
-		public void setDetailCondition(String detailCondition) {
-			this.detailCondition = detailCondition;
-		}
-
-		public String getDetailCondition() {
-			return detailCondition;
-		}
-
-		public void setSchoolImg(int schoolImg) {
-			this.schoolImg = schoolImg;
-		}
-
-		public int getSchoolImg() {
-			return schoolImg;
-		}
-
 	}
 
 	@Override
@@ -267,54 +241,42 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 		if (requestCode == 0
 				&& resultCode == DetailConditionConstants.CONDITION_ITEM_SELECTE_CONFIRM_RESULE_CODE) {
 			isReset = false;
-			Toast.makeText(
-					this,
-					"选中个数"
-							+ data.getStringArrayExtra(DetailConditionConstants.SELECTED_ITEM_TAG).length,
-					Toast.LENGTH_SHORT).show();
+
 			int position = data.getIntExtra(SHAIXUAN_CLICK_POSITION, 0);
 
 			// 更新条件视图
 			View view = mConditionListView.getChildAt(position);
 
-			mItemList
-					.get(position)
-					.setDetailCondition(
-							getSelectedItemString(data
-									.getStringArrayExtra(DetailConditionConstants.SELECTED_ITEM_TAG)));
-			mItemAdapter.notifyDataSetChanged();
+			ArrayList<ConditionItem> detailConditionItemList = (ArrayList<ConditionItem>) data
+					.getSerializableExtra(DetailConditionConstants.SELECTED_ITEM_TAG);
+			// .getParcelableArrayListExtra(DetailConditionConstants.SELECTED_ITEM_TAG);
 
-			// 设置需要回传给FilterSchoolAndMajorActivity的数据封装
-			wrapperConditionData(
-					position,
-					data.getStringArrayExtra(DetailConditionConstants.SELECTED_ITEM_TAG));
+			mItemList.get(position).setDetailCondition(
+					getSelectedItemString(detailConditionItemList));
+			mItemList.get(position).setmSubDetailConditionItemList(
+					detailConditionItemList);
+			mItemAdapter.notifyDataSetChanged();
+		} else if (requestCode == 2 && resultCode == 3) {
+			mShaixuanIntent.putExtra("low_score",
+					data.getStringExtra("low_score"));
+			mShaixuanIntent.putExtra("high_score",
+					data.getStringExtra("high_score"));
+			mShaixuanIntent.putExtra("year_score",
+					data.getStringExtra("high_score"));
+			mShaixuanIntent.putExtra("score_type",
+					data.getIntExtra("score_type", 1));
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void wrapperConditionData(int position, String conditionArray[]) {
-		switch (position) {
-		case DetailConditionConstants.PROVINCE:
-			mShaiXuanInfo.setProvinceList(Arrays.asList(conditionArray));
-			break;
-		case DetailConditionConstants.SCHOOL_TYPE:
-			mShaiXuanInfo.setProvinceList(Arrays.asList(conditionArray));
-			break;
-		case DetailConditionConstants.MAJOR:
-			mShaiXuanInfo.setMajorList(Arrays.asList(conditionArray));
-			break;
-		case DetailConditionConstants.LUQU_PICI:
-			mShaiXuanInfo.setLuquPiciList(Arrays.asList(conditionArray));
-			break;
-		}
-	}
-
-	private String getSelectedItemString(String[] selectedStr) {
+	private String getSelectedItemString(
+			ArrayList<ConditionItem> detailConditionItemList) {
 		StringBuffer buffer = new StringBuffer();
-		for (int i = 0; i < selectedStr.length; i++) {
-			buffer.append(selectedStr[i]);
-			if (i != selectedStr.length - 1)
+		for (int i = 0; i < detailConditionItemList.size(); i++) {
+			buffer.append(((com.education.entity.ConditionItem) detailConditionItemList
+					.get(i)).getDetailConditionName());
+			if (i != detailConditionItemList.size() - 1)
 				buffer.append("/");
 		}
 		return buffer.toString();
@@ -324,7 +286,12 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.shaixuan_confirm_bt:
-			mShaixuanIntent.putExtra(SHAIXUAN_RESULT_TAG, mShaiXuanInfo);
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(SHAIXUAN_RESULT_TAG,
+					(Serializable) mItemList);
+			// bundle.putParcelableArrayList(SHAIXUAN_RESULT_TAG,
+			// (ArrayList<? extends Parcelable>) mItemList);
+			mShaixuanIntent.putExtra(SHAIXUAN_RESULT_TAG, bundle);
 			setResult(1, mShaixuanIntent);
 			finish();
 			break;

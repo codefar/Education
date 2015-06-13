@@ -1,35 +1,61 @@
 package com.education.entity;
 
+import java.io.Serializable;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.education.R;
 
-public class ConditionItem {
+public class ConditionItem implements Parcelable ,Serializable{
 
-	protected int conditionItemSelected=R.drawable.arrow_right;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected int conditionItemSelected = R.drawable.arrow_right;
 	protected String detailConditionName;
-	protected String proviceId;
+	protected int proviceId;
 
-	
-	public ConditionItem(String detailConditionName,
-			String proviceId) {
+	public static final Parcelable.Creator<ConditionItem> CREATOR = new Parcelable.Creator<ConditionItem>() {
+		public ConditionItem createFromParcel(Parcel in) {
+			return new ConditionItem(in);
+		}
+
+		public ConditionItem[] newArray(int size) {
+			return new ConditionItem[size];
+		}
+	};
+
+	private ConditionItem(Parcel in) {
+		conditionItemSelected = in.readInt();
+		detailConditionName = in.readString();
+		proviceId = in.readInt();
+
+	}
+
+	public ConditionItem(String detailConditionName, int proviceId) {
 		super();
 		this.detailConditionName = detailConditionName;
 		this.proviceId = proviceId;
 	}
-	public void setProviceId(String proviceId) {
+
+	public void setProviceId(int proviceId) {
 		this.proviceId = proviceId;
 	}
-	public String getProviceId() {
+
+	public int getProviceId() {
 		return proviceId;
 	}
 
 	public ConditionItem(int conditionItemSelected, String detailConditionName,
-			String proviceId) {
+			int proviceId) {
 		super();
 		this.conditionItemSelected = conditionItemSelected;
 		this.detailConditionName = detailConditionName;
 		this.proviceId = proviceId;
 	}
-	
+
 	public void setDetailConditionName(String detailConditionName) {
 		this.detailConditionName = detailConditionName;
 	}
@@ -44,6 +70,18 @@ public class ConditionItem {
 
 	public int getConditionItemSelected() {
 		return conditionItemSelected;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(conditionItemSelected);
+		dest.writeString(detailConditionName);
+		dest.writeInt(proviceId);
 	}
 
 }
