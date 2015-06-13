@@ -3,10 +3,15 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:background="@color/content_bg">
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="@dimen/dimen_17_dip"
+            android:background="@color/divider"
+            android:id="@+id/divider"/>
     <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_17_dip"
             android:divider="@null"
             android:listSelector="@android:color/transparent"
             android:id="@+id/list"/>

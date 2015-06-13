@@ -22,7 +22,7 @@
                 android:hint="输入手机号码"
                 android:id="@+id/cell_number"
                 android:inputType="phone"
-                style="@style/EditText"/>
+                style="@style/EditText.SingleLine"/>
     </LinearLayout>
     <!-- protocol -->
     <LinearLayout
