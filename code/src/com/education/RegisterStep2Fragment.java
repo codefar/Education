@@ -215,11 +215,18 @@ public class RegisterStep2Fragment extends CommonFragment implements View.OnClic
             @Override
             public void onSuccessfulResponse(JSONObject response, boolean success) {
                 if (success) {
-                    Fragment newFragment = RegisterStep3Fragment.create(mCellNumber, 120);
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.layout, newFragment, "step3");
-                    ft.addToBackStack(null);
-                    ft.commit();
+                    JSONObject jsonObject = response.getJSONObject("result");
+                    int status = jsonObject.getInteger("status");
+                    if (status == 0) {
+                        String message = jsonObject.getString("msgText");
+                        Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Fragment newFragment = RegisterStep3Fragment.create(mCellNumber, 120);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.layout, newFragment, "step3");
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    }
                 } else {
                     ErrorData errorData = AppHelper.getErrorData(response);
                     Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();

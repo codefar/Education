@@ -23,8 +23,8 @@
             android:name=".GuideActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name=".SmartRecommentActivity"
@@ -38,6 +38,7 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -76,12 +77,11 @@
             android:exported="true"
             android:label="FilterSchoolAndMajorActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name=".LuQuScore"
             android:exported="true"
             android:label="LuQuScore"
             android:screenOrientation="portrait" />
-         
         <activity
             android:name=".ShaiXuanActivity"
             android:exported="true"
@@ -103,10 +103,10 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-                android:name=".TestActivity"
-                android:label="TestActivity"
-                android:exported="true"
-                android:screenOrientation="portrait" >
+            android:name=".TestActivity"
+            android:exported="true"
+            android:label="TestActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -117,19 +117,19 @@
             android:name=".SmartRecommentResultActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/StyledIndicators">
+            android:theme="@style/StyledIndicators" >
         </activity>
         <activity
-                android:name=".UserInfoActivity"
-                android:screenOrientation="portrait"/>
+            android:name=".UserInfoActivity"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".AboutUsActivity"
-                android:screenOrientation="portrait"/>
+            android:name=".AboutUsActivity"
+            android:screenOrientation="portrait" />
         <activity
-                android:name=".MajorDetailActivity"
-                android:screenOrientation="portrait" >
+            android:name=".MajorDetailActivity"
+            android:label="@string/volunteer_collection"
+            android:screenOrientation="portrait" >
         </activity>
-        
     </application>
 
 </manifest>
