@@ -87,18 +87,6 @@ public class MajorDetailFragment extends CommonFragment implements
 
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.main, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		MenuHelper.menuItemSelected(getActivity(), 0, item);
-		return super.onOptionsItemSelected(item);
-	}
-
 	private class ItemAdapter extends BaseAdapter {
 		public int getCount() {
 			return mHistoryMajorItems.size();

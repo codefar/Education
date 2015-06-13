@@ -127,7 +127,6 @@
                 android:screenOrientation="portrait"/>
         <activity
                 android:name=".MajorDetailActivity"
-                android:exported="true"
                 android:screenOrientation="portrait" >
         </activity>
         

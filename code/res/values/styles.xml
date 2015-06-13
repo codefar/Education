@@ -4,7 +4,7 @@
 
         <!-- API 14 theme customizations can go here. -->
         <!-- <item name="android:actionBarStyle">@android:style/Widget.Holo.ActionBar</item> -->
-        <!-- <item name="android:actionOverflowButtonStyle">@style/OverFlow</item> -->
+        <item name="android:actionOverflowButtonStyle">@style/OverFlow</item> 
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:actionMenuTextAppearance">@style/ActionBarMenu</item>
         <item name="android:actionMenuTextColor">@color/white</item>
@@ -17,6 +17,11 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/dimen_16_dip</item>
     </style>
+    
+     <style name="OverFlow" parent="@android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_menu_moreoverflow</item>
+    </style>
+    
     <!-- ActionBar styles -->
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/action_bar_bg</item>

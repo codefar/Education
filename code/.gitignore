@@ -2,3 +2,4 @@ bin/
 gen/
 ../project_libs/android-segmented-control/demo/src/main/bin/
 ../project_libs/android-segmented-control/demo/src/main/bin/*
+../project_libs/Android-PullToRefresh ../project_libs/adapter-core ../project_libs/android-segmented-control ../project_libs/library-viewpagerindicator

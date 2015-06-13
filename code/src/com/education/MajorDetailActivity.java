@@ -1,17 +1,21 @@
 package com.education;
 
+import com.education.entity.User;
+
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
 
 /**
  * Created by su on 15-6-13.
  */
-public class MajorDetailActivity extends FragmentBaseActivity {
+public class MajorDetailActivity extends CommonBaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_major_detail);
+		setupTitleBar();
 
 		if (savedInstanceState == null) {
 			MajorDetailFragment fragmentStep1 = MajorDetailFragment
@@ -21,5 +25,29 @@ public class MajorDetailActivity extends FragmentBaseActivity {
 					.add(R.id.container, fragmentStep1).commit();
 		}
 
+	}
+
+	@Override
+	protected void unLoginForward(User user) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void forceUpdateForward() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+    protected void setupTitleBar() {
+        ActionBar bar = getActionBar();
+        bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
+        bar.setHomeButtonEnabled(true);
+    }
+
+	@Override
+	protected String getTag() {
+		return null;
 	}
 }
