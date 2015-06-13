@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
@@ -44,6 +46,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 	private Intent mDetailConditionItemIntent, mShaixuanIntent;
 	private Button mConfirmBt;
 	private boolean isReset = false;
+	private String[] mLuQuPici;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 
 		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mResources = getResources();
+		mLuQuPici=mResources.getStringArray(R.array.luqu_pici_name);
 		mDetailConditionItemIntent = new Intent(this,
 				DetailConditionActivity.class);
 		mShaixuanIntent = new Intent();
@@ -190,7 +194,9 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 			if (position == mItemAdapter.getCount() - 1)
 				startActivityForResult(new Intent(ShaiXuanActivity.this,
 						LuQuScore.class), 2);
-			else {
+			else if(position==3){
+				simpleDialog(position);
+			}else {
 				mDetailConditionItemIntent.putExtra(SHAIXUAN_CLICK_POSITION,
 						position);
 
@@ -291,5 +297,35 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 			finish();
 			break;
 		}
+	}
+	
+	/**
+	 * 单选Dialogs
+	 */
+	private void simpleDialog(final int position) {
+		AlertDialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("录取批次");
+		builder.setSingleChoiceItems(mLuQuPici, 0,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+						View view=mConditionListView.getChildAt(position);
+					    TextView text=(TextView) view.findViewById(R.id.desc);
+					    text.setText(mLuQuPici[which]);
+					    mItemList.get(3).setmSubDetailConditionItemList(getSubPiciItem(which));
+					}
+				});
+		dialog = builder.create();
+		dialog.show();
+	}
+	
+	private ArrayList<ConditionItem>  getSubPiciItem(int position){
+		ArrayList<ConditionItem> detailConditionItemList=new ArrayList<ConditionItem>();
+		ConditionItem item=new ConditionItem("",position+1);
+		detailConditionItemList.add(item);
+		
+		return detailConditionItemList;
 	}
 }

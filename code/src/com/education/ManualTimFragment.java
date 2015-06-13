@@ -1,5 +1,12 @@
 package com.education;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -9,15 +16,19 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -36,13 +47,6 @@ import com.education.entity.ShaiXuanJieGuo;
 import com.education.entity.User;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 public class ManualTimFragment extends CommonFragment implements
 		View.OnClickListener {
@@ -66,6 +70,7 @@ public class ManualTimFragment extends CommonFragment implements
 	private Activity mActivity;
 	private int mPageNo = 1;
 	private User mUser;
+	private EditText mTitleSearchEdit;
 
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
@@ -115,7 +120,19 @@ public class ManualTimFragment extends CommonFragment implements
 		mUserLocation = (TextView) v.findViewById(R.id.user_location);
 		mSchoolNumbersText = (TextView) v.findViewById(R.id.school_numbers);
 		mMajorNumbersText = (TextView) v.findViewById(R.id.major_numbers);
+		mTitleSearchEdit=(EditText) getActivity().getActionBar().getCustomView().findViewById(R.id.search_school_major_edit);
 
+		mTitleSearchEdit.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				 if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE){
+					 postData2Server(conditionItemList,v.getText().toString().trim());
+		}
+				return false;
+			}
+		});
+		
 		User user = User.getInstance();
 		if (user != null) {
 			Log.w("wutl", user.toString());
@@ -341,7 +358,7 @@ public class ManualTimFragment extends CommonFragment implements
 			conditionItemList = (ArrayList<ShaiXuanConditionItem>) bundle
 					.getSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
 			mLuquQingkuang = getLuquQingkuang(data);
-			postData2Server(conditionItemList);
+			postData2Server(conditionItemList,"");
 			Log.w("wutl", "录取情况＝" + mLuquQingkuang);
 			Toast.makeText(mActivity, conditionItemList.toString(),
 					Toast.LENGTH_SHORT).show();
@@ -371,7 +388,7 @@ public class ManualTimFragment extends CommonFragment implements
 	}
 
 	private void postData2Server(
-			final ArrayList<ShaiXuanConditionItem> conditionlist) {
+			final ArrayList<ShaiXuanConditionItem> conditionlist,final String skey) {
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.SHAI_XUAN, null,
 				new VolleyResponseListener(mActivity) {
@@ -382,8 +399,10 @@ public class ManualTimFragment extends CommonFragment implements
 							String datas = response.getString("datas");
 							ShaiXuanJieGuo result = JSON.parseObject(datas,
 									ShaiXuanJieGuo.class);
-							if (result != null)
+							if (result != null){
 								setDataSource(result);
+							     mItemAdapter.notifyDataSetChanged();
+							}
 							Log.d("wutl", "resutl=" + result.toString());
 						} else {
 							ErrorData errorData = AppHelper
@@ -408,7 +427,7 @@ public class ManualTimFragment extends CommonFragment implements
 				User user = User.getInstance();
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("pageno", String.valueOf(1));
-				// map.put("skey", "清华");
+				 map.put("skey", skey);
 				map.put("yxss", getYxss(conditionlist));
 				map.put("yxlx", getYxlx(conditionlist));
 				map.put("yxxz", getYxxz(conditionlist));
@@ -417,6 +436,7 @@ public class ManualTimFragment extends CommonFragment implements
 				map.put("kskl", String.valueOf(user.getKskl()));
 				map.put("kqdh", String.valueOf(user.getKqdh()));
 
+				Log.w("wutl","map="+AppHelper.makeSimpleData("search", map).toString());
 				return AppHelper.makeSimpleData("search", map);
 			}
 		};
@@ -520,7 +540,7 @@ public class ManualTimFragment extends CommonFragment implements
 		}
 		Log.w("wutl", "录取批次＝" + buffer.toString());
 		if (TextUtils.isEmpty(buffer.toString()))
-			return "";
+			return "2";
 		return buffer.toString();
 	}
 

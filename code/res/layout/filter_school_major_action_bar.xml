@@ -11,6 +11,7 @@
         android:background="#FFFFFF"
         android:ellipsize="end"
         android:hint="请输入学校 、专业信息"
+        android:imeOptions="actionDone"      
         android:paddingLeft="@dimen/dimen_25_dip"
         android:textSize="@dimen/dimen_12_dip"
         android:textColor="@color/third_text"
