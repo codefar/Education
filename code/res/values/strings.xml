@@ -6,7 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="smart_recomment">智能推荐</string>
-    <string name="manual_tim">手工添报</string>
+    <string name="manual_tim">手工筛选</string>
     <string name="volunteer_collection">志愿收藏</string>
     <string name="person_center">个人中心</string>
     <string name="internet_exception">网络异常，请重试</string>
