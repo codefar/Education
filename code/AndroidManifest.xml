@@ -39,7 +39,6 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -101,11 +100,6 @@
             android:label="AdmissionInPastYearActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MinAdmissionScoreActivity"
-            android:exported="true"
-            android:label="MinAdmissionScoreActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".SetUserInfoActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
@@ -123,8 +117,11 @@
         <activity
             android:name=".SmartRecommentResultActivity"
             android:exported="true"
-            android:label="@string/app_name" >
+            android:screenOrientation="portrait">
         </activity>
+        <activity
+                android:name=".UserInfoActivity"
+                android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
