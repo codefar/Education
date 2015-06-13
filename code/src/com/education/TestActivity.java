@@ -1,5 +1,7 @@
 package com.education;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -23,6 +25,14 @@ import com.education.entity.User;
 import com.education.entity.UserInfo;
 import com.education.entity.XingGe;
 import com.education.utils.LogUtil;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,10 +45,40 @@ import java.util.Map;
 public class TestActivity extends CommonBaseActivity {
 
     private static final String TAG = "TestActivity";
+    private LineChart mChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.test);
+        mChart = (LineChart) findViewById(R.id.chart1);
+        // if enabled, the chart will always start at zero on the y-axis
+
+        // no description text
+//        mChart.setOnChartValueSelectedListener(this);
+
+        mChart.setDrawGridBackground(false);
+        mChart.setDescription("");
+        mChart.getXAxis().setEnabled(true); //x轴
+        mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        mChart.getXAxis().setDrawGridLines(false);
+        mChart.getAxisRight().setEnabled(false); //右纵轴
+        mChart.getAxisLeft().setDrawGridLines(false);
+        // mChart.setStartAtZero(true);
+
+        // enable value highlighting
+        mChart.setHighlightEnabled(true);
+
+        // disable touch gestures
+        mChart.setTouchEnabled(false);
+        mChart.setDragEnabled(false);
+        mChart.setScaleEnabled(false);
+        mChart.setPinchZoom(false);
+
+        Legend l = mChart.getLegend();
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        setData();
+
 
         UserInfo userInfo = makeUserInfo();
 //        updateKsxx(userInfo);
@@ -54,6 +94,56 @@ public class TestActivity extends CommonBaseActivity {
         zhuanYeFenXiBaoGao();
     }
 
+    private void setData() {
+        int year = 4;
+        ArrayList<String> xVals = new ArrayList<String>();
+        for (int i = 0; i < year; i++) {
+            xVals.add((i) + "");
+        }
+
+        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+        for (int z = 0; z < 3; z++) {
+            ArrayList<Entry> values = new ArrayList<Entry>();
+
+            for (int i = 0; i < year; i++) {
+                double val = (Math.random() * 1000);
+                values.add(new Entry((float) val, i));
+            }
+
+            LineDataSet d = new LineDataSet(values, "DataSet " + (z + 1));
+            d.setLineWidth(2.5f);
+            d.setCircleSize(4f);
+
+            int color = mColors[z % mColors.length];
+            d.setColor(color);
+            d.setCircleColor(color);
+            dataSets.add(d);
+        }
+
+        ArrayList<Entry> values = new ArrayList<Entry>();
+        for (int i = 0; i < year; i++) {
+            double val = (521);
+            values.add(new Entry((float) val, i));
+        }
+        LineDataSet d = new LineDataSet(values, "DataSet " + (3 + 1));
+        d.setLineWidth(2.5f);
+        d.setCircleSize(4f);
+
+        int color = mColors[3 % mColors.length];
+        d.setColor(color);
+        d.setCircleColor(color);
+        dataSets.add(d);
+
+        LineData data = new LineData(xVals, dataSets);
+        mChart.setData(data);
+        mChart.invalidate();
+    }
+
+    private int[] mColors = new int[] {
+            ColorTemplate.VORDIPLOM_COLORS[0],
+            ColorTemplate.VORDIPLOM_COLORS[1],
+            ColorTemplate.VORDIPLOM_COLORS[2]
+    };
 
     public static class Item6 {
         private String yxmc;
