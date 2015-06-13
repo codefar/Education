@@ -319,6 +319,7 @@ public class PersonCenterFragment extends CommonFragment {
                 if (success) {
                     User user = User.getInstance();
                     user.setAccountId(nickname);
+                    User.saveUser(user);
                     TextView tv = (TextView) parent.findViewById(R.id.desc);
                     tv.setText(nickname);
                 } else {
