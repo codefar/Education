@@ -215,7 +215,7 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 						// 收藏
 						Log.i(TAG, majorItem.toString());
 						shouCangZhuanYe(ii.getYxdh(), majorItem.getZydh(),
-								ii.getYxmc(),mPiciID[ii.getYxpc()-1]);
+								majorItem.getZymc(),mPiciID[ii.getYxpc()-1]);
 					}
 				});
 				item.setOnClickListener(new OnClickListener() {
