@@ -155,7 +155,6 @@ public class LoginActivity extends CommonBaseActivity implements View.OnClickLis
             case R.id.login:
                 if (checkInput()) {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    mBlockedDialogFragment.updateMessage(getText(R.string.login_ing));
                     mBlockedDialogFragment.show(ft, "block_dialog");
                     //new LoginAsyncTask(ACTION_LOGIN).execute();
                     final String userName = mUserNameEditText.getText().toString();

@@ -43,14 +43,17 @@
                 android:id="@+id/type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="@dimen/dimen_90_dip"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:text="综合 985 211"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textColor="@color/first_text"
                 android:textSize="@dimen/dimen_12_dip" />
 
             <TextView
-                android:id="@+id/buck"
+                android:id="@+id/pici"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -64,9 +67,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_alignBaseline="@id/buck"
+                android:layout_alignBaseline="@id/pici"
                 android:layout_below="@id/type"
-                android:text="录取率 98%"
                 android:textColor="@color/first_text"
                 android:textSize="@dimen/dimen_12_dip" />
             
@@ -78,15 +80,13 @@
         android:layout_height="1px"
         android:background="@color/divider"/>
 
-    <LinearLayout
+   <LinearLayout
         android:id="@+id/item_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="@dimen/dimen_17_dip" >
-		<include layout="@layout/item_smart_setep3_item"/>
-		<include layout="@layout/item_smart_setep3_item"/>
-		<include layout="@layout/item_smart_setep3_item"/>
+
     </LinearLayout>
 
     <View

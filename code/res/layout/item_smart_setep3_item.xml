@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:clickable="true"
     android:layout_height="@dimen/dimen_34_dip"
     android:minHeight="@dimen/dimen_34_dip" >
 
@@ -15,11 +16,9 @@
 
     <TextView
         android:id="@+id/item_title"
-        android:layout_width="@dimen/dimen_51_dip"
+        android:layout_width="@dimen/dimen_40_dip"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dimen_9_dip"
-        android:layout_toRightOf="@id/icon"
         android:includeFontPadding="false"
         android:text="专业1"
         android:textColor="@color/first_text"
@@ -29,12 +28,26 @@
         android:id="@+id/item_title2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="@dimen/dimen_150_dip"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/dimen_9_dip"
         android:layout_toRightOf="@id/item_title"
+        android:ellipsize="end"
         android:includeFontPadding="false"
+        android:singleLine="true"
         android:text="建筑"
         android:textColor="@color/first_text"
+        android:textSize="@dimen/dimen_12_dip" />
+
+    <TextView
+        android:id="@+id/rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dimen_9_dip"
+        android:layout_toRightOf="@id/item_title2"
+        android:includeFontPadding="false"
+        android:textColor="#ff6600"
         android:textSize="@dimen/dimen_12_dip" />
 
     <TextView
@@ -46,6 +59,7 @@
         android:layout_toLeftOf="@id/arrow"
         android:includeFontPadding="false"
         android:text="收藏"
+        android:clickable="true"
         android:textColor="@color/first_text"
         android:textSize="@dimen/dimen_10_dip" />
 

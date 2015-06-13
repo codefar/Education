@@ -28,7 +28,7 @@ public class Questions {
 
     public static class Question {
         private String dm;
-        private String content;
+        private String xm;
 
         public String getDm() {
             return dm;
@@ -38,12 +38,13 @@ public class Questions {
             this.dm = dm;
         }
 
-        public String getContent() {
-            return content;
-        }
+		public String getXm() {
+			return xm;
+		}
 
-        public void setContent(String content) {
-            this.content = content;
-        }
+		public void setXm(String xm) {
+			this.xm = xm;
+		}
+
     }
 }

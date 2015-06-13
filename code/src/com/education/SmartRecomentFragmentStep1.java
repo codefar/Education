@@ -104,7 +104,6 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 						.beginTransaction();
 				ft.replace(R.id.container, new SmartRecomentFragmentStep2(),
 						"step2");
-				ft.addToBackStack(null);
 				ft.commit();
 			} else {
 				// whet to do
