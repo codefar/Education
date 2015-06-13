@@ -301,7 +301,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 			protected Map<String, String> getParams() throws AuthFailureError {
 				User user = User.getInstance();
 				Map<String, String> map = new HashMap<String, String>();
-				map.put("userId", "8a8a92f34dce12a0014dce1b97b90000"); // user.getId()
+				map.put("userId", user.getId()); // user.getId()
 				return AppHelper.makeSimpleData("getcollectschool", map);
 			}
 		};
@@ -351,7 +351,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 			protected Map<String, String> getParams() throws AuthFailureError {
 				User user = User.getInstance();
 				Map<String, String> map = new HashMap<String, String>();
-				map.put("userId", "8a8a92f34dce12a0014dce1b97b90000"); // user.getId()
+				map.put("userId", user.getId()); // user.getId()
 				map.put("yxdh", collegeItem.getYxdh());
 				return AppHelper.makeSimpleData("getcollectmajor", map);
 			}
