@@ -2,6 +2,7 @@ package com.education;
 
 import android.app.ActionBar;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.TextView;
 import com.education.entity.User;
 
@@ -31,6 +32,11 @@ public class UserInfoActivity extends CommonBaseActivity {
         kspw.setText(String.valueOf(user.getKspw()));
         kskl.setText(user.getKskl() == 1 ? "理工" : "文史");
         kskq.setText(user.getKskqName());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 
     @Override

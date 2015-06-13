@@ -2,6 +2,7 @@ package com.education;
 
 import android.app.ActionBar;
 import android.os.Bundle;
+import android.view.Menu;
 import com.education.entity.User;
 
 /**
@@ -16,6 +17,11 @@ public class AboutUsActivity extends CommonBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
         setupTitleBar();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 
     @Override

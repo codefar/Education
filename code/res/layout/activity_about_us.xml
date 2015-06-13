@@ -19,7 +19,7 @@
             android:paddingRight="@dimen/dimen_17_dip">
         <TextView
                 android:layout_width="@dimen/dimen_125_dip"
-                android:layout_height="@dimen/dimen_145_dip"
+                android:layout_height="@dimen/dimen_155_dip"
                 android:text="微信二维码"
                 android:textColor="@color/my_account_preference_title"
                 android:textSize="@dimen/dimen_14_dip"
@@ -30,7 +30,7 @@
 
         <TextView
                 android:layout_width="@dimen/dimen_125_dip"
-                android:layout_height="@dimen/dimen_145_dip"
+                android:layout_height="@dimen/dimen_155_dip"
                 android:text="微信二维码"
                 android:textColor="@color/my_account_preference_title"
                 android:textSize="@dimen/dimen_14_dip"

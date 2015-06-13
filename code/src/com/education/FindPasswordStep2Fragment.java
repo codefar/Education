@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -21,6 +22,8 @@ import com.education.common.FastJsonRequest;
 import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
 import com.education.entity.ErrorData;
+import com.education.entity.User;
+import com.education.entity.UserInfo;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
 
@@ -124,12 +127,12 @@ public class FindPasswordStep2Fragment extends CommonFragment implements View.On
                 , null, new VolleyResponseListener(mActivity) {
             @Override
             public void onSuccessfulResponse(JSONObject response, boolean success) {
+                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
                 if (success) {
                     JSONObject result = response.getJSONObject("result");
                     int status = result.getInteger("status");
                     if (status == 1) {
                         successful();
-                        mActivity.finish();
                     } else {
                         Toast.makeText(mActivity, result.getString("msgText"), Toast.LENGTH_SHORT).show();
                     }
@@ -137,7 +140,6 @@ public class FindPasswordStep2Fragment extends CommonFragment implements View.On
                     ErrorData errorData = AppHelper.getErrorData(response);
                     Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
                 }
-                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
             }
         }, new VolleyErrorListener() {
             @Override
@@ -162,12 +164,12 @@ public class FindPasswordStep2Fragment extends CommonFragment implements View.On
     private void successful() {
         AlertDialog alertDialog = new AlertDialog.Builder(mActivity)
                 .setMessage("修改密码成功")
-                .setPositiveButton("请重新登录", null)
+                .setPositiveButton("确定", null)
                 .show();
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                mActivity.finish();
+                appLogin(mCellNumber, mNewPasswordEditText.getText().toString());
             }
         });
     }
@@ -177,26 +179,33 @@ public class FindPasswordStep2Fragment extends CommonFragment implements View.On
         return null;
     }
 
-    private void appLogin(final String userName, final String passWord, final String kaptcha, final String smsCode, final String sign, final String version){
+    private void appLogin(final String userName, final String password) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        mSimpleBlockedDialogFragment.updateMessage("提交中...");
+        mSimpleBlockedDialogFragment.show(ft, "block_dialog");
+
         final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.LOGIN
-                , null, new Response.Listener<JSONObject>() {
+                , null, new VolleyResponseListener(mActivity) {
             @Override
-            public void onResponse(JSONObject response) {
-                Integer errorCode = response.getInteger("errorCode");
-                if (EduApp.DEBUG) {
-                    Log.i(TAG, response.toJSONString());
-                }
-                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
-                if (errorCode != null && errorCode == 0) {
-
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    String data = response.getString("userInfo");
+                    UserInfo userInfo = JSON.parseObject(data, UserInfo.class);
+                    User user = User.getInstance();
+                    user.setId(userInfo.getUserId());
+                    user.setUserSession(userInfo.getUserSession());
+                    User.saveUser(user);
+                    startActivity(AppHelper.mainActivityIntent(mActivity));
+                    mActivity.finish();
                 } else {
-                    Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
                 }
-
             }
-        }, new Response.ErrorListener() {
+        }, new VolleyErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
+            public void onVolleyErrorResponse(VolleyError volleyError) {
                 LogUtil.logNetworkResponse(volleyError, TAG);
                 mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
                 Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
@@ -204,14 +213,10 @@ public class FindPasswordStep2Fragment extends CommonFragment implements View.On
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("userName", userName);
-                params.put("passWord", passWord);
-                params.put("kaptcha", kaptcha);
-                params.put("smsCode", smsCode);
-                params.put("sign", sign);
-                params.put("version", version);
-                return params;
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("loginName", userName);
+                map.put("password", password);
+                return AppHelper.makeSimpleData("login", map);
             }
         };
         EduApp.sRequestQueue.add(request);
