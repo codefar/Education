@@ -144,7 +144,7 @@ public class PersonCenterFragment extends CommonFragment {
             } else if (position == 2) { //个人信息
                 startActivity(new Intent(mActivity, UserInfoActivity.class));
             } else if (position == 3) { // 关于
-
+                startActivity(new Intent(mActivity, AboutUsActivity.class));
             } else if (position == 4) { //分享
                 ShareDialog dialog = new ShareDialog(mActivity);
                 dialog.setOnDismissListener(new ShareDialog.OnDismissListener() {

@@ -122,6 +122,9 @@
         <activity
                 android:name=".UserInfoActivity"
                 android:screenOrientation="portrait"/>
+        <activity
+                android:name=".AboutUsActivity"
+                android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

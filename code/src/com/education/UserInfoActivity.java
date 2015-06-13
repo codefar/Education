@@ -1,5 +1,6 @@
 package com.education;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.widget.TextView;
 import com.education.entity.User;
@@ -44,7 +45,10 @@ public class UserInfoActivity extends CommonBaseActivity {
 
     @Override
     protected void setupTitleBar() {
-
+        ActionBar bar = getActionBar();
+        bar.setTitle("个人信息");
+        bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
+        bar.setHomeButtonEnabled(true);
     }
 
     @Override
