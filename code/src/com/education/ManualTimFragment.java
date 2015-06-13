@@ -95,6 +95,7 @@ public class ManualTimFragment extends CommonFragment implements
 				false);
 		initView(v);
 
+		mLuquQingkuang = getLuquQingkuang(new Intent());
 		mItemAdapter = new ItemAdapter();
 		mShaixuanIntent = new Intent(mActivity, ShaiXuanActivity.class);
 		mSearchResulListView.setAdapter(mItemAdapter);
