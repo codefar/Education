@@ -50,18 +50,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_8_dip"
         android:orientation="horizontal">
-
         <EditText
             android:id="@+id/lowScoreEdit"
             style="@style/EditText.SingleLine"
             android:layout_width="0dip"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="@dimen/dimen_8_dip"
             android:gravity="center_vertical"
             android:hint="560分"
+            android:inputType="number"
             android:paddingBottom="@dimen/dimen_10_dip"
             android:paddingLeft="@dimen/dimen_17_dip"
             android:paddingTop="@dimen/dimen_10_dip"
@@ -70,7 +69,6 @@
 
         <TextView
             style="@style/filter_school_and_major_down_text"
-            android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:paddingLeft="@dimen/dimen_17_dip"
             android:paddingRight="@dimen/dimen_17_dip"
@@ -83,10 +81,9 @@
             android:layout_width="0dip"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/dimen_8_dip"
             android:gravity="center_vertical"
             android:hint="560分"
+            android:inputType="number"
             android:paddingBottom="@dimen/dimen_10_dip"
             android:paddingLeft="@dimen/dimen_17_dip"
             android:paddingTop="@dimen/dimen_10_dip"
@@ -99,16 +96,18 @@
         android:layout_height="@dimen/dimen_34_dip"
         android:layout_marginTop="@dimen/dimen_9_dip"
         android:text="恢复至默认值"
-        style="@style/MajorButton">
+        android:textSize="@dimen/dimen_12_dip"
+        style="@style/MajorButton"
+        android:id="@+id/reset">
     </Button>
 
     <TextView
         style="@style/filter_school_and_major_down_text"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dimen_9_dip"
         android:text="注:默认值是你的高考成绩上下浮动20分"
-        android:textSize="15dp" >
-    </TextView>
+        android:textSize="@dimen/dimen_12_dip"
+        android:id="@+id/hint"/>
 
     <Button
         android:id="@+id/luqu_confirm_bt"
@@ -116,6 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_34_dip"
         android:layout_marginTop="@dimen/dimen_17_dip"
+        android:textSize="@dimen/dimen_12_dip"
         android:text="确认筛选" />
 
 </LinearLayout>

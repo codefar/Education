@@ -48,9 +48,11 @@ project_libs/Android-PullToRefresh/extras/PullToRefreshListFragment/project.prop
 project_libs/Android-PullToRefresh/extras/PullToRefreshViewPager/project.properties
 
 project_libs/Android-PullToRefresh/library/project.properties
-
+project_libs/library-viewpagerindicator/gen/
+project_libs/library-viewpagerindicator/gen/com/viewpagerindicator/R.java
+project_libs/library-viewpagerindicator/gen/com/viewpagerindicator/BuildConfig.java
+project_libs/library-viewpagerindicator/library-viewpagerindicator.iml
 project_libs/adapter-core/bin/R.txt
-
 project_libs/adapter-core/bin/jarlist.cache
 
 project_libs/adapter-core/.settings/org.eclipse.jdt.core.prefs

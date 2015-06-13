@@ -28,11 +28,13 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
 	private String[] mYearArray;
 	private List<Integer> mYearList = new ArrayList<Integer>();
 	private EditText mLowEdit, mHighEdit;
-	private Button mConfirmBt;
-	private SegmentedGroup mTypeGroup;
-	private int mCurrentRadioType = 1;;
+    private Button mResetBt;
+    private TextView mHintTextView;
+    private Button mConfirmBt;
+    private SegmentedGroup mTypeGroup;
+    private int mCurrentRadioType = 1;;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.luqu_score);
@@ -40,12 +42,15 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
 		mLuquYearTextView = (TextView) findViewById(R.id.luqu_score_year_spinner);
 		mLowEdit = (EditText) findViewById(R.id.lowScoreEdit);
 		mHighEdit = (EditText) findViewById(R.id.highScoreEdit);
-		mConfirmBt = (Button) findViewById(R.id.luqu_confirm_bt);
-		mTypeGroup = (SegmentedGroup) findViewById(R.id.score_type_radio_grop);
-		mTypeGroup.setOnCheckedChangeListener(this);
-		initYear();
-		mLuquYearTextView.setOnClickListener(this);
-		mConfirmBt.setOnClickListener(this);
+        mResetBt = (Button) findViewById(R.id.reset);
+        mResetBt.setOnClickListener(this);
+        mHintTextView = (TextView) findViewById(R.id.hint);
+        mConfirmBt = (Button) findViewById(R.id.luqu_confirm_bt);
+        mConfirmBt.setOnClickListener(this);
+        mTypeGroup = (SegmentedGroup) findViewById(R.id.score_type_radio_grop);
+        mTypeGroup.setOnCheckedChangeListener(this);
+        initYear();
+        mLuquYearTextView.setOnClickListener(this);
 	}
 
 	/**
@@ -94,7 +99,7 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
 	@Override
 	protected void setupTitleBar() {
 		ActionBar bar = getActionBar();
-		bar.setTitle("返回");
+		bar.setTitle("历年录取情况");
 		bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
 				| ActionBar.DISPLAY_SHOW_TITLE);
 		bar.setHomeButtonEnabled(true);
@@ -119,15 +124,50 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
 
 			setResult(3, intent);
 			finish();
-		}
+		} else if (v.getId() == R.id.reset) {
+            if (mCurrentRadioType == 1) {
+                fenShuReset();
+            } else {
+                paiWeiReset();
+            }
+        }
 
 	}
+
+    private void fenShuReset() {
+        User user = User.getInstance();
+        yearReset();
+        int low = user.getKscj() - 20;
+        mLowEdit.setText(String.valueOf(low < 1 ? 1 : low));
+        mHighEdit.setText(String.valueOf(user.getKscj() + 20));
+    }
+
+    private void paiWeiReset() {
+        User user = User.getInstance();
+        yearReset();
+        int low = user.getKspw() - 200;
+        mLowEdit.setText(String.valueOf(low < 1 ? 1 : low));
+        mHighEdit.setText(String.valueOf(user.getKspw() + 200));
+    }
+
+    private void yearReset() {
+        Calendar c = Calendar.getInstance(Locale.getDefault());
+        int year = c.get(Calendar.YEAR) - 1;
+        mLuquYearTextView.setText(String.valueOf(year));
+    }
+
+
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		if (checkedId == R.id.fenshu_radiobutton)
-			mCurrentRadioType = 1;
-		else
-			mCurrentRadioType = 2;
+		if (checkedId == R.id.fenshu_radiobutton) {
+            mCurrentRadioType = 1;
+            mHintTextView.setText("注:默认值是你的高考成绩上下浮动20分");
+        }
+		else {
+            mCurrentRadioType = 2;
+            mHintTextView.setText("注:默认值是你的高考成绩上下浮动200名");
+        }
 	}
+//    注:默认值是你的高考成绩上下浮动20分
 }

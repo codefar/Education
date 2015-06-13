@@ -37,6 +37,7 @@
         android:layout_marginLeft="@dimen/dimen_17_dip"
         android:layout_marginRight="@dimen/dimen_17_dip"
         android:layout_marginTop="@dimen/dimen_17_dip"
-        android:text="开始筛选" />
+        android:text="开始筛选"
+        android:textSize="@dimen/dimen_12_dip"/>
 
 </LinearLayout>
