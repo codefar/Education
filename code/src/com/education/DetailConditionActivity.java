@@ -43,10 +43,10 @@ public class DetailConditionActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detail_condition);
-
-		 setTheme(android.R.style.Theme_Dialog);
+        setTheme(android.R.style.Theme_Dialog);
 		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mResources = getResources();
+
 		mCurrentSelectShaixuan = getIntent().getIntExtra(
 				ShaiXuanActivity.SHAIXUAN_CLICK_POSITION, 0);
 		mCurrentCondition = getIntent().getIntExtra(

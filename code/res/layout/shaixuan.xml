@@ -13,7 +13,9 @@
             style="@style/filter_school_and_major_top_text"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:textSize="@dimen/dimen_11_dip"
+            android:textSize="@dimen/dimen_12_dip"
+            android:paddingTop="@dimen/dimen_9_dip"
+            android:paddingBottom="@dimen/dimen_9_dip"
             android:text="筛选" >
         </TextView>
     </RelativeLayout>

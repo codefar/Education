@@ -5,15 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,7 +28,6 @@ import android.widget.Toast;
 
 import com.education.entity.ConditionItem;
 import com.education.entity.ShaiXuanConditionItem;
-import com.education.entity.ShaiXuanInfo;
 import com.education.entity.User;
 
 public class ShaiXuanActivity extends CommonBaseActivity implements

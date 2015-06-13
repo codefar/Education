@@ -121,7 +121,7 @@
         <item name="android:backgroundDimEnabled">true</item> <!-- //设置是否背景模糊 -->
         <item name="android:windowIsTranslucent">true</item> <!-- //设置半透明 -->
         <item name="android:windowFullscreen">false</item>
-//设置全屏        <!-- <item name="android:backgroundDimEnabled">false</item>activity不变暗 -->
+        <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
     </style>
  

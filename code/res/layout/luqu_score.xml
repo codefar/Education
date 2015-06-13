@@ -40,23 +40,23 @@
     <TextView
         android:id="@+id/luqu_score_year_spinner"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/dimen_34_dip"
         android:layout_marginTop="10dp"
         android:background="@drawable/edittext_bg_focused"
         android:gravity="center"
         android:text="2014年"
         android:textSize="@dimen/dimen_11_dip" />
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal" >
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/lowScoreEdit"
             style="@style/EditText.SingleLine"
-            android:layout_width="200dp"
+            android:layout_width="0dip"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="@dimen/dimen_8_dip"
@@ -72,12 +72,16 @@
             style="@style/filter_school_and_major_down_text"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:text="至" />
+            android:paddingLeft="@dimen/dimen_17_dip"
+            android:paddingRight="@dimen/dimen_17_dip"
+            android:text="至"
+            android:includeFontPadding="false"/>
 
         <EditText
             android:id="@+id/highScoreEdit"
             style="@style/EditText.SingleLine"
-            android:layout_width="200dp"
+            android:layout_width="0dip"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/dimen_8_dip"
@@ -88,15 +92,14 @@
             android:paddingTop="@dimen/dimen_10_dip"
             android:textColorHint="@color/third_text"
             android:textSize="@dimen/dimen_9_dip" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <Button
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
+        android:layout_height="@dimen/dimen_34_dip"
+        android:layout_marginTop="@dimen/dimen_9_dip"
         android:text="恢复至默认值"
-        android:textSize="20dp" >
+        style="@style/MajorButton">
     </Button>
 
     <TextView
