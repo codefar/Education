@@ -146,7 +146,6 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 	protected void setupTitleBar() {
 		ActionBar bar = mActivity.getActionBar();
 		bar.setTitle(R.string.smart_recomment_smart2);
-		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -202,7 +201,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.main, menu);
+		//inflater.inflate(R.menu.main, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
