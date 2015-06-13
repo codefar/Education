@@ -1,5 +1,6 @@
 package com.education;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -59,7 +60,9 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 	private boolean goSmartRecomnetStep2 = false;
 	public static final String GO_SMART_RECOMNET_STEP2 = "GO_SMART_RECOMNET_STEP2";
 
-	String[] mKaoQu;
+    String[] mKaoQu;
+    int[] mKaoQuId;
+    private int mCheckedKaoQuId;
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
 	 */
@@ -71,7 +74,8 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 			goSmartRecomnetStep2 = getArguments().getBoolean(
 					GO_SMART_RECOMNET_STEP2, true);
 		}
-		mKaoQu = getResources().getStringArray(R.array.kaoqu_name);
+        mKaoQu = getResources().getStringArray(R.array.kaoqu_name);
+        mKaoQuId = getResources().getIntArray(R.array.kaoqu_id);
 	}
 
 	/**
@@ -92,12 +96,13 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
         mZoneTextView.setOnClickListener(this);
         mSegmentedGroup = (SegmentedGroup) v.findViewById(R.id.segmented);
         User user = User.getInstance();
-        if (user.getXm() != null) {
+        if (!TextUtils.isEmpty(user.getXm())) {
             mNameEditText.setText(user.getXm());
             mIdEditText.setText(user.getSfzh());
             mScoreEditText.setText(String.valueOf(user.getKscj()));
             mPostionEditText.setText(String.valueOf(user.getKspw()));
             mZoneTextView.setText(user.getKskqName());
+            mCheckedKaoQuId = mKaoQuId[user.getKqdh()];
             mSegmentedGroup.check(user.getKskl() == 1 ? R.id.btn_li_ke : R.id.btn_wen_ke);
             v.findViewById(R.id.btn_li_ke).setEnabled(false);
             v.findViewById(R.id.btn_wen_ke).setEnabled(false);
@@ -216,6 +221,9 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 
                     if (goSmartRecomnetStep2) {
                         next();
+                    } else {
+                        getActivity().finish();
+                        startActivity(AppHelper.mainActivityIntent(getActivity()));
                     }
                 } else {
                     ErrorData errorData = AppHelper.getErrorData(response);
@@ -234,12 +242,19 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("userId", userInfo.getUserId());
-                params.put("xm", userInfo.getXm());
-                params.put("sfzh", userInfo.getSfzh());
-                params.put("kscj", String.valueOf(userInfo.getKscj()));
-                params.put("kspw", String.valueOf(userInfo.getKspw()));
-                params.put("kskl", String.valueOf(userInfo.getKskl()));
-                params.put("kskq", String.valueOf(userInfo.getKqdh()));
+                params.put("xm", mNameEditText.getText().toString());
+                params.put("sfzh", mIdEditText.getText().toString());
+                params.put("kscj", mScoreEditText.getText().toString());
+                params.put("kspw", mPostionEditText.getText().toString());
+
+                int kskl = 1;
+                if (mSegmentedGroup.getCheckedRadioButtonId() == R.id.btn_li_ke) {
+                    kskl = 1;
+                } else {
+                    kskl = 2;
+                }
+                params.put("kskl", String.valueOf(kskl));
+                params.put("kskq", String.valueOf(mCheckedKaoQuId));
                 return AppHelper.makeSimpleData("ksxxUpdate", params);
             }
         };
@@ -295,6 +310,7 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.cancel();
+                        mCheckedKaoQuId = mKaoQuId[which];
 						mZoneTextView.setText(mKaoQu[which]);
 					}
 				});

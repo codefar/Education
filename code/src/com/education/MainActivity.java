@@ -43,7 +43,6 @@ public class MainActivity extends FragmentBaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         boolean init = sp.getBoolean(Constants.SP_COLUMN_INIT_GUIDE_PAGE, false);
         if (!init) {
@@ -52,13 +51,22 @@ public class MainActivity extends FragmentBaseActivity {
             finish();
             return;
         }
-		initTabs();
+
+        User user = User.getInstance();
+        if (TextUtils.isEmpty(user.getId())) {
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+            return;
+        }
+
+        setContentView(R.layout.activity_main);
+        initTabs();
         fetchUserInfo();
 	}
 
     private void fetchUserInfo() {
         User user = User.getInstance();
-        if (user.getXm() == null) { // 如果用户没有填写真实姓名,那么从后台读取
+        if (TextUtils.isEmpty(user.getXm())) { // 如果用户没有填写真实姓名,那么从后台读取
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             mBlockedDialogFragment.updateMessage("");
             mBlockedDialogFragment.show(ft, "block_dialog");
