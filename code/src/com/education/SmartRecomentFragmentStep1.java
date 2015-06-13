@@ -133,7 +133,13 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.btn_next) {
-			if (checkInput()) {
+			if (goSmartRecomnetStep2) {
+				FragmentTransaction ft = getActivity().getFragmentManager()
+						.beginTransaction();
+				ft.replace(R.id.container, new SmartRecomentFragmentStep2(),
+						"step2");
+				ft.commit();
+			} else if (checkInput()) {
                 updateKsxx(makeUserInfo());
 			}
 		} else if (v.getId() == R.id.editText3) {

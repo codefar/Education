@@ -1,6 +1,8 @@
 package com.education;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
@@ -8,13 +10,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.education.TestActivity.Answer;
 import com.education.common.AppHelper;
 import com.education.common.FastJsonRequest;
 import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
 import com.education.entity.ErrorData;
+import com.education.entity.Questions;
 import com.education.entity.User;
 import com.education.entity.UserInfo;
+import com.education.entity.Questions.Question;
 import com.education.utils.LogUtil;
 import com.education.utils.MenuHelper;
 import com.education.widget.SimpleBlockedDialogFragment;
@@ -45,8 +50,10 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 
 	private Button mAnsABtn, mAnsBBtn, mAnsCBtn, mAnsDBtn;
 	private TextView mTotalNumTextView, mCurrentNumTextView, mQuestionTextView;
-	private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
-	
+	private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment
+			.newInstance();
+	private ArrayList<Answer> answerList = new ArrayList<Answer>();
+
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
 	 */
@@ -76,8 +83,8 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		mTotalNumTextView = (TextView) v.findViewById(R.id.total);
 		mCurrentNumTextView = (TextView) v.findViewById(R.id.current);
 		mQuestionTextView = (TextView) v.findViewById(R.id.question);
-		
-		fetchQuestions();
+
+		getQuestions();
 		return v;
 	}
 
@@ -86,7 +93,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		super.onResume();
 		setupTitleBar();
 	}
-	
+
 	@Override
 	protected String getLogTag() {
 		return TAG;
@@ -100,19 +107,40 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 
 	@Override
 	public void onClick(View v) {
+		Log.i(TAG, "mCurrentQueston = " + mCurrentQueston + " total "
+				+ mQuestions.getCount());
 		switch (v.getId()) {
 		case R.id.btn_a:
+			Answer answera = new Answer();
+			answera.setDm(mQuestions.getTmDatas().get(mCurrentQueston).getDm());
+			answera.setAns("A");
+			answerList.add(answera);
 			gotoNextQuestion();
+			mCurrentQueston++;
 			break;
 		case R.id.btn_b:
+			Answer answerb = new Answer();
+			answerb.setDm(mQuestions.getTmDatas().get(mCurrentQueston).getDm());
+			answerb.setAns("B");
+			answerList.add(answerb);
 			gotoNextQuestion();
+			mCurrentQueston++;
 			break;
 		case R.id.btn_c:
+			Answer answerc = new Answer();
+			answerc.setDm(mQuestions.getTmDatas().get(mCurrentQueston).getDm());
+			answerc.setAns("C");
+			answerList.add(answerc);
 			gotoNextQuestion();
+			mCurrentQueston++;
 			break;
 		case R.id.btn_d:
+			Answer answerd = new Answer();
+			answerd.setDm(mQuestions.getTmDatas().get(mCurrentQueston).getDm());
+			answerd.setAns("D");
+			answerList.add(answerd);
 			gotoNextQuestion();
-			gotoStep3();
+			mCurrentQueston++;
 			break;
 		default:
 			break;
@@ -124,9 +152,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 				.beginTransaction();
 		SmartRecomentFragmentStep3 fragmentStep3 = new SmartRecomentFragmentStep3();
 		fragmentStep3.setArguments(new Bundle());
-		ft.replace(R.id.container, fragmentStep3,
-				"step3");
-		ft.addToBackStack(null);
+		ft.replace(R.id.container, fragmentStep3, "step3");
 		ft.commit();
 	}
 
@@ -142,45 +168,123 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		return super.onOptionsItemSelected(item);
 	}
 
-	private int mCurrentQueston = 1;
+	private int mCurrentQueston = 0;
 
 	private void gotoNextQuestion() {
-		mCurrentQueston++;
-		mCurrentNumTextView.setText("" + mCurrentQueston);
-		mQuestionTextView.setText("问题" + String.valueOf(mCurrentQueston));
+		if (mCurrentQueston < mQuestions.getCount()) {
+			mCurrentNumTextView.setText(String.valueOf(mCurrentQueston + 1));
+			mQuestionTextView.setText(mQuestions.getTmDatas()
+					.get(mCurrentQueston).getXm());
+			if (mCurrentQueston == (mQuestions.getCount() - 1)) {
+				answerQuestions(answerList);
+			}
+		}
 	}
-	
-	private void fetchQuestions(){
+
+	private Questions mQuestions = new Questions();
+
+	private void getQuestions() {
+		mCurrentQueston = 0;
+		mBlockedDialogFragment.updateMessage(getString(R.string.get_questions));
 		mBlockedDialogFragment.show(getFragmentManager(), "block_dialog");
-		final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.GET_QUESTION
-                , null, new VolleyResponseListener(getActivity()) {
-            @Override
-            public void onSuccessfulResponse(JSONObject response, boolean success) {
-            	Log.i(TAG, response.toJSONString());
-                if (success) {
-                    String data = response.getString("userInfo");
-                    
-                } else {
-                    ErrorData errorData = AppHelper.getErrorData(response);
-                    mBlockedDialogFragment.dismissAllowingStateLoss();
-                    Toast.makeText(getActivity(), errorData.getText(), Toast.LENGTH_SHORT).show();
-                }
-                mBlockedDialogFragment.dismissAllowingStateLoss();
-            }
-        }, new VolleyErrorListener() {
-            @Override
-            public void onVolleyErrorResponse(VolleyError volleyError) {
-                LogUtil.logNetworkResponse(volleyError, TAG);
-                mBlockedDialogFragment.dismissAllowingStateLoss();
-                Toast.makeText(getActivity(), getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<String, String>();
-                return AppHelper.makeSimpleData("", map);
-            }
-        };
-        EduApp.sRequestQueue.add(request);
+		final FastJsonRequest request = new FastJsonRequest(
+				Request.Method.POST, Url.XING_GE_CE_SHI_TI_MU, null,
+				new VolleyResponseListener(getActivity()) {
+					@Override
+					public void onSuccessfulResponse(JSONObject response,
+							boolean success) {
+						Log.i(TAG, response.toJSONString());
+						mBlockedDialogFragment.dismissAllowingStateLoss();
+						if (success) {
+							String tmList = response.getString("tmList");
+							Questions questions = JSON.parseObject(tmList,
+									Questions.class);
+							mQuestions = questions;
+							mTotalNumTextView.setText(getString(
+									R.string.index_questions,
+									String.valueOf(mQuestions.getCount())));
+							mCurrentQueston = 0;
+							gotoNextQuestion();
+						} else {
+							ErrorData errorData = AppHelper
+									.getErrorData(response);
+						}
+					}
+				}, new VolleyErrorListener() {
+					@Override
+					public void onVolleyErrorResponse(VolleyError volleyError) {
+						mBlockedDialogFragment.dismissAllowingStateLoss();
+						LogUtil.logNetworkResponse(volleyError, TAG);
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				return AppHelper.makeSimpleData("getTms", null);
+			}
+		};
+		EduApp.sRequestQueue.add(request);
 	}
+
+	private void answerQuestions(final List<Answer> answerList) {
+		mBlockedDialogFragment.updateMessage(getString(R.string.post_answers));
+		mBlockedDialogFragment.show(getFragmentManager(), "block_dialog");
+		final FastJsonRequest request = new FastJsonRequest(
+				Request.Method.POST, Url.XING_GE_CE_SHI_HUI_DA, null,
+				new VolleyResponseListener(getActivity()) {
+					@Override
+					public void onSuccessfulResponse(JSONObject response,
+							boolean success) {
+						mBlockedDialogFragment.dismissAllowingStateLoss();
+						if (success) {
+							gotoStep3();
+						} else {
+							ErrorData errorData = AppHelper
+									.getErrorData(response);
+							Toast.makeText(getActivity(), errorData.getText(),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				}, new VolleyErrorListener() {
+					@Override
+					public void onVolleyErrorResponse(VolleyError volleyError) {
+						mBlockedDialogFragment.dismissAllowingStateLoss();
+						LogUtil.logNetworkResponse(volleyError, TAG);
+						Toast.makeText(
+								getActivity(),
+								getResources().getString(
+										R.string.internet_exception),
+								Toast.LENGTH_SHORT).show();
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				User user = User.getInstance();
+				Map<String, String> map = new HashMap<String, String>();
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("request", "tmhd");
+				int size = answerList.size();
+				List<JSONObject> array = new ArrayList<JSONObject>();
+				for (int i = 0; i < size; i++) {
+					Answer a = answerList.get(i);
+					JSONObject item = new JSONObject();
+					item.put("dm", a.getDm());
+					item.put("ans", a.getAns());
+					array.add(item);
+				}
+
+				JSONObject params = new JSONObject();
+				params.put("userId", user.getId());
+				params.put("count", String.valueOf(10));
+				params.put("hdDatas", array);
+				jsonObject.put("params", params);
+				map.put("userData", jsonObject.toJSONString());
+				if (EduApp.DEBUG) {
+					Log.d(TAG, "map: " + map);
+				}
+				return map;
+			}
+		};
+		EduApp.sRequestQueue.add(request);
+	}
+
 }

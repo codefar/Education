@@ -15,7 +15,7 @@
         android:paddingRight="@dimen/dimen_20_dip"
         android:text="@string/about_content"
         android:textColor="@color/about_content"
-        android:textSize="@dimen/dimen_11_dip" 
+        android:textSize="@dimen/dimen_12_dip" 
         android:lineSpacingExtra="@dimen/dimen_5_dip"/>
 
     <View

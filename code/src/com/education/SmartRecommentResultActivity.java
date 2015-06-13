@@ -15,9 +15,11 @@ import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
 import com.education.entity.ErrorData;
 import com.education.utils.LogUtil;
+import com.education.widget.SimpleBlockedDialogFragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -29,6 +31,7 @@ public class SmartRecommentResultActivity extends FragmentBaseActivity implement
 		View.OnClickListener {
 
 	protected static final String TAG = SmartRecommentResultActivity.class.getSimpleName();
+	private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 
@@ -49,11 +52,14 @@ public class SmartRecommentResultActivity extends FragmentBaseActivity implement
 
 	//单专业分析报告
     private void zhuanYeFenXiBaoGao() {
+    	FragmentTransaction ft = getFragmentManager().beginTransaction();
+        mBlockedDialogFragment.updateMessage(getText(R.string.login_ing));
+        mBlockedDialogFragment.show(ft, "block_dialog");
         final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.ZHUAN_YE_FEN_XI_BAO_GAO
                 , null, new VolleyResponseListener(this) {
             @Override
             public void onSuccessfulResponse(JSONObject response, boolean success) {
-            	Log.i(TAG, response.toJSONString());
+            	mBlockedDialogFragment.dismissAllowingStateLoss();
                 if (success) {
                     String zyfxdata = response.getString("zyfxdata");
                     item = JSON.parseObject(zyfxdata, Item6.class);
@@ -67,6 +73,7 @@ public class SmartRecommentResultActivity extends FragmentBaseActivity implement
         }, new VolleyErrorListener() {
             @Override
             public void onVolleyErrorResponse(VolleyError volleyError) {
+            	mBlockedDialogFragment.dismissAllowingStateLoss();
                 LogUtil.logNetworkResponse(volleyError, TAG);
                 Toast.makeText(SmartRecommentResultActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
             }

@@ -34,7 +34,6 @@
                 android:id="@+id/current"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20"
                 android:textColor="@color/button_main_default"
                 android:textSize="@dimen/dimen_21_dip" />
 
@@ -49,7 +48,6 @@
                 android:id="@+id/total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="124题"
                 android:textColor="@color/first_text"
                 android:textSize="@dimen/dimen_14_dip" />
         </LinearLayout>
@@ -68,7 +66,6 @@
         android:layout_marginTop="@dimen/dimen_8_dip"
         android:background="@color/white"
         android:padding="@dimen/dimen_17_dip"
-        android:text="TextView"
         android:textColor="@color/second_text"
         android:textSize="@dimen/dimen_14_dip" />
 

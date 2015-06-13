@@ -13,7 +13,6 @@ public class MajorItem {
     private int min; //录取成绩最低
     private int max; //录取成绩最高
     private int pjz; //录取成绩平均值
-
     private String lqgl;
 
     public String getZydh() {
