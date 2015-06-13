@@ -1,5 +1,6 @@
 package com.education;
 
+import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -43,6 +45,7 @@ public class MainActivity extends FragmentBaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setupTitleBar();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         boolean init = sp.getBoolean(Constants.SP_COLUMN_INIT_GUIDE_PAGE, false);
         if (!init) {
@@ -125,6 +128,14 @@ public class MainActivity extends FragmentBaseActivity {
         EduApp.sRequestQueue.add(request);
     }
 
+    protected void setupTitleBar() {
+        ActionBar bar = getActionBar();
+        bar.setDisplayHomeAsUpEnabled(false); 
+        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        bar.setCustomView(R.layout.filter_school_major_action_bar);
+        bar.setDisplayShowCustomEnabled(false);
+    }
+    
 	private void initTabs() {
 		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup(this, getFragmentManager(),
@@ -149,6 +160,18 @@ public class MainActivity extends FragmentBaseActivity {
 				PersonCenterFragment.class, null);
 		//设置tabs之间的分隔线不显示
 		mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
+		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
+			@Override
+			public void onTabChanged(String tabId) {
+				if(mTabHost.getCurrentTab() == TAB_MANUAL){
+					ActionBar bar = getActionBar();
+			        bar.setDisplayShowCustomEnabled(true);
+				} else {
+					ActionBar bar = getActionBar();
+					bar.setDisplayShowCustomEnabled(false);
+				}
+			}
+		});
 	}
 
     @Override

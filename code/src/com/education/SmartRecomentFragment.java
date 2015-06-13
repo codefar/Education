@@ -32,7 +32,6 @@ public class SmartRecomentFragment extends CommonFragment implements OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupTitleBar();
     }
 
     /**
@@ -63,14 +62,6 @@ public class SmartRecomentFragment extends CommonFragment implements OnClickList
 	protected String getLogTag() {
 		return TAG;
 	}
-	
-	protected void setupTitleBar() {
-        ActionBar bar = getActivity().getActionBar();
-        bar.setDisplayHomeAsUpEnabled(false); 
-        bar.setDisplayShowHomeEnabled(false);
-        bar.setTitle(R.string.smart_recomment);
-        setHasOptionsMenu(true);
-    }
 
 	@Override
 	public void onClick(View v) {
