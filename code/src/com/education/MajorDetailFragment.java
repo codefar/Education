@@ -26,6 +26,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.education.TestActivity.Item3;
 import com.education.TestActivity.Item6;
 import com.education.common.AppHelper;
 import com.education.common.FastJsonRequest;
@@ -48,27 +49,27 @@ public class MajorDetailFragment extends CommonFragment implements
 	protected LayoutInflater mInflater;
 	List<HistoryMajor> mHistoryMajorItems = new ArrayList<HistoryMajor>();
 	ItemAdapter mAdpter;
-	Item6 mItem;
+	Item3 mItem;
 
 	private String yxdh;
 	private String zydh;
 	private String yxpc;
-	
-	public static MajorDetailFragment createInstance (Bundle param){
+
+	public static MajorDetailFragment createInstance(Bundle param) {
 		MajorDetailFragment instance = new MajorDetailFragment();
 		instance.setArguments(param);
 		return instance;
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Bundle param =  getArguments();
+		Bundle param = getArguments();
 		yxdh = param.getString("yxdh", "");
 		zydh = param.getString("zydh", "");
 		yxpc = param.getString("yxpc", "");
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -78,7 +79,7 @@ public class MajorDetailFragment extends CommonFragment implements
 		mResultListView = (ListView) v.findViewById(R.id.listView);
 		mAdpter = new ItemAdapter();
 		mResultListView.setAdapter(mAdpter);
-		zhuanYeFenXiBaoGao();
+		shaiXuanByMajor();
 		return v;
 	}
 
@@ -204,37 +205,30 @@ public class MajorDetailFragment extends CommonFragment implements
 		LinearLayout mScrollView;
 	}
 
-	// 单专业分析报告
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void zhuanYeFenXiBaoGao() {
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		mBlockedDialogFragment.show(ft, "block_dialog");
+	// 手工筛选-专业录取情况
+	private void shaiXuanByMajor() {
 		final FastJsonRequest request = new FastJsonRequest(
-				Request.Method.POST, Url.ZHUAN_YE_FEN_XI_BAO_GAO, null,
+				Request.Method.POST, Url.SHAI_XUAN_BY_MAJOR, null,
 				new VolleyResponseListener(getActivity()) {
 					@Override
 					public void onSuccessfulResponse(JSONObject response,
 							boolean success) {
-						mBlockedDialogFragment.dismissAllowingStateLoss();
-						Log.i(TAG, response.toJSONString());
 						if (success) {
 							String zyfxdata = response.getString("zyfxdata");
-							mItem = JSON.parseObject(zyfxdata, Item6.class);
+							mItem = JSON.parseObject(zyfxdata, Item3.class);
 							mHistoryMajorItems.clear();
 							mHistoryMajorItems.addAll(mItem.getLssj());
 							mAdpter.notifyDataSetChanged();
 						} else {
 							ErrorData errorData = AppHelper
 									.getErrorData(response);
-							Toast.makeText(getActivity(),
-									errorData.getText(), Toast.LENGTH_SHORT)
-									.show();
+							Toast.makeText(getActivity(), errorData.getText(),
+									Toast.LENGTH_SHORT).show();
 						}
 					}
 				}, new VolleyErrorListener() {
 					@Override
 					public void onVolleyErrorResponse(VolleyError volleyError) {
-						mBlockedDialogFragment.dismissAllowingStateLoss();
 						LogUtil.logNetworkResponse(volleyError, TAG);
 						Toast.makeText(
 								getActivity(),
@@ -251,7 +245,7 @@ public class MajorDetailFragment extends CommonFragment implements
 				map.put("yxpc", String.valueOf(yxpc));
 				map.put("kskl", String.valueOf(User.getInstance().getKskl()));
 				map.put("kqdh", String.valueOf(User.getInstance().getKqdh()));
-				return AppHelper.makeSimpleData("zyfx", map);
+				return AppHelper.makeSimpleData("searchmajor", map);
 			}
 		};
 		EduApp.sRequestQueue.add(request);
