@@ -257,7 +257,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 			mShaixuanIntent.putExtra("high_score",
 					data.getStringExtra("high_score"));
 			mShaixuanIntent.putExtra("year_score",
-					data.getStringExtra("high_score"));
+					data.getStringExtra("year_score"));
 			mShaixuanIntent.putExtra("score_type",
 					data.getIntExtra("score_type", 1));
 		}

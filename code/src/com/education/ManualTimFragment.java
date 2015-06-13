@@ -328,8 +328,8 @@ public class ManualTimFragment extends CommonFragment implements View.OnClickLis
             // bundle.getParcelableArrayList(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
             conditionItemList = (ArrayList<ShaiXuanConditionItem>) bundle
                     .getSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
-            postData2Server(conditionItemList);
             mLuquQingkuang = getLuquQingkuang(data);
+            postData2Server(conditionItemList);
             Log.w("wutl", "录取情况＝" + mLuquQingkuang);
             Toast.makeText(mActivity, conditionItemList.toString(),
                     Toast.LENGTH_SHORT).show();
