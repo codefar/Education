@@ -20,7 +20,8 @@
     <color name="third_text">#999999</color>
     <color name="radio_button_selected_color">#333333</color>
     <color name="radio_button_unselected_color">@android:color/transparent</color>
-    
+
+    <color name="warning">#EE5930</color>
     <color name="action_bar_bg">#178FFE</color>
     <color name="line_divider">#1580E4</color>
     <color name="share_bg_transparent">#50000000</color>

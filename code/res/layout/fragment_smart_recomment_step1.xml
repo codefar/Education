@@ -1,144 +1,157 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/dimen_17_dip"
-    android:paddingRight="@dimen/dimen_17_dip"
-    android:paddingTop="@dimen/dimen_23_dip" >
-
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:scrollbars="vertical"
+             android:fillViewport="true"
+             android:id="@+id/scroll_view">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:paddingBottom="@dimen/activity_vertical_margin"
+                  android:paddingLeft="@dimen/dimen_17_dip"
+                  android:paddingRight="@dimen/dimen_17_dip"
+                  android:paddingTop="@dimen/dimen_23_dip" >
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/jindu" />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+            <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/jindu" />
+        </LinearLayout>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remment_tip"
+                android:textColor="@color/first_text"
+                android:textSize="@dimen/dimen_12_dip" />
+
+        <EditText
+                android:id="@+id/name"
+                style="@style/EditText.SingleLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8_dip"
+                android:gravity="center_vertical"
+                android:hint="@string/input_student_name"
+                android:paddingBottom="@dimen/dimen_10_dip"
+                android:paddingLeft="@dimen/dimen_17_dip"
+                android:paddingTop="@dimen/dimen_10_dip"
+                android:textColorHint="@color/third_text"
+                android:textSize="@dimen/dimen_12_dip" >
+        </EditText>
+
+        <EditText
+                android:id="@+id/id"
+                style="@style/EditText.SingleLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8_dip"
+                android:gravity="center_vertical"
+                android:hint="@string/input_student_id"
+                android:paddingBottom="@dimen/dimen_10_dip"
+                android:paddingLeft="@dimen/dimen_17_dip"
+                android:paddingTop="@dimen/dimen_10_dip"
+                android:textColorHint="@color/third_text"
+                android:textSize="@dimen/dimen_12_dip" >
+        </EditText>
+
+        <EditText
+                android:id="@+id/editText1"
+                style="@style/EditText.SingleLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8_dip"
+                android:gravity="center_vertical"
+                android:hint="@string/input_student_score"
+                android:paddingBottom="@dimen/dimen_10_dip"
+                android:paddingLeft="@dimen/dimen_17_dip"
+                android:paddingTop="@dimen/dimen_10_dip"
+                android:textColorHint="@color/third_text"
+                android:textSize="@dimen/dimen_12_dip" >
+        </EditText>
+
+        <EditText
+                android:id="@+id/editText2"
+                style="@style/EditText.SingleLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8_dip"
+                android:gravity="center_vertical"
+                android:hint="@string/input_student_position"
+                android:paddingBottom="@dimen/dimen_10_dip"
+                android:paddingLeft="@dimen/dimen_17_dip"
+                android:paddingTop="@dimen/dimen_10_dip"
+                android:textColorHint="@color/third_text"
+                android:textSize="@dimen/dimen_12_dip" />
+
+        <info.hoang8f.android.segmented.SegmentedGroup
+                android:id="@+id/segmented"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8_dip"
+                tyle="@style/EditText.SingleLine"
+                android:minHeight="@dimen/dimen_34_dip"
+                android:orientation="horizontal"
+                segmentedgroup:border_width="1dp"
+                segmentedgroup:corner_radius="5dp"
+                segmentedgroup:tint_color="@color/tab_select" >
+
+            <RadioButton
+                    android:id="@+id/btn_li_ke"
+                    style="@style/RadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/li_ke" />
+
+            <RadioButton
+                    android:id="@+id/btn_wen_ke"
+                    style="@style/RadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/wen_ke" />
+        </info.hoang8f.android.segmented.SegmentedGroup>
+
+        <TextView
+                android:id="@+id/editText3"
+                style="@style/EditText.SingleLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8_dip"
+                android:gravity="center_vertical"
+                android:hint="@string/select_zone"
+                android:paddingBottom="@dimen/dimen_10_dip"
+                android:paddingLeft="@dimen/dimen_17_dip"
+                android:paddingTop="@dimen/dimen_10_dip"
+                android:textColorHint="@color/third_text"
+                android:clickable="true"
+                android:textSize="@dimen/dimen_12_dip" >
+        </TextView>
+
+        <Button
+                android:id="@+id/btn_next"
+                style="@style/MajorButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8_dip"
+                android:text="@string/next_step" />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_17_dip"
+                android:text="考生的分数和排位信息可在个人中心--个人信息中修改，修改考分和排位信息将影响智能推荐结果。"
+                android:textSize="@dimen/dimen_12_dip"
+                android:textColor="@color/warning"/>
     </LinearLayout>
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/remment_tip"
-            android:textColor="@color/first_text"
-            android:textSize="@dimen/dimen_12_dip" />
-    
-    <EditText
-        android:id="@+id/name"
-        style="@style/EditText.SingleLine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_8_dip"
-        android:gravity="center_vertical"
-        android:hint="@string/input_student_name"
-        android:paddingBottom="@dimen/dimen_10_dip"
-        android:paddingLeft="@dimen/dimen_17_dip"
-        android:paddingTop="@dimen/dimen_10_dip"
-        android:textColorHint="@color/third_text"
-        android:textSize="@dimen/dimen_12_dip" >
-    </EditText>
-
-    <EditText
-        android:id="@+id/id"
-        style="@style/EditText.SingleLine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_8_dip"
-        android:gravity="center_vertical"
-        android:hint="@string/input_student_id"
-        android:paddingBottom="@dimen/dimen_10_dip"
-        android:paddingLeft="@dimen/dimen_17_dip"
-        android:paddingTop="@dimen/dimen_10_dip"
-        android:textColorHint="@color/third_text"
-        android:textSize="@dimen/dimen_12_dip" >
-    </EditText>
-
-    <EditText
-        android:id="@+id/editText1"
-        style="@style/EditText.SingleLine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_8_dip"
-        android:gravity="center_vertical"
-        android:hint="@string/input_student_score"
-        android:paddingBottom="@dimen/dimen_10_dip"
-        android:paddingLeft="@dimen/dimen_17_dip"
-        android:paddingTop="@dimen/dimen_10_dip"
-        android:textColorHint="@color/third_text"
-        android:textSize="@dimen/dimen_12_dip" >
-    </EditText>
-
-    <EditText
-        android:id="@+id/editText2"
-        style="@style/EditText.SingleLine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_8_dip"
-        android:gravity="center_vertical"
-        android:hint="@string/input_student_position"
-        android:paddingBottom="@dimen/dimen_10_dip"
-        android:paddingLeft="@dimen/dimen_17_dip"
-        android:paddingTop="@dimen/dimen_10_dip"
-        android:textColorHint="@color/third_text"
-        android:textSize="@dimen/dimen_12_dip" />
-
-    <info.hoang8f.android.segmented.SegmentedGroup
-        android:id="@+id/segmented"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_8_dip"
-        tyle="@style/EditText.SingleLine"
-        android:minHeight="@dimen/dimen_34_dip"
-        android:orientation="horizontal"
-        segmentedgroup:border_width="1dp"
-        segmentedgroup:corner_radius="5dp"
-        segmentedgroup:tint_color="@color/tab_select" >
-
-        <RadioButton
-            android:id="@+id/btn_li_ke"
-            style="@style/RadioButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="@string/li_ke" />
-
-        <RadioButton
-            android:id="@+id/btn_wen_ke"
-            style="@style/RadioButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/wen_ke" />
-    </info.hoang8f.android.segmented.SegmentedGroup>
-
-    <TextView
-        android:id="@+id/editText3"
-        style="@style/EditText.SingleLine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_8_dip"
-        android:gravity="center_vertical"
-        android:hint="@string/select_zone"
-        android:paddingBottom="@dimen/dimen_10_dip"
-        android:paddingLeft="@dimen/dimen_17_dip"
-        android:paddingTop="@dimen/dimen_10_dip"
-        android:textColorHint="@color/third_text"
-        android:clickable="true"
-        android:textSize="@dimen/dimen_12_dip" >
-    </TextView>
-
-    <Button
-        android:id="@+id/btn_next"
-        style="@style/MajorButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_8_dip"
-        android:text="@string/next_step" />
-
-</LinearLayout>
+</ScrollView>
