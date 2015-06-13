@@ -16,7 +16,7 @@ public class UserInfoActivity extends CommonBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-
+        setupTitleBar();
         User user = User.getInstance();
         TextView xm = (TextView) findViewById(R.id.xm);
         TextView sfzh = (TextView) findViewById(R.id.sfzh);

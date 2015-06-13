@@ -6,13 +6,14 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_38_dip"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dimen_14_dip"
+            android:paddingBottom="@dimen/dimen_14_dip"
             android:orientation="horizontal" >
         <!-- 成绩 -->
         <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:gravity="center_horizontal" >
             <ImageView
@@ -43,7 +44,6 @@
         <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:gravity="center_horizontal" >
 
@@ -73,11 +73,9 @@
         </RelativeLayout>
 
         <!-- 科类 -->
-
         <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:gravity="center_horizontal" >
             <ImageView
@@ -111,7 +109,6 @@
         <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:gravity="center_horizontal" >
             <ImageView
@@ -148,37 +145,48 @@
             android:layout_height="@dimen/dimen_17_dip"
             android:gravity="bottom" >
         <!-- 拼音排序 -->
-        <TextView
-                android:id="@+id/paixu_pinyin"
-                style="@style/filter_school_and_major_down_text"
-                android:layout_marginLeft="@dimen/dimen_17_dip"
-                android:text="按拼音排序"
-                android:textSize="@dimen/dimen_12_dip" >
-        </TextView>
-
-        <ImageView
-                android:id="@+id/paixu_pinyin_img"
-                style="@style/shaixuan_img_style"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/paixu_pinyin"
-                android:src="@drawable/paixu_normal" />
+        <!-- 学校排序 -->
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:id="@+id/pinyin_paixu"
+                android:visibility="gone">
+            <TextView
+                    android:id="@+id/paixu_pinyin"
+                    style="@style/filter_school_and_major_down_text"
+                    android:layout_marginLeft="@dimen/dimen_17_dip"
+                    android:text="按拼音排序"
+                    android:textSize="@dimen/dimen_12_dip" >
+            </TextView>
+            <ImageView
+                    android:id="@+id/paixu_pinyin_img"
+                    style="@style/shaixuan_img_style"
+                    android:src="@drawable/paixu_normal" />
+        </LinearLayout>
 
         <!-- 学校排序 -->
-        <TextView
-                android:id="@+id/paiming_school"
-                style="@style/filter_school_and_major_down_text"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/paixu_pinyin_img"
-                android:text="按学校排名"
-                android:textSize="@dimen/dimen_12_dip" >
-        </TextView>
-
-        <ImageView
-                android:id="@+id/paiming_school_img"
-                style="@style/shaixuan_img_style"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/paiming_school"
-                android:src="@drawable/paixu_normal" />
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/dimen_9_dip"
+                android:layout_toRightOf="@id/pinyin_paixu"
+                android:gravity="center_vertical"
+                android:id="@+id/xuexiao_paixu"
+                android:visibility="gone">
+            <TextView
+                    android:id="@+id/paiming_school"
+                    style="@style/filter_school_and_major_down_text"
+                    android:text="按学校排名"
+                    android:textSize="@dimen/dimen_12_dip"/>
+            <ImageView
+                    android:id="@+id/paiming_school_img"
+                    style="@style/shaixuan_img_style"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/paixu_normal"/>
+        </LinearLayout>
 
         <!-- 筛选 -->
         <ImageView

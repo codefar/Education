@@ -102,7 +102,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 	@Override
 	protected void setupTitleBar() {
 		ActionBar bar = getActionBar();
-		bar.setTitle("返回");
+		bar.setTitle("筛选");
 		bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
 				| ActionBar.DISPLAY_SHOW_TITLE);
 		bar.setHomeButtonEnabled(true);

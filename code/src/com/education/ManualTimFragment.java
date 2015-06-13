@@ -1,6 +1,7 @@
 package com.education;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -32,6 +33,7 @@ import com.education.entity.ShaiXuanConditionItem;
 import com.education.entity.ShaiXuanJieGuo;
 import com.education.entity.User;
 import com.education.utils.LogUtil;
+import com.education.widget.SimpleBlockedDialogFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +42,7 @@ import java.util.Map;
 
 public class ManualTimFragment extends CommonFragment implements View.OnClickListener {
 	private static final String TAG = ManualTimFragment.class.getSimpleName();
-
+    private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
     private ListView mSearchResulListView;
     private List<SchoolItem> mItemList = new ArrayList<SchoolItem>();
     protected LayoutInflater mInflater;
@@ -52,11 +54,11 @@ public class ManualTimFragment extends CommonFragment implements View.OnClickLis
     private Intent mShaixuanIntent;
     private ImageView mScoreRankImg, mSchoolRankImg;
     private int clickPinyinNumbers, clickSchoolNumbers;
-    private User mUser;
     private String mSchoolNumbers, mLuquQingkuang;
     private int mMajorNumbers;
     private ArrayList<ShaiXuanConditionItem> conditionItemList;
     private Activity mActivity;
+    private int mPageNo = 1;
 
     /**
      * When creating, retrieve this instance's number from its arguments.
@@ -104,22 +106,26 @@ public class ManualTimFragment extends CommonFragment implements View.OnClickLis
         mSchoolNumbersText = (TextView) v.findViewById(R.id.school_numbers);
         mMajorNumbersText = (TextView) v.findViewById(R.id.major_numbers);
 
-        mUser = User.getInstance();
-        if (mUser != null) {
-            Log.w("wutl", mUser.toString());
-            mUserScoreText.setText(mUser.getKscj() + "");
-            mUserRankText.setText(mUser.getKspw() + "");
-            mUserTypeText.setText(mUser.getKskl() + "");
-            mUserLocation.setText(mUser.getKskqName() + "");
+        User user = User.getInstance();
+        if (user != null) {
+            Log.w("wutl", user.toString());
+            mUserScoreText.setText(user.getKscj() + "");
+            mUserRankText.setText(user.getKspw() + "");
+            int kskl = user.getKskl();
+            mUserTypeText.setText(kskl == 1 ? "理工" : "文史");
+            mUserLocation.setText(user.getKskqName() + "");
         }
     }
 
     private void shaiXuan() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        mBlockedDialogFragment.show(ft, "block_dialog");
+
         final FastJsonRequest request = new FastJsonRequest(Request.Method.GET,
                 Url.SHAI_XUAN, null, new VolleyResponseListener(mActivity) {
             @Override
-            public void onSuccessfulResponse(JSONObject response,
-                                             boolean success) {
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
                 if (success) {
                     String datas = response.getString("datas");
                     ShaiXuanJieGuo result = JSON.parseObject(datas,
@@ -128,8 +134,7 @@ public class ManualTimFragment extends CommonFragment implements View.OnClickLis
                         setDataSource(result);
                     Log.d("wutl", "resutl=" + result.toString());
                 } else {
-                    ErrorData errorData = AppHelper
-                            .getErrorData(response);
+                    ErrorData errorData = AppHelper.getErrorData(response);
                     Toast.makeText(mActivity,
                             errorData.getText(), Toast.LENGTH_SHORT)
                             .show();
@@ -138,11 +143,11 @@ public class ManualTimFragment extends CommonFragment implements View.OnClickLis
         }, new VolleyErrorListener() {
             @Override
             public void onVolleyErrorResponse(VolleyError volleyError) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
                 LogUtil.logNetworkResponse(volleyError, "wutl");
                 Toast.makeText(
                         mActivity,
-                        getResources().getString(
-                                R.string.internet_exception),
+                        getResources().getString(R.string.internet_exception),
                         Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -377,7 +382,6 @@ public class ManualTimFragment extends CommonFragment implements View.OnClickLis
             protected Map<String, String> getParams() throws AuthFailureError {
                 User user = User.getInstance();
                 Map<String, String> map = new HashMap<String, String>();
-
                 map.put("pageno", String.valueOf(1));
                 // map.put("skey", "清华");
                 map.put("yxss", getYxss(conditionlist));
@@ -385,8 +389,8 @@ public class ManualTimFragment extends CommonFragment implements View.OnClickLis
                 map.put("yxxz", getYxxz(conditionlist));
                 map.put("lqpc", getLuqupici(conditionlist));
                 map.put("lqqk", mLuquQingkuang);
-                map.put("kskl", String.valueOf(mUser.getKskl()));
-                map.put("kqdh", String.valueOf(mUser.getKqdh()));
+                map.put("kskl", String.valueOf(user.getKskl()));
+                map.put("kqdh", String.valueOf(user.getKqdh()));
 
                 return AppHelper.makeSimpleData("search", map);
             }

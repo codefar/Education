@@ -4,24 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/shaixuan_text"
-            style="@style/filter_school_and_major_top_text"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:textSize="@dimen/dimen_12_dip"
-            android:paddingTop="@dimen/dimen_9_dip"
-            android:paddingBottom="@dimen/dimen_9_dip"
-            android:text="筛选" >
-        </TextView>
-    </RelativeLayout>
-
-    <include layout="@layout/single_line_view" />
-
     <ListView
         android:id="@+id/shaixuan_condition_list"
         android:layout_width="match_parent"
