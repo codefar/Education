@@ -34,7 +34,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/title_activity_main"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -126,6 +125,12 @@
         <activity
                 android:name=".AboutUsActivity"
                 android:screenOrientation="portrait"/>
+        <activity
+                android:name=".MajorDetailActivity"
+                android:exported="true"
+                android:screenOrientation="portrait" >
+        </activity>
+        
     </application>
 
 </manifest>
