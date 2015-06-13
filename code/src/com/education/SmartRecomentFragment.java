@@ -3,6 +3,7 @@ package com.education;
 import com.education.utils.MenuHelper;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,7 +46,10 @@ public class SmartRecomentFragment extends CommonFragment implements OnClickList
         mStartBtn  = (Button) v.findViewById(R.id.start_btn);
         mStartBtn.setOnClickListener(this);
         mGuang = (ImageView)v.findViewById(R.id.guang);
-        animator3 = ObjectAnimator.ofFloat(mGuang, "rotation", 0F, 360F);
+        animator3 = ObjectAnimator.ofFloat(mGuang, "rotation", 0F, 359F);
+        //animator3.setRepeatCount(ValueAnimator.INFINITE);
+        //animator3.setDuration(3000);
+        //animator3.setRepeatMode(ValueAnimator.RESTART);
         animator3.start();
         return v;
     }

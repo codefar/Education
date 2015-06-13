@@ -66,5 +66,6 @@
     <string name="major_numbers">符合条件专业 %1$s</string>
     <string name="get_questions">获取题目...</string>
     <string name="post_answers">提交答案...</string>
-    
+    <string name="single_major_report">单专业分析报告</string>
+    <string name="rank_index">第%1$d名</string>
 </resources>

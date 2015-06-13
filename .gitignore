@@ -59,3 +59,9 @@ code/project.properties
 project_libs/Android-PullToRefresh/sample/project.properties
 project_libs/android-segmented-control/demo/src/main/.classpath
 project_libs/android-segmented-control/library/src/main/.classpath
+
+*.properties
+
+*.properties
+
+code/project.properties

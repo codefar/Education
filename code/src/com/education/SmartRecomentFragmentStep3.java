@@ -178,7 +178,7 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			Item5 ii = (Item5) mItemList.get(position);
+			final Item5 ii = (Item5) mItemList.get(position);
 			holder.rankTextView.setText(String.valueOf(position + 1));
 			holder.nameTextView.setText(ii.getYxmc());
 			holder.typeTextView.setText(ii.getYxDesc());
@@ -195,12 +195,14 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 				TextView mItemTitle2 = (TextView) item
 						.findViewById(R.id.item_title2);
 				TextView rate = (TextView) item.findViewById(R.id.rate);
-				rate.setText(items.get(i).getLqgl());
 				TextView mItemDesc = (TextView) item
 						.findViewById(R.id.item_desc);
+				
+				final MajorItem majorItem = items.get(i);
+				rate.setText(majorItem.getLqgl());
 				mItemTitle1.setText("专业" + String.valueOf(i + 1));
-				mItemTitle2.setText(items.get(i).getZymc());
-				mItemTitle2.setOnClickListener(null);
+				mItemTitle2.setText(majorItem.getZymc());
+				
 				mItemDesc.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -213,6 +215,8 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 						// 下级页面
 						Intent intent = new Intent(getActivity(),
 								SmartRecommentResultActivity.class);
+						intent.putExtra("xuexiao", ii);
+						intent.putExtra("zhuanye", majorItem);
 						startActivity(intent);
 					}
 				});

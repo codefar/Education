@@ -1,10 +1,16 @@
 package com.education.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by su on 15-6-11.
  */
-public class MajorItem {
-    private String zydh; //专业代号
+public class MajorItem implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String zydh; //专业代号
     private String zymc; //专业名称
     private String lqpc; //录取批次
     private int source; //收藏来源

@@ -75,7 +75,7 @@ public class SmartRecomentFragmentStep2 extends CommonFragment implements
 		mAnsABtn.setOnClickListener(this);
 		mAnsBBtn = (Button) v.findViewById(R.id.btn_b);
 		mAnsBBtn.setOnClickListener(this);
-		mAnsCBtn = (Button) v.findViewById(R.id.btn_b);
+		mAnsCBtn = (Button) v.findViewById(R.id.btn_c);
 		mAnsCBtn.setOnClickListener(this);
 		mAnsDBtn = (Button) v.findViewById(R.id.btn_d);
 		mAnsDBtn.setOnClickListener(this);

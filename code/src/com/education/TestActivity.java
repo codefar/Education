@@ -34,6 +34,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -295,8 +296,12 @@ public class TestActivity extends CommonBaseActivity {
         }
     }
 
-    public static class Item5 {
-        private String yxdh; //院校代号
+    public static class Item5 implements Serializable{
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private String yxdh; //院校代号
         private String yxmc; //院校名称
         private String yxDesc; //综合描述
         private int yxpc; //录取批次代号

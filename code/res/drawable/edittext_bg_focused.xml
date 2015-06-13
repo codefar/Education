@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-<item
-        android:state_pressed="false"
-        android:state_enabled="true">
-    <shape>
-        <solid android:color="#178FFE" />
-        <corners android:radius="4dip"/>
-    </shape>
-</item>
-<item
-        android:top="1dip"
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:state_enabled="true"
+        android:state_pressed="false">
+        <shape>
+            <solid android:color="#178FFE" />
+
+            <corners android:radius="4dip" />
+        </shape>
+    </item>
+    <item
         android:bottom="1dip"
-        android:right="1dip"
         android:left="1dip"
+        android:right="1dip"
+        android:state_enabled="true"
         android:state_pressed="false"
-        android:state_enabled="true">
-    <shape>
-        <solid android:color="@color/white" />
-        <corners android:radius="4dip"/>
-    </shape>
-</item>
+        android:top="1dip">
+        <shape>
+            <solid android:color="@color/white" />
+
+            <corners android:radius="4dip" />
+        </shape>
+    </item>
+
 </layer-list>
