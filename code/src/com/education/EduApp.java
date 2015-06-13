@@ -159,7 +159,5 @@ public class EduApp extends Application {
         }
 
         AppHelper.initImageLoader(this);
-        AppHelper.createGestureFileIfNotExist(this);
-        AppHelper.createPasswordFileIfNotExist(this);
     }
 }

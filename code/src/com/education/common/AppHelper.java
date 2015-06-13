@@ -30,15 +30,12 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.education.EduApp;
-import com.education.Constants;
 import com.education.LoginActivity;
 import com.education.MainActivity;
 import com.education.R;
 import com.education.entity.ErrorData;
-import com.education.entity.Share;
 import com.education.entity.User;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -49,7 +46,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import com.education.widget.ShareDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
@@ -145,34 +141,6 @@ public class AppHelper {
         } catch (Exception e) {
             return new DefaultHttpClient();
         }
-    }
-
-    public static File createGestureFileIfNotExist(Context context) {
-        String gestureFilename = context.getFilesDir().getAbsolutePath() + "/" + Constants.LOCK_PATTERN_FILE;
-        File file = new File(gestureFilename);
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            return file;
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
-        }
-        return null;
-    }
-
-    public static File createPasswordFileIfNotExist(Context context) {
-        String passwordFilename = context.getFilesDir().getAbsolutePath() + "/" + Constants.LOCK_PASSWORD_FILE;
-        File file = new File(passwordFilename);
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            return file;
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
-        }
-        return null;
     }
 
     public static String fillNullNumberString(String s) {

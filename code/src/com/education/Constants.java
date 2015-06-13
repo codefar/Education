@@ -18,18 +18,13 @@ public class Constants {
     public static final SimpleDateFormat SDF_YYYY_MM_DD_T_HH_MM_SS = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     public static final SimpleDateFormat SDF_YYYY_MM_DD_HH_MM_SS_SSS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
-    public static final String LOCK_PATTERN_FILE = "gesture.key";
-    public static final String LOCK_PASSWORD_FILE = "password.key";
-
     public static final String PASSWORD_STR = "[~`!@#$%^&*()_=+\\[{\\]}\\|;:'\",<.>/?0-9a-zA-Z-]{6,20}";
     /*
     * same as microlog.appender.FileAppender.File in assets/microlog.properties
     * */
-    public static final String APP_DIR_ROOT = "souyidai/";
-    public static final String APP_DIR_TEMP = "souyidai/temp/";
-    public static final String APP_DIR_PIC = "souyidai/pic/";
-    public static final String APP_DIR_IMG_TEMP = "souyidai/img/temp";
-    public static final String PRODUCT_ID = "T";
+    public static final String APP_DIR_ROOT = "com.education/";
+    public static final String APP_DIR_TEMP = "com.education/temp/";
+    public static final String APP_DIR_PIC = "com.education/pic/";
 
     public static final String SP_COLUMN_INIT = "init";
     public static final String SP_COLUMN_INIT_GUIDE_PAGE = "init_guide_page";
