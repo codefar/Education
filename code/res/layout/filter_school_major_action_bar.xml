@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="360dp"
-    android:layout_height="40dp"
+    android:layout_width="@dimen/dimen_189_dip"
+    android:layout_height="@dimen/dimen_26_dip"
     android:layout_gravity="center_vertical" >
 
     <EditText
@@ -11,7 +11,7 @@
         android:background="#FFFFFF"
         android:ellipsize="end"
         android:hint="请输入学校 、专业信息"
-        android:paddingLeft="40dp"
+        android:paddingLeft="@dimen/dimen_15_dip"
         android:singleLine="true" />
 
     <ImageView
