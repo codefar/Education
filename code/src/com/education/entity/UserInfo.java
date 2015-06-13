@@ -22,6 +22,7 @@ public class UserInfo {
     private int kskl;
     private String ksklName;
     private int kqdh; //考区代号
+    private int kskq; //考区代号(考生考区)
     private String kskqName; //考区名称
 
     public String getUserId() {
@@ -102,6 +103,14 @@ public class UserInfo {
 
     public void setKqdh(int kqdh) {
         this.kqdh = kqdh;
+    }
+
+    public int getKskq() {
+        return kskq;
+    }
+
+    public void setKskq(int kskq) {
+        this.kskq = kskq;
     }
 
     public String getKskqName() {

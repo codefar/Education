@@ -172,16 +172,19 @@ public class VolunteerCollectionFragment extends CommonFragment {
             item1.setYxdh("123");
             item1.setYxmc("北京大学");
             item1.setIcon("http://www.icosky.com/icon/png/Emoticon/Emoticons/Glad.png");
+            item1.setDesc("5");
 
             CollegeItem item2 = new CollegeItem();
             item2.setYxdh("124");
             item2.setYxmc("天津大学");
             item2.setIcon("http://www.aa25.cn/uploadfile/png/Iconbase/Waterworld/ok.png");
+            item2.setDesc("10");
 
             CollegeItem item3 = new CollegeItem();
             item3.setYxdh("1235");
             item3.setYxmc("复旦大学");
             item3.setIcon("http://img.sc115.com/uploads/png/110125/201101251607119003.png");
+            item1.setDesc("10");
 
             mCollegeItemList.add(item1);
             mCollegeItemList.add(item2);

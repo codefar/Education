@@ -10,7 +10,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/dimen_17_dip"
-        android:src="@drawable/arrow_right"
+        android:src="@drawable/condition_item_selected"
         android:visibility="invisible" />
 
     <TextView

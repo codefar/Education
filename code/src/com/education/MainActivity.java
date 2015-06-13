@@ -1,9 +1,10 @@
 package com.education;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentTabHost;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import com.education.entity.ErrorData;
 import com.education.entity.User;
 import com.education.entity.UserInfo;
 import com.education.utils.LogUtil;
+import com.education.widget.SimpleBlockedDialogFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +32,9 @@ import java.util.Map;
 public class MainActivity extends FragmentBaseActivity {
 
     private static final String TAG = "MainActivity";
-	private FragmentTabHost mTabHost;
+    private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
+
+    private FragmentTabHost mTabHost;
     public static final int TAB_SMART = 0;
     public static final int TAB_MANUAL = 1;
     public static final int TAB_VOLUNTEER = 2;
@@ -40,7 +44,14 @@ public class MainActivity extends FragmentBaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean init = sp.getBoolean(Constants.SP_COLUMN_INIT_GUIDE_PAGE, false);
+        if (!init) {
+            sp.edit().putBoolean(Constants.SP_COLUMN_INIT_GUIDE_PAGE, true).apply();
+            startActivity(new Intent(this, GuideActivity.class));
+            finish();
+            return;
+        }
 		initTabs();
         fetchUserInfo();
 	}
@@ -48,6 +59,9 @@ public class MainActivity extends FragmentBaseActivity {
     private void fetchUserInfo() {
         User user = User.getInstance();
         if (user.getXm() == null) { // 如果用户没有填写真实姓名,那么从后台读取
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            mBlockedDialogFragment.updateMessage("");
+            mBlockedDialogFragment.show(ft, "block_dialog");
             fetch(user.getId());
         }
     }
@@ -57,6 +71,7 @@ public class MainActivity extends FragmentBaseActivity {
                 , null, new VolleyResponseListener(this) {
             @Override
             public void onSuccessfulResponse(JSONObject response, boolean success) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
                 if (success) {
                     String ksxx = response.getString("ksxx");
                     UserInfo userInfo = JSON.parseObject(ksxx, UserInfo.class);
@@ -73,6 +88,8 @@ public class MainActivity extends FragmentBaseActivity {
                     User.saveUser(user);
                     if (TextUtils.isEmpty(user.getXm())) {
                         //需要用户录入信息
+                        startActivity(new Intent(MainActivity.this, SetUserInfoActivity.class));
+                        finish();
                     } else {
                         //打开首页
 //                        startActivity(new Intent());
@@ -85,6 +102,7 @@ public class MainActivity extends FragmentBaseActivity {
         }, new VolleyErrorListener() {
             @Override
             public void onVolleyErrorResponse(VolleyError volleyError) {
+                mBlockedDialogFragment.dismissAllowingStateLoss();
                 LogUtil.logNetworkResponse(volleyError, TAG);
                 Toast.makeText(MainActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
             }
@@ -123,15 +141,6 @@ public class MainActivity extends FragmentBaseActivity {
 				PersonCenterFragment.class, null);
 		//设置tabs之间的分隔线不显示
 		mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		return super.onOptionsItemSelected(item);
 	}
 
     @Override

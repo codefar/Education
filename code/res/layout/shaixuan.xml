@@ -13,15 +13,9 @@
             style="@style/filter_school_and_major_top_text"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:textSize="@dimen/dimen_11_dip"
             android:text="筛选" >
         </TextView>
-
-        <Button
-            android:id="@+id/shaixuan_confirm_bt"
-            style="@style/filter_school_and_major_top_text"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text="确定" />
     </RelativeLayout>
 
     <include layout="@layout/single_line_view" />
@@ -32,5 +26,15 @@
         android:layout_height="wrap_content"
         android:divider="@null"
         android:listSelector="@android:color/transparent" />
+
+    <Button
+        android:id="@+id/shaixuan_confirm_bt"
+        style="@style/MajorButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_34_dip"
+        android:layout_marginLeft="@dimen/dimen_17_dip"
+        android:layout_marginRight="@dimen/dimen_17_dip"
+        android:layout_marginTop="@dimen/dimen_17_dip"
+        android:text="开始筛选" />
 
 </LinearLayout>

@@ -193,7 +193,7 @@ public class LoginActivity extends CommonBaseActivity implements View.OnClickLis
                     user.setId(userInfo.getUserId());
                     user.setUserSession(userInfo.getUserSession());
                     User.saveUser(user);
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    startActivity(AppHelper.mainActivityIntent(LoginActivity.this));
                     finish();
                 } else {
                     ErrorData errorData = AppHelper.getErrorData(response);

@@ -81,10 +81,4 @@ public class SmartRecomentFragment extends CommonFragment implements OnClickList
 		inflater.inflate(R.menu.main, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-
-    @Override 
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	MenuHelper.menuItemSelected(getActivity(), 0, item);
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -32,8 +32,10 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 	protected LayoutInflater mInflater;
 	protected Resources mResources;
 	private ItemAdapter mItemAdapter;
-	private TextView mFilterTextView;
+	private TextView mFilterTextView, mScoreRankText, mSchoolRankText;
 	private Intent mShaixuanIntent;
+	private ImageView mScoreRankImg, mSchoolRankImg;
+	private int clickPinyinNumbers, clickSchoolNumbers;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +47,17 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 		mResources = getResources();
 		mSearchResulListView = (ListView) findViewById(R.id.filter_school_result_list);
 		mFilterTextView = (TextView) findViewById(R.id.filter_textview);
+		mScoreRankText = (TextView) findViewById(R.id.paixu_pinyin);
+		mSchoolRankText = (TextView) findViewById(R.id.paiming_school);
+		mScoreRankImg = (ImageView) findViewById(R.id.paixu_pinyin_img);
+		mSchoolRankImg = (ImageView) findViewById(R.id.paiming_school_img);
 		mItemAdapter = new ItemAdapter();
 		mShaixuanIntent = new Intent(this, ShaiXuanActivity.class);
 		mSearchResulListView.setAdapter(mItemAdapter);
 		displayCollege();
 		mFilterTextView.setOnClickListener(this);
+		mScoreRankText.setOnClickListener(this);
+		mSchoolRankText.setOnClickListener(this);
 
 	}
 
@@ -208,9 +216,10 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		//获取筛选条件
+		// 获取筛选条件
 		if (requestCode == 1 && resultCode == 1) {
-			ShaiXuanInfo info=(ShaiXuanInfo)data.getSerializableExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
+			ShaiXuanInfo info = (ShaiXuanInfo) data
+					.getSerializableExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
 			Toast.makeText(this, info.toString(), Toast.LENGTH_SHORT).show();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -221,6 +230,46 @@ public class FilterSchoolAndMajorActivity extends CommonBaseActivity implements
 		switch (v.getId()) {
 		case R.id.filter_textview:
 			startActivityForResult(mShaixuanIntent, 1);
+			break;
+		case R.id.paixu_pinyin:
+			clickPinyinNumbers++;
+			if (clickPinyinNumbers > 2)
+				clickPinyinNumbers = 0;
+			switchPinyinImgState(clickPinyinNumbers);
+			break;
+		case R.id.paiming_school:
+			clickSchoolNumbers++;
+			if (clickSchoolNumbers > 2)
+				clickSchoolNumbers = 0;
+			switchSchoolImgState(clickSchoolNumbers);
+			break;
+		}
+	}
+
+	private void switchPinyinImgState(int number) {
+		switch (number) {
+		case 0:
+			mScoreRankImg.setImageResource(R.drawable.paixu_normal);
+			break;
+		case 1:
+			mScoreRankImg.setImageResource(R.drawable.paixu_up);
+			break;
+		case 2:
+			mScoreRankImg.setImageResource(R.drawable.paixu_down);
+			break;
+		}
+	}
+
+	private void switchSchoolImgState(int number) {
+		switch (number) {
+		case 0:
+			mSchoolRankImg.setImageResource(R.drawable.paixu_normal);
+			break;
+		case 1:
+			mSchoolRankImg.setImageResource(R.drawable.paixu_up);
+			break;
+		case 2:
+			mSchoolRankImg.setImageResource(R.drawable.paixu_down);
 			break;
 		}
 	}

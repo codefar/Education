@@ -13,12 +13,16 @@
         android:layout_height="280dp"
         android:divider="@null"
         android:listSelector="@android:color/transparent" />
-
-    <Button
+    
+      <Button
         android:id="@+id/detail_condition_confirm_bt"
-        style="@style/filter_school_and_major_top_text"
-        android:layout_below="@id/detail_condition_lists"
-        android:layout_centerHorizontal="true"
-        android:text="       确定     " />
+        style="@style/MajorButton"
+        android:layout_width="match_parent"
+         android:layout_below="@id/detail_condition_lists"
+        android:layout_height="@dimen/dimen_34_dip"
+        android:layout_marginLeft="@dimen/dimen_17_dip"
+        android:layout_marginRight="@dimen/dimen_17_dip"
+        android:layout_marginTop="@dimen/dimen_17_dip"
+        android:text="确定" />
 
 </RelativeLayout>

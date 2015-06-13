@@ -10,8 +10,11 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -40,6 +43,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 	private Intent mDetailConditionItemIntent, mShaixuanIntent;
 	private Button mConfirmBt;
 	private ShaiXuanInfo mShaiXuanInfo;
+	private boolean isReset = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,23 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
+		switch (menuItem.getItemId()) {
+		case android.R.id.home:
+			super.onBackPressed();
+			return true;
+		case R.id.reset_filter_condition:
+			Toast.makeText(this, "click ", Toast.LENGTH_SHORT).show();
+			isReset = true;
+			mItemAdapter.notifyDataSetChanged();
+			break;
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(menuItem);
+	}
+
+	@Override
 	protected void unLoginForward(User user) {
 
 	}
@@ -74,6 +95,8 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.reset, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -140,11 +163,22 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 			ConditionItem ConditionItem = mItemList.get(position);
 			holder.schoolImg.setImageBitmap(BitmapFactory.decodeResource(
 					mResources, ConditionItem.getSchoolImg()));
-			holder.schoolImg.setVisibility(View.GONE);
 			holder.conditionNameTextView.setText(ConditionItem
 					.getConditionName());
-			holder.detailConditionTextView.setText(ConditionItem
-					.getDetailCondition());
+			if (isReset) {
+				if (position == getCount() - 1)
+					holder.detailConditionTextView.setText("默认值");
+				else
+					holder.detailConditionTextView.setText("全部");
+			}
+			else {
+				if (TextUtils.isEmpty(ConditionItem.getDetailCondition()))
+					holder.detailConditionTextView.setText("全部");
+				else
+					holder.detailConditionTextView.setText(ConditionItem
+							.getDetailCondition());
+			}
+
 			return convertView;
 		}
 
@@ -155,41 +189,45 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			mDetailConditionItemIntent.putExtra(SHAIXUAN_CLICK_POSITION,
-					position);
-			startActivityForResult(mDetailConditionItemIntent, 0);
+			if (position == mItemAdapter.getCount() - 1)
+				startActivity(new Intent(ShaiXuanActivity.this, LuQuScore.class));
+			else {
+				mDetailConditionItemIntent.putExtra(SHAIXUAN_CLICK_POSITION,
+						position);
+				startActivityForResult(mDetailConditionItemIntent, 0);
+			}
 		}
 	}
 
 	private void fetchCollege() {
 		ConditionItem item1 = new ConditionItem();
-		item1.setSchoolImg(R.drawable.xuexiao_1);
+		item1.setSchoolImg(R.drawable.sx_shengfen);
 		item1.setConditionName("院校省份");
 		item1.setDetailCondition("全部");
 		mItemList.add(item1);
 
 		ConditionItem item2 = new ConditionItem();
-		item2.setSchoolImg(R.drawable.xuexiao_2);
+		item2.setSchoolImg(R.drawable.xuexiao_4);
 		item2.setConditionName("院校类型");
 		item2.setDetailCondition("全部");
 		mItemList.add(item2);
 
 		ConditionItem item3 = new ConditionItem();
-		item3.setSchoolImg(R.drawable.xuexiao_3);
+		item3.setSchoolImg(R.drawable.sx_zhuanye);
 		item3.setConditionName("专业");
 		item3.setDetailCondition("全部");
 		mItemList.add(item3);
 
 		ConditionItem item4 = new ConditionItem();
-		item4.setSchoolImg(R.drawable.xuexiao_3);
+		item4.setSchoolImg(R.drawable.sx_pici);
 		item4.setConditionName("录取批次");
 		item4.setDetailCondition("全部");
 		mItemList.add(item4);
 
 		ConditionItem item5 = new ConditionItem();
-		item5.setSchoolImg(R.drawable.xuexiao_3);
-		item5.setConditionName("历年录取分数");
-		item5.setDetailCondition("全部");
+		item5.setSchoolImg(R.drawable.sx_fenshu);
+		item5.setConditionName("历年录取情况");
+		item5.setDetailCondition("默认值");
 		mItemList.add(item5);
 	}
 
@@ -228,7 +266,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 0
 				&& resultCode == DetailConditionConstants.CONDITION_ITEM_SELECTE_CONFIRM_RESULE_CODE) {
-
+			isReset = false;
 			Toast.makeText(
 					this,
 					"选中个数"
