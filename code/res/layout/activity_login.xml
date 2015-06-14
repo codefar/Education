@@ -22,7 +22,7 @@
             android:orientation="vertical"
             android:layout_marginLeft="@dimen/dimen_17_dip"
             android:layout_marginRight="@dimen/dimen_17_dip">
-        <!--手机/昵称-->
+        <!--手机/用户名-->
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_34_dip"

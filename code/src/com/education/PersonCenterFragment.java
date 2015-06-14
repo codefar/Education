@@ -138,7 +138,7 @@ public class PersonCenterFragment extends CommonFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             User user = User.getInstance();
             if (position == 0) {
-                if (TextUtils.isEmpty(user.getAccountId())) { //设置昵称
+                if (TextUtils.isEmpty(user.getAccountId())) { //设置昵称/用户名
                     nicknameDialog(view);
                 }
             } else if (position == 1) { //修改密码
@@ -297,14 +297,14 @@ public class PersonCenterFragment extends CommonFragment {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         linearLayout.addView(et, lp);
         new AlertDialog.Builder(mActivity)
-                .setTitle("设置昵称")
+                .setTitle("设置用户名")
                 .setView(linearLayout)
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String nickname = et.getText().toString();
                         if (!Pattern.matches(Constants.NICKNAME_STR, nickname)) {
-                            Toast.makeText(mActivity, "昵称只能由6-20位大小写字母、数字下划线和连词符组成", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mActivity, "用户名只能由6-20位大小写字母、数字下划线和连词符组成", Toast.LENGTH_LONG).show();
                             nicknameDialog(view);
                             return;
                         }
@@ -366,7 +366,7 @@ public class PersonCenterFragment extends CommonFragment {
 
         User user = User.getInstance();
         Item item1 = new Item();
-        item1.title = "昵称";
+        item1.title = "用户名";
         item1.icon = R.drawable.nickname;
         item1.desc = user.getAccountId();
         mItemList.add(item1);
@@ -388,12 +388,12 @@ public class PersonCenterFragment extends CommonFragment {
 
         Item item5 = new Item();
         item5.title = "分享";
-        item5.icon = R.drawable.about;
+        item5.icon = R.drawable.share;
         mItemList.add(item5);
 
         Item item6 = new Item();
-        item6.title = "退出(测试用)";
-        item6.icon = R.drawable.about;
+        item6.title = "退出";
+        item6.icon = R.drawable.exit;
         mItemList.add(item6);
 
         mItemAdapter.notifyDataSetChanged();

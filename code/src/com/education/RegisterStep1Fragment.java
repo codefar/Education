@@ -135,14 +135,14 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
                 break;
             case R.id.protocol:
                 Intent intent = new Intent(mActivity, WebViewActivity.class);
-                intent.putExtra("url", "http://kaoying.benshijy.com/contract.html");
+                intent.putExtra("url", "http://king.benshijy.com/contract.html");
                 intent.putExtra("title", "用户注册协议");
                 startActivity(intent);
                 break;
             case R.id.customer_service:
                 Intent customerServiceIntent = new Intent(mActivity, WebViewActivity.class);
-                customerServiceIntent.putExtra("url", "http://kaoying.benshijy.com/service.html");
-                customerServiceIntent.putExtra("title", "用户注册协议");
+                customerServiceIntent.putExtra("url", "http://king.benshijy.com/service.html");
+                customerServiceIntent.putExtra("title", "联系客服");
                 startActivity(customerServiceIntent);
                 break;
             default:

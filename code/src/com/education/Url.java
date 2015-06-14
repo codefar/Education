@@ -5,7 +5,8 @@ package com.education;
  */
 public class Url {
 
-    public static final String SCHEME = "http://10.10.18.7:8018";
+//    public static final String SCHEME = "http://king.benshijy.com" 以后外网用上面的域名（注册时，协议与联系客服页面的链接要单独替换）
+    public static final String SCHEME = "http://10.10.18.7:8018"; //以后外网用上面的域名（注册时，协议与联系客服页面的链接要单独替换）
     public static final String LOGIN = SCHEME + "/login"; //登录
     public static final String REGISTER_GET_SMS_CODE = SCHEME + "/register/getSMCode"; //获取短信
     public static final String REGISTER_CHECK_SMS_CODE = SCHEME + "/register/chkSMCode"; //检查短信
@@ -15,7 +16,7 @@ public class Url {
     public static final String SET_ACCOUNT = SCHEME + "/my/setaccount"; //设置账户
     public static final String RESET_PASSWORD = SCHEME + "/my/resetPassword";
     public static final String GET_SHARE_URL = SCHEME + "/share/getShareUrl"; //获取分享链接
-    public static final String GET_QUESTION = "http://www.benshijy.com:8018/zntj/getTms";
+//    public static final String GET_QUESTION = "http://www.benshijy.com:8018/zntj/getTms";
 
     public static final String KAO_SHENG_XIN_XI = SCHEME + "/my/ksxxQuery"; //考生信息查询
     public static final String KAO_SHENG_XIN_XI_XIU_GAI = SCHEME + "/my/ksxxUpdate"; //考生信息修改
