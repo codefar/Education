@@ -26,6 +26,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -73,6 +74,7 @@ public class ManualTimFragment extends CommonFragment implements
 	private int mPageNo = 1;
 	private User mUser;
 	private EditText mTitleSearchEdit;
+	private String mLuqupici,mLuquqingkuang;
 
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
@@ -105,7 +107,9 @@ public class ManualTimFragment extends CommonFragment implements
 		mFilterTextView.setOnClickListener(this);
 		mScoreRankText.setOnClickListener(this);
 		mSchoolRankText.setOnClickListener(this);
-		firstGetData("");
+		mLuqupici=getLuqupici(null);
+		mLuquQingkuang=getLuquQingkuang(new Intent());
+		postData2Server(null,"",true);
 		return v;
 	}
 
@@ -130,7 +134,7 @@ public class ManualTimFragment extends CommonFragment implements
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				 if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE){
-					 postData2Server(conditionItemList,v.getText().toString().trim());
+					 postData2Server(conditionItemList,v.getText().toString().trim(),false);
 		}
 				return false;
 			}
@@ -150,6 +154,7 @@ public class ManualTimFragment extends CommonFragment implements
 
 	private void setDataSource(ShaiXuanJieGuo result) {
 		mSchoolNumbers = String.valueOf(result.getYxzydata().size());
+		mMajorNumbers=0;
 		List<CollegeItem> schoolList = result.getYxzydata();
 		mItemList.clear();
 		for (int i = 0; i < schoolList.size(); i++) {
@@ -158,6 +163,7 @@ public class ManualTimFragment extends CommonFragment implements
 			mMajorNumbers += Integer.valueOf(schoolList.get(i).getZysl())
 					.intValue();
 			setSchoolImg(localItem, i % 3);
+			localItem.setYxdh(schoolList.get(i).getYxdh());
 			mItemList.add(localItem);
 		}
 		mItemAdapter.notifyDataSetChanged();
@@ -246,15 +252,10 @@ public class ManualTimFragment extends CommonFragment implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			if (position == 0) {
-
-			} else if (position == 1) {
-
-			} else if (position == 2) {
-
-			} else if (position == 3) {
-
-			}
+			String yxdh=mItemList.get(position).getYxdh();
+			String luqupic=mLuqupici;
+			String lqqk=mLuquQingkuang;
+			
 		}
 	}
 
@@ -262,7 +263,16 @@ public class ManualTimFragment extends CommonFragment implements
 		protected int schoolImg;
 		protected String marjorNumber;
 		protected String schoolName;
+		protected String yxdh;
 
+		public void setYxdh(String yxdh) {
+			this.yxdh = yxdh;
+		}
+		
+		public String getYxdh() {
+			return yxdh;
+		}
+		
 		public SchoolItem(String marjorNumber, String schoolName) {
 			super();
 			this.marjorNumber = marjorNumber;
@@ -308,10 +318,8 @@ public class ManualTimFragment extends CommonFragment implements
 			conditionItemList = (ArrayList<ShaiXuanConditionItem>) bundle
 					.getSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
 			mLuquQingkuang = getLuquQingkuang(data);
-			postData2Server(conditionItemList,"");
+			postData2Server(conditionItemList,"",false);
 			Log.w("wutl", "录取情况＝" + mLuquQingkuang);
-			Toast.makeText(mActivity, conditionItemList.toString(),
-					Toast.LENGTH_SHORT).show();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -331,10 +339,11 @@ public class ManualTimFragment extends CommonFragment implements
 		if(TextUtils.isEmpty(high_score))
 			high_score=String.valueOf(mUser.getKscj()+20);
 		
-		return year + "|"
+		mLuquQingkuang=year + "|"
 				+ data.getIntExtra("score_type", 1) + "|"
 				+ low_score + "|"
 				+ high_score;
+		return mLuquQingkuang;
 	}
 
 	private void firstGetData(
@@ -357,8 +366,6 @@ public class ManualTimFragment extends CommonFragment implements
 						} else {
 							ErrorData errorData = AppHelper
 									.getErrorData(response);
-							Toast.makeText(mActivity, errorData.getText(),
-									Toast.LENGTH_SHORT).show();
 						}
 					}
 				}, new VolleyErrorListener() {
@@ -381,7 +388,7 @@ public class ManualTimFragment extends CommonFragment implements
 				map.put("yxss", "");
 				map.put("yxlx", "");
 				map.put("yxxz", "");
-				map.put("lqpc", "3");
+				map.put("lqpc", mLuqupici);
 				map.put("lqqk", getLuquQingkuang(new Intent()));
 				map.put("kskl", String.valueOf(user.getKskl()));
 				map.put("kqdh", String.valueOf(user.getKqdh()));
@@ -394,7 +401,7 @@ public class ManualTimFragment extends CommonFragment implements
 	}
 	
 	private void postData2Server(
-			final ArrayList<ShaiXuanConditionItem> conditionlist,final String skey) {
+			final ArrayList<ShaiXuanConditionItem> conditionlist,final String skey,final boolean isFirstInto) {
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.SHAI_XUAN, null,
 				new VolleyResponseListener(mActivity) {
@@ -432,6 +439,17 @@ public class ManualTimFragment extends CommonFragment implements
 			protected Map<String, String> getParams() throws AuthFailureError {
 				User user = User.getInstance();
 				Map<String, String> map = new HashMap<String, String>();
+				if(isFirstInto){
+					map.put("pageno", String.valueOf(1));
+					 map.put("skey", skey);
+					map.put("yxss", "");
+					map.put("yxlx", "");
+					map.put("yxxz", "");
+					map.put("lqpc", mLuqupici);
+					map.put("lqqk", getLuquQingkuang(new Intent()));
+					map.put("kskl", String.valueOf(user.getKskl()));
+					map.put("kqdh", String.valueOf(user.getKqdh()));
+				}else{
 				map.put("pageno", String.valueOf(1));
 				 map.put("skey", skey);
 				map.put("yxss", getYxss(conditionlist));
@@ -441,7 +459,7 @@ public class ManualTimFragment extends CommonFragment implements
 				map.put("lqqk", mLuquQingkuang);
 				map.put("kskl", String.valueOf(user.getKskl()));
 				map.put("kqdh", String.valueOf(user.getKqdh()));
-
+				}
 				Log.w("wutl","map="+AppHelper.makeSimpleData("search", map).toString());
 				return AppHelper.makeSimpleData("search", map);
 			}
@@ -545,9 +563,12 @@ public class ManualTimFragment extends CommonFragment implements
 			}
 		}
 		Log.w("wutl", "录取批次＝" + buffer.toString());
-		if (TextUtils.isEmpty(buffer.toString()))
-			return "3";
-		return buffer.toString();
+		if (TextUtils.isEmpty(buffer.toString())){
+			mLuqupici="3";
+			return mLuqupici;
+		}
+		mLuqupici=buffer.toString();
+		return mLuqupici;
 	}
 
 	@Override
@@ -618,7 +639,7 @@ public class ManualTimFragment extends CommonFragment implements
 	@Override
 	public void afterTextChanged(Editable s) {
 		if(TextUtils.isEmpty(s.toString())){
-			 postData2Server(conditionItemList,"");
+			 postData2Server(conditionItemList,"",false);
 		}
 		
 	}
