@@ -10,7 +10,7 @@
         android:layout_height="fill_parent"
         android:background="#FFFFFF"
         android:ellipsize="end"
-        android:hint="请输入学校 、专业信息"
+        android:hint="请输入学校名称"
         android:imeOptions="actionDone"      
         android:paddingLeft="@dimen/dimen_25_dip"
         android:textSize="@dimen/dimen_12_dip"

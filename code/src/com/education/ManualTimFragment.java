@@ -13,15 +13,12 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -67,7 +64,8 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	protected Resources mResources;
 	private ItemAdapter mItemAdapter;
 	private MajorItemAdapter mMajorAdapter;
-	private TextView mFilterTextView, mScoreRankText, mSchoolRankText,
+	private View mFilterLayout;
+    private TextView mScoreRankText, mSchoolRankText,
 			mUserScoreText, mUserRankText, mUserTypeText, mUserLocation,
 			mSchoolNumbersText, mMajorNumbersText;
 	private Intent mShaixuanIntent;
@@ -117,7 +115,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		mMajorResultListView.setAdapter(mMajorAdapter);
 		mMajorResultListView.setOnItemClickListener(mMajorAdapter);
 		displayCollege();
-		mFilterTextView.setOnClickListener(this);
+		mFilterLayout.setOnClickListener(this);
 		mScoreRankText.setOnClickListener(this);
 		mSchoolRankText.setOnClickListener(this);
 		mLuqupici = getLuqupici(null);
@@ -136,7 +134,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 
 		mMajorResultListView = (ListView) v
 				.findViewById(R.id.filter_major_result_list);
-		mFilterTextView = (TextView) v.findViewById(R.id.filter_textview);
+		mFilterLayout = v.findViewById(R.id.shaixuan_layout);
 		mScoreRankText = (TextView) v.findViewById(R.id.paixu_pinyin);
 		mSchoolRankText = (TextView) v.findViewById(R.id.paiming_school);
 		mScoreRankImg = (ImageView) v.findViewById(R.id.paixu_pinyin_img);
@@ -756,7 +754,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.filter_textview:
+		case R.id.shaixuan_layout:
             mShaixuanIntent.putExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG, conditionItemList);
             mShaixuanIntent.putExtra("LU_QU_QING_KUANG", mLuquQingkuang);
 			startActivityForResult(mShaixuanIntent, 1);

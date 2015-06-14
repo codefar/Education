@@ -192,7 +192,7 @@ public class MainActivity extends FragmentBaseActivity {
 				switch (mTabHost.getCurrentTab()) {
 				case TAB_MANUAL:
 					bar.setDisplayShowCustomEnabled(true);
-					bar.setTitle(R.string.manual_tim);
+					bar.setTitle(""); //客户不要此title
 					break;
 				case TAB_SMART:
 					bar.setDisplayShowCustomEnabled(false);
