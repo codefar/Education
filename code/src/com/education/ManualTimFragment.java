@@ -2,6 +2,7 @@ package com.education;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -243,6 +245,15 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		View dividerView;
 	}
 
+	private static class ViewHolderMajor {
+		TextView zymcTextView;
+		TextView personNumberTextView;
+		TextView t1;
+		TextView t2;
+		TextView t3;
+		TextView tBtn;
+	}
+	
 	private class ItemAdapter extends BaseAdapter implements
 			AdapterView.OnItemClickListener {
 		public int getCount() {
@@ -316,42 +327,48 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			final ViewHolder holder;
+			final ViewHolderMajor holder;
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_college, null,
+				convertView = mInflater.inflate(R.layout.item_zhuanye_by_colleage, null,
 						false);
-				holder = new ViewHolder();
-				holder.dividerView = convertView.findViewById(R.id.divider);
-				holder.schoolNameTextView = (TextView) convertView
-						.findViewById(R.id.item_title);
-				holder.majorNumberTextView = (TextView) convertView
-						.findViewById(R.id.desc);
-				holder.schoolImg = (ImageView) convertView
-						.findViewById(R.id.icon);
-				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-						AbsListView.LayoutParams.MATCH_PARENT,
-						mResources.getDimensionPixelSize(R.dimen.dimen_34_dip));
-				convertView.setLayoutParams(lp);
+				holder = new ViewHolderMajor();
+				holder.zymcTextView = (TextView) convertView
+						.findViewById(R.id.zymc);
+				holder.personNumberTextView = (TextView) convertView
+						.findViewById(R.id.person_num);
+				holder.t1 = (TextView) convertView
+						.findViewById(R.id.text1);
+				holder.t2 = (TextView) convertView
+						.findViewById(R.id.text3);
+				holder.t3 = (TextView) convertView
+						.findViewById(R.id.text5);
+				holder.tBtn = (TextView) convertView
+						.findViewById(R.id.collect);
+//				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
+//						AbsListView.LayoutParams.MATCH_PARENT,
+//						mResources.getDimensionPixelSize(R.dimen.dimen_34_dip));
+//				convertView.setLayoutParams(lp);
 			} else {
-				holder = (ViewHolder) convertView.getTag();
+				holder = (ViewHolderMajor) convertView.getTag();
 			}
 			convertView.setTag(holder);
 
-			MajorItem majorItem = mZyData.get(position);
+			final MajorItem majorItem = mZyData.get(position);
 
-			holder.schoolNameTextView.setText(majorItem.getZymc());
-			int source = majorItem.getSource();
-			if (source == 0) {
-				// 未收藏
-				holder.majorNumberTextView.setText("");
-			} else if (source == 1) {
-				holder.majorNumberTextView.setText("手工筛选");
-			} else if (source == 2) {
-				holder.majorNumberTextView.setText("智能推荐");
-			}
-			holder.schoolImg.setImageBitmap(BitmapFactory.decodeResource(
-					mResources, getImgId(position - 1)));
-
+			holder.zymcTextView.setText(majorItem.getZymc());
+			holder.personNumberTextView.setText("共录取"+majorItem.getLqrs()+"人");
+			holder.t1.setText(String.valueOf(majorItem.getMin()));
+			holder.t2.setText(String.valueOf(majorItem.getMax()));
+			holder.t3.setText(String.valueOf(majorItem.getPjz()));
+			
+			holder.tBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//final String yxdh, final String zydh,
+					//final String zymc, final int lqpc
+					//shouCangZhuanYe(item2.getYxdh(),majorItem.getZydh(),majorItem.getZymc(),1);
+				}
+			});
 			return convertView;
 		}
 
@@ -395,6 +412,62 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void shouCangZhuanYe(final String yxdh, final String zydh,
+			final String zymc, final int lqpc) {
+		final FastJsonRequest request = new FastJsonRequest(
+				Request.Method.POST, Url.SHOU_CANG_ZHUAN_YE, null,
+				new VolleyResponseListener(getActivity()) {
+					@Override
+					public void onSuccessfulResponse(JSONObject response,
+							boolean success) {
+						Log.i(TAG, response.toJSONString());
+						if (success) {
+							JSONObject result = response
+									.getJSONObject("result");
+							int status = result.getInteger("status");
+							if (status == 1) {
+
+							}
+							Toast.makeText(getActivity(),
+									result.getString("msgText"),
+									Toast.LENGTH_SHORT).show();
+						} else {
+							ErrorData errorData = AppHelper
+									.getErrorData(response);
+							Toast.makeText(getActivity(), errorData.getText(),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				}, new VolleyErrorListener() {
+					@Override
+					public void onVolleyErrorResponse(VolleyError volleyError) {
+						LogUtil.logNetworkResponse(volleyError, TAG);
+						Toast.makeText(
+								getActivity(),
+								getResources().getString(
+										R.string.internet_exception),
+								Toast.LENGTH_SHORT).show();
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				User user = User.getInstance();
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("userId", user.getId());
+				map.put("yxdh", yxdh); // 院校代号
+				map.put("zydh", zydh); // 专业代号
+				map.put("zymc", zymc); // 专业名称
+				map.put("lqpc", String.valueOf(lqpc)); // 录取批次
+				map.put("source", "2");// 收藏来源 1为手工筛选 2为智能推荐
+				Log.i(TAG, Arrays.toString(map.entrySet().toArray()));
+				return AppHelper.makeSimpleData("search", map);
+			}
+		};
+		EduApp.sRequestQueue.add(request);
+	}
+
+	Item2 item2;
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void shaiXuanByCollege(final SchoolItem schoolItem) {
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.SHAI_XUAN_BY_COLLEGE, null,
@@ -405,9 +478,9 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 						Log.i(TAG, response.toJSONString());
 						if (success) {
 							String datas = response.getString("datas");
-							Item2 item = JSON.parseObject(datas, Item2.class);
+							item2 = JSON.parseObject(datas, Item2.class);
 							mZyData.clear();
-							mZyData.addAll(item.getZydata());
+							mZyData.addAll(item2.getZydata());
 
 							mSearchResulListView.setVisibility(View.INVISIBLE);
 							mMajorResultListView.setVisibility(View.VISIBLE);

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dimen_17_dip"
+        android:paddingRight="@dimen/dimen_17_dip"
+        android:paddingTop="@dimen/dimen_17_dip" >
+
+        <TextView
+            android:id="@+id/zymc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="专业"
+            android:textColor="@color/first_text"
+            android:textSize="@dimen/dimen_12_dip" />
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_51_dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="@dimen/dimen_11_dip"
+                android:layout_height="@dimen/dimen_11_dip"
+                android:src="@drawable/ren_1" />
+
+            <TextView
+                android:id="@+id/person_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="录取3人"
+                android:textColor="@color/first_text"
+                android:textSize="@dimen/dimen_9_dip" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginTop="@dimen/dimen_9_dip"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_34_dip"
+        android:paddingLeft="@dimen/dimen_17_dip"
+        android:paddingRight="@dimen/dimen_17_dip" >
+
+        <TextView
+            android:id="@+id/ss"
+            android:layout_width="@dimen/dimen_51_dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:singleLine="true"
+            android:text="录取成绩"
+            android:textColor="@color/third_text"
+            android:textSize="@dimen/dimen_10_dip" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_34_dip"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/ss"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/text0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="最低"
+                    android:textColor="@color/third_text"
+                    android:textSize="@dimen/dimen_10_dip" />
+
+                <TextView
+                    android:id="@+id/text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/first_text"
+                    android:textSize="@dimen/dimen_10_dip" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/dimen_9_dip"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="最高"
+                    android:textColor="@color/third_text"
+                    android:textSize="@dimen/dimen_10_dip" />
+
+                <TextView
+                    android:id="@+id/text3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/first_text"
+                    android:textSize="@dimen/dimen_10_dip" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/dimen_9_dip"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/text4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="平均"
+                    android:textColor="@color/third_text"
+                    android:textSize="@dimen/dimen_10_dip" />
+
+                <TextView
+                    android:id="@+id/text5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/first_text"
+                    android:textSize="@dimen/dimen_10_dip" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/collect"
+            android:layout_width="@dimen/dimen_51_dip"
+            android:layout_height="@dimen/dimen_17_dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:background="@color/button_green_default"
+            android:gravity="center"
+            android:minHeight="@dimen/dimen_17_dip"
+            android:text="收藏"
+            android:clickable="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_9_dip" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider" />
+
+</LinearLayout>
