@@ -33,7 +33,8 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
     private TextView mHintTextView;
     private Button mConfirmBt;
     private SegmentedGroup mTypeGroup;
-    private int mCurrentRadioType = 1;;
+    private int mCurrentRadioType = 1;
+    private User mUser;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +66,7 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
             mLuquYearTextView.setText(yearScore);
 
         mTypeGroup.check(scoreType == 1 ? R.id.fenshu_radiobutton : R.id.paiwei_radiobutton);
-//        intent.putExtra("low_score", mShaixuanIntent.getStringExtra("low_score"));
-//        intent.putExtra("high_score", mShaixuanIntent.getStringExtra("high_score"));
-//        intent.putExtra("year_score", mShaixuanIntent.getStringExtra("year_score"));
-//        intent.putExtra("score_type", mShaixuanIntent.getIntExtra("score_type", 1));
+        mUser=User.getInstance();
 	}
 
 	/**
@@ -181,10 +179,14 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
 		if (checkedId == R.id.fenshu_radiobutton) {
             mCurrentRadioType = 1;
             mHintTextView.setText("注:默认值是你的高考成绩上下浮动20分");
+            mLowEdit.setText(String.valueOf(mUser.getKscj()-20));
+            mHighEdit.setText(String.valueOf(mUser.getKscj()+20));
         }
 		else {
             mCurrentRadioType = 2;
             mHintTextView.setText("注:默认值是你的高考成绩上下浮动200名");
+            mLowEdit.setText(String.valueOf(mUser.getKspw()-200));
+            mHighEdit.setText(String.valueOf(mUser.getKspw()+200));
         }
 	}
 //    注:默认值是你的高考成绩上下浮动20分

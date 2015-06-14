@@ -349,6 +349,8 @@ public class ManualTimFragment extends CommonFragment implements
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(data==null)
+			return;
 		// 获取筛选条件
 		if (requestCode == 1 && resultCode == 1) {
 

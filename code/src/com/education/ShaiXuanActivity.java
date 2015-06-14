@@ -252,6 +252,8 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(data==null)
+			return;
 		if (requestCode == 0
 				&& resultCode == DetailConditionConstants.CONDITION_ITEM_SELECTE_CONFIRM_RESULE_CODE) {
 			isReset = false;
