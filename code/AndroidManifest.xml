@@ -131,6 +131,13 @@
             android:label="@string/volunteer_collection"
             android:screenOrientation="portrait" >
         </activity>
+
+        <activity
+                android:name=".WebViewActivity"
+                android:exported="true"
+                android:screenOrientation="portrait"
+                android:theme="@style/StyledIndicators" >
+        </activity>
     </application>
 
 </manifest>

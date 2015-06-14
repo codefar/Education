@@ -3,6 +3,7 @@ package com.education;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -46,6 +47,7 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
     private RegisterActivity mActivity;
     private CheckBox mCheckBox;
     private Button mRegister;
+    private TextView mProtocolTextView;
 
     public static RegisterStep1Fragment create() {
         return new RegisterStep1Fragment();
@@ -68,6 +70,7 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_register_step1, null);
         TextView protocolTextView = (TextView) layout.findViewById(R.id.protocol);
+        protocolTextView.setOnClickListener(this);
         protocolTextView.setMovementMethod(LinkMovementMethod.getInstance());
         mRegister = (Button) layout.findViewById(R.id.register);
         mRegister.setOnClickListener(this);
@@ -127,6 +130,10 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
                 }
                 break;
             case R.id.protocol:
+                Intent intent = new Intent(mActivity, WebViewActivity.class);
+                intent.putExtra("url", "http://www.baidu.com");
+                intent.putExtra("title", "用户注册协议");
+                startActivity(intent);
                 break;
             default:
                 break;

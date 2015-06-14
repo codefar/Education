@@ -198,19 +198,16 @@
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:id="@+id/shaixuan_layout">
-            <ImageView
-                    android:id="@+id/shaixuan_img"
-                    style="@style/shaixuan_img_style"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/paixu_normal" />
-
             <TextView
                     android:id="@+id/filter_textview"
                     style="@style/filter_school_and_major_down_text"
-                    android:layout_toLeftOf="@id/shaixuan_img"
                     android:text="筛选"
-                    android:textSize="@dimen/dimen_12_dip" >
-            </TextView>
+                    android:textSize="@dimen/dimen_12_dip"/>
+            <ImageView
+                    android:id="@+id/shaixuan_img"
+                    style="@style/shaixuan_img_style"
+                    android:layout_marginLeft="@dimen/dimen_3_dip"
+                    android:src="@drawable/shaixuan_02" />
         </LinearLayout>
     </RelativeLayout>
 
