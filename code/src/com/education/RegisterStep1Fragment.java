@@ -123,7 +123,7 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
                     mSimpleBlockedDialogFragment.updateMessage("正在获取验证码");
                     mSimpleBlockedDialogFragment.show(ft, "block_dialog");
                     String phoneNumber = mPhoneNumberEditText.getText().toString();
-                    appCheckMobile(phoneNumber);
+                    checkUser(phoneNumber);
                 }
                 break;
             case R.id.protocol:
@@ -133,7 +133,7 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
         }
     }
 
-    private void appCheckMobile(final String mobile) {
+    private void getSmsCode(final String mobile) {
         final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.REGISTER_GET_SMS_CODE
                 , null, new VolleyResponseListener(mActivity) {
             @Override
@@ -163,6 +163,45 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("phoneNum", mobile);
                 return AppHelper.makeSimpleData("regChkPN", params);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
+    }
+
+    //检查用户是否已经存在
+    private void checkUser(final String phoneNumber) {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.CHECK_USER
+                , null, new VolleyResponseListener(mActivity) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    JSONObject jsonObject = response.getJSONObject("result");
+                    int isVaild = jsonObject.getInteger("isVaild");
+                    if (isVaild == 1) {
+                        getSmsCode(phoneNumber);
+                    } else {
+                        Toast.makeText(mActivity, jsonObject.getString("msgText"), Toast.LENGTH_SHORT).show();
+                        mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
+                    }
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(mActivity, errorData.getText(), Toast.LENGTH_SHORT).show();
+                    mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(mActivity, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+                mSimpleBlockedDialogFragment.dismissAllowingStateLoss();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("phoneNum", phoneNumber);
+                return AppHelper.makeSimpleData("regChkPN", map);
             }
         };
         EduApp.sRequestQueue.add(request);

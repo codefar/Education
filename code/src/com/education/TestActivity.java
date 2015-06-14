@@ -93,7 +93,44 @@ public class TestActivity extends CommonBaseActivity {
 //        tuiJianXinXi();
 
 //        zhuanYeFenXiBaoGao();
-        huiDaZhuangTai();
+//        huiDaZhuangTai();
+        checkUser();
+    }
+
+    //检查用户是否已经存在
+    private void checkUser() {
+        final FastJsonRequest request = new FastJsonRequest(Request.Method.POST, Url.CHECK_USER
+                , null, new VolleyResponseListener(this) {
+            @Override
+            public void onSuccessfulResponse(JSONObject response, boolean success) {
+                if (success) {
+                    JSONObject jsonObject = response.getJSONObject("result");
+                    int isVaild = jsonObject.getInteger("isVaild");
+                    if (isVaild == 1) {
+                        Toast.makeText(TestActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(TestActivity.this, jsonObject.getString("msgText"), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    ErrorData errorData = AppHelper.getErrorData(response);
+                    Toast.makeText(TestActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onVolleyErrorResponse(VolleyError volleyError) {
+                LogUtil.logNetworkResponse(volleyError, TAG);
+                Toast.makeText(TestActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("phoneNum", "17000000000");
+                return AppHelper.makeSimpleData("regChkPN", map);
+            }
+        };
+        EduApp.sRequestQueue.add(request);
     }
 
     //回答状态
