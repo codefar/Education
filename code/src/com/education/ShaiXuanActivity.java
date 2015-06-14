@@ -191,9 +191,22 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			if (position == mItemAdapter.getCount() - 1)
-				startActivityForResult(new Intent(ShaiXuanActivity.this,
-						LuQuScore.class), 2);
+			if (position == mItemAdapter.getCount() - 1) {
+//                mShaixuanIntent.putExtra("low_score",
+//                        data.getStringExtra("low_score"));
+//                mShaixuanIntent.putExtra("high_score",
+//                        data.getStringExtra("high_score"));
+//                mShaixuanIntent.putExtra("year_score",
+//                        data.getStringExtra("year_score"));
+//                mShaixuanIntent.putExtra("score_type",
+//                        data.getIntExtra("score_type", 1));
+                Intent intent = new Intent(ShaiXuanActivity.this, LuQuScore.class);
+                intent.putExtra("low_score", mShaixuanIntent.getStringExtra("low_score"));
+                intent.putExtra("high_score", mShaixuanIntent.getStringExtra("high_score"));
+                intent.putExtra("year_score", mShaixuanIntent.getStringExtra("year_score"));
+                intent.putExtra("score_type", mShaixuanIntent.getIntExtra("score_type", 1));
+                startActivityForResult(intent, 2);
+            }
 			else if(position==3){
 				simpleDialog(position);
 			}else {
@@ -257,7 +270,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 			mItemList.get(position).setmSubDetailConditionItemList(
 					detailConditionItemList);
 			mItemAdapter.notifyDataSetChanged();
-		} else if (requestCode == 2 && resultCode == 3) {
+		} else if (requestCode == 2 || resultCode == 3) {
 			mShaixuanIntent.putExtra("low_score",
 					data.getStringExtra("low_score"));
 			mShaixuanIntent.putExtra("high_score",

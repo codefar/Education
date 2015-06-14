@@ -88,6 +88,7 @@ public class PersonCenterFragment extends CommonFragment {
         View v = inflater.inflate(R.layout.fragment_main_center, container, false);
 
         api = WXAPIFactory.createWXAPI(mActivity, EduApp.WX_APP_ID);
+        api.registerApp(EduApp.WX_APP_ID);
         mInflater = inflater;
         mListView = (ListView) v.findViewById(R.id.list);
         mItemAdapter = new ItemAdapter();

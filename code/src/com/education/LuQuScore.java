@@ -1,5 +1,6 @@
 package com.education;
 
+import android.text.TextUtils;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 import java.util.ArrayList;
@@ -51,6 +52,23 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
         mTypeGroup.setOnCheckedChangeListener(this);
         initYear();
         mLuquYearTextView.setOnClickListener(this);
+
+        Intent intent = getIntent();
+        String lowScore = intent.getStringExtra("low_score");
+        String highScore = intent.getStringExtra("high_score");
+        String yearScore = intent.getStringExtra("year_score");
+        int scoreType = intent.getIntExtra("score_type", 1);
+        mLowEdit.setText(lowScore);
+        mHighEdit.setText(highScore);
+
+        if (!TextUtils.isEmpty(yearScore))
+            mLuquYearTextView.setText(yearScore);
+
+        mTypeGroup.check(scoreType == 1 ? R.id.fenshu_radiobutton : R.id.paiwei_radiobutton);
+//        intent.putExtra("low_score", mShaixuanIntent.getStringExtra("low_score"));
+//        intent.putExtra("high_score", mShaixuanIntent.getStringExtra("high_score"));
+//        intent.putExtra("year_score", mShaixuanIntent.getStringExtra("year_score"));
+//        intent.putExtra("score_type", mShaixuanIntent.getIntExtra("score_type", 1));
 	}
 
 	/**
