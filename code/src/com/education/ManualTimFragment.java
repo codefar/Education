@@ -14,7 +14,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -49,7 +51,7 @@ import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
 
 public class ManualTimFragment extends CommonFragment implements
-		View.OnClickListener {
+		View.OnClickListener,TextWatcher {
 	private static final String TAG = ManualTimFragment.class.getSimpleName();
 	private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment
 			.newInstance();
@@ -103,7 +105,7 @@ public class ManualTimFragment extends CommonFragment implements
 		mFilterTextView.setOnClickListener(this);
 		mScoreRankText.setOnClickListener(this);
 		mSchoolRankText.setOnClickListener(this);
-		shaiXuan();
+		firstGetData("");
 		return v;
 	}
 
@@ -133,6 +135,7 @@ public class ManualTimFragment extends CommonFragment implements
 				return false;
 			}
 		});
+		mTitleSearchEdit.addTextChangedListener(this);
 		
 		User user = User.getInstance();
 		if (user != null) {
@@ -143,62 +146,6 @@ public class ManualTimFragment extends CommonFragment implements
 			mUserTypeText.setText(kskl == 1 ? "理工" : "文史");
 			mUserLocation.setText(user.getKskqName() + "");
 		}
-	}
-
-	private void shaiXuan() {
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		mBlockedDialogFragment.show(ft, "block_dialog");
-
-		final FastJsonRequest request = new FastJsonRequest(Request.Method.GET,
-				Url.SHAI_XUAN, null, new VolleyResponseListener(mActivity) {
-					@Override
-					public void onSuccessfulResponse(JSONObject response,
-							boolean success) {
-						mBlockedDialogFragment.dismissAllowingStateLoss();
-						if (success) {
-							String datas = response.getString("datas");
-							ShaiXuanJieGuo result = JSON.parseObject(datas,
-									ShaiXuanJieGuo.class);
-							if (result != null)
-								setDataSource(result);
-							Log.d("wutl", "resutl=" + result.toString());
-						} else {
-							ErrorData errorData = AppHelper
-									.getErrorData(response);
-							Toast.makeText(mActivity, errorData.getText(),
-									Toast.LENGTH_SHORT).show();
-						}
-					}
-				}, new VolleyErrorListener() {
-					@Override
-					public void onVolleyErrorResponse(VolleyError volleyError) {
-						mBlockedDialogFragment.dismissAllowingStateLoss();
-						LogUtil.logNetworkResponse(volleyError, "wutl");
-						Toast.makeText(
-								mActivity,
-								getResources().getString(
-										R.string.internet_exception),
-								Toast.LENGTH_SHORT).show();
-					}
-				}) {
-			@Override
-			protected Map<String, String> getParams() throws AuthFailureError {
-				User user = User.getInstance();
-				Map<String, String> map = new HashMap<String, String>();
-				map.put("pageno", String.valueOf(1));
-				map.put("skey", "清华");
-				map.put("yxss", "1|2|3");
-				map.put("yxlx", "");
-				map.put("yxxz", "1|2");
-				map.put("lqpc", "3");
-				map.put("lqqk", "2013|1|688|720");
-				map.put("kskl", String.valueOf(1/* 文史 */));
-				map.put("kqdh", String.valueOf(2/* 上海 */));
-
-				return AppHelper.makeSimpleData("search", map);
-			}
-		};
-		EduApp.sRequestQueue.add(request);
 	}
 
 	private void setDataSource(ShaiXuanJieGuo result) {
@@ -390,6 +337,62 @@ public class ManualTimFragment extends CommonFragment implements
 				+ high_score;
 	}
 
+	private void firstGetData(
+			final String skey) {
+		final FastJsonRequest request = new FastJsonRequest(
+				Request.Method.POST, Url.SHAI_XUAN, null,
+				new VolleyResponseListener(mActivity) {
+					@Override
+					public void onSuccessfulResponse(JSONObject response,
+							boolean success) {
+						if (success) {
+							String datas = response.getString("datas");
+							ShaiXuanJieGuo result = JSON.parseObject(datas,
+									ShaiXuanJieGuo.class);
+							if (result != null){
+								setDataSource(result);
+							     mItemAdapter.notifyDataSetChanged();
+							}
+							Log.d("wutl", "resutl=" + result.toString());
+						} else {
+							ErrorData errorData = AppHelper
+									.getErrorData(response);
+							Toast.makeText(mActivity, errorData.getText(),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				}, new VolleyErrorListener() {
+					@Override
+					public void onVolleyErrorResponse(VolleyError volleyError) {
+						LogUtil.logNetworkResponse(volleyError, "wutl");
+						Toast.makeText(
+								mActivity,
+								getResources().getString(
+										R.string.internet_exception),
+								Toast.LENGTH_SHORT).show();
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				User user = User.getInstance();
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("pageno", String.valueOf(1));
+				 map.put("skey", skey);
+				map.put("yxss", "");
+				map.put("yxlx", "");
+				map.put("yxxz", "");
+				map.put("lqpc", "3");
+				map.put("lqqk", getLuquQingkuang(new Intent()));
+				map.put("kskl", String.valueOf(user.getKskl()));
+				map.put("kqdh", String.valueOf(user.getKqdh()));
+
+				Log.w("wutl","map="+AppHelper.makeSimpleData("search", map).toString());
+				return AppHelper.makeSimpleData("search", map);
+			}
+		};
+		EduApp.sRequestQueue.add(request);
+	}
+	
 	private void postData2Server(
 			final ArrayList<ShaiXuanConditionItem> conditionlist,final String skey) {
 		final FastJsonRequest request = new FastJsonRequest(
@@ -543,7 +546,7 @@ public class ManualTimFragment extends CommonFragment implements
 		}
 		Log.w("wutl", "录取批次＝" + buffer.toString());
 		if (TextUtils.isEmpty(buffer.toString()))
-			return "2";
+			return "3";
 		return buffer.toString();
 	}
 
@@ -599,5 +602,24 @@ public class ManualTimFragment extends CommonFragment implements
 	@Override
 	protected String getLogTag() {
 		return TAG;
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+		
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		
+	}
+
+	@Override
+	public void afterTextChanged(Editable s) {
+		if(TextUtils.isEmpty(s.toString())){
+			 postData2Server(conditionItemList,"");
+		}
+		
 	}
 }
