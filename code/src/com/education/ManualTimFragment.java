@@ -50,13 +50,16 @@ import com.education.entity.ShaiXuanJieGuo;
 import com.education.entity.User;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
-public class ManualTimFragment extends CommonFragment implements
+public class ManualTimFragment extends CommonFragment implements PullToRefreshBase.OnRefreshListener2<ListView>,
 		View.OnClickListener, TextWatcher {
 	private static final String TAG = ManualTimFragment.class.getSimpleName();
 	private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment
 			.newInstance();
-	private ListView mSearchResulListView, mMajorResultListView;;
+	private PullToRefreshListView mSearchResulListView;
+    private ListView mMajorResultListView;;
 	private List<SchoolItem> mItemList = new ArrayList<SchoolItem>();
 	private List<MajorItem> mZyData = new ArrayList<MajorItem>();
 
@@ -71,13 +74,14 @@ public class ManualTimFragment extends CommonFragment implements
 	private ImageView mScoreRankImg, mSchoolRankImg;
 	private int clickPinyinNumbers, clickSchoolNumbers;
 	private String mSchoolNumbers, mLuquQingkuang;
+    private List<CollegeItem> mSchoolList = new ArrayList<CollegeItem>();//用于记录分页
 	private int mMajorNumbers;
 	private ArrayList<ShaiXuanConditionItem> conditionItemList;
 	private Activity mActivity;
-	private int mPageNo = 1;
 	private User mUser;
 	private EditText mTitleSearchEdit;
 	private String mLuqupici, mLuquqingkuang;
+    private int mPageNo = 1;
 
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
@@ -120,8 +124,11 @@ public class ManualTimFragment extends CommonFragment implements
 	}
 
 	private void initView(View v) {
-		mSearchResulListView = (ListView) v
+		mSearchResulListView = (PullToRefreshListView) v
 				.findViewById(R.id.filter_school_result_list);
+        mSearchResulListView.setOnRefreshListener(this);
+        mSearchResulListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+
 		mMajorResultListView = (ListView) v
 				.findViewById(R.id.filter_major_result_list);
 		mFilterTextView = (TextView) v.findViewById(R.id.filter_textview);
@@ -164,6 +171,16 @@ public class ManualTimFragment extends CommonFragment implements
 			mUserLocation.setText(user.getKskqName() + "");
 		}
 	}
+
+    @Override
+    public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView) {
+        postData2Server(conditionItemList, "", true);
+    }
+
+    @Override
+    public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView) {
+        postData2Server(conditionItemList, "", false);
+    }
 
 	private void setDataSource(ShaiXuanJieGuo result) {
 		mSchoolNumbers = String.valueOf(result.getYxzydata().size());
@@ -521,19 +538,34 @@ public class ManualTimFragment extends CommonFragment implements
 	private void postData2Server(
 			final ArrayList<ShaiXuanConditionItem> conditionlist,
 			final String skey, final boolean isFirstInto) {
+        if (mSearchResulListView.getVisibility() == View.VISIBLE) {
+            mSearchResulListView.setRefreshing(true);
+        }
+
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.SHAI_XUAN, null,
 				new VolleyResponseListener(mActivity) {
 					@Override
 					public void onSuccessfulResponse(JSONObject response,
 							boolean success) {
+                        if (mSearchResulListView.getVisibility() == View.VISIBLE) {
+                            mSearchResulListView.onRefreshComplete();
+                        }
 						if (success) {
 							String datas = response.getString("datas");
 							ShaiXuanJieGuo result = JSON.parseObject(datas,
 									ShaiXuanJieGuo.class);
 							if (result != null) {
 								setDataSource(result);
-								mItemAdapter.notifyDataSetChanged();
+
+                                mItemAdapter.notifyDataSetChanged();
+                                List<CollegeItem> collegeItemList = result.getYxzydata();
+                                if (collegeItemList.size() > 0) {
+                                    mSearchResulListView.setMode(PullToRefreshBase.Mode.BOTH);
+                                } else {
+                                    mSearchResulListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+                                }
+
 							}
 							Log.d("wutl", "resutl=" + result.toString());
 						} else {
@@ -546,6 +578,9 @@ public class ManualTimFragment extends CommonFragment implements
 				}, new VolleyErrorListener() {
 					@Override
 					public void onVolleyErrorResponse(VolleyError volleyError) {
+                        if (mSearchResulListView.getVisibility() == View.VISIBLE) {
+                            mSearchResulListView.onRefreshComplete();
+                        }
 						LogUtil.logNetworkResponse(volleyError, "wutl");
 						Toast.makeText(
 								mActivity,
