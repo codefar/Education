@@ -121,7 +121,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final ViewHolder holder;
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_college, null,
+				convertView = mInflater.inflate(R.layout.item_volunteer_collection, null,
 						false);
 				holder = new ViewHolder();
 				holder.dividerView = convertView.findViewById(R.id.divider);
@@ -129,6 +129,8 @@ public class VolunteerCollectionFragment extends CommonFragment {
 						.findViewById(R.id.item_title);
 				holder.descTextView = (TextView) convertView
 						.findViewById(R.id.desc);
+                holder.quxiaoTextView = (TextView) convertView
+                        .findViewById(R.id.quxiao);
 				holder.iconImageView = (ImageView) convertView
 						.findViewById(R.id.icon);
 				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
@@ -144,6 +146,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 			if (mType == TYPE_COLLEGE) {
 				CollegeItem collegeItem = (CollegeItem) item;
 				holder.descTextView.setText(collegeItem.getZysl());
+                holder.quxiaoTextView.setVisibility(View.GONE);
 				holder.titleTextView.setText(collegeItem.getYxmc());
                 holder.iconImageView.setImageBitmap(BitmapFactory.decodeResource(
                         mResources, getImgId(position)));
@@ -157,6 +160,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 				} else if (source == 2) {
 					holder.descTextView.setText("智能推荐");
                 }
+                holder.quxiaoTextView.setVisibility(View.GONE); //以后可能会添加取消收藏
                 holder.titleTextView.setText(majorItem.getZymc());
                 holder.iconImageView.setImageBitmap(BitmapFactory.decodeResource(
                         mResources, getImgId(position - 1)));
@@ -239,6 +243,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 	private static class ViewHolder {
 		TextView titleTextView;
 		TextView descTextView;
+        TextView quxiaoTextView;
 		ImageView iconImageView;
 		View dividerView;
 	}
