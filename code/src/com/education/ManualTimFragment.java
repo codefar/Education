@@ -109,7 +109,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 				false);
 		initView(v);
 
-		mLuquQingkuang = getLuquQingkuang(new Intent());
+//		mLuquQingkuang = getLuquQingkuang(new Intent());
 		mItemAdapter = new ItemAdapter();
 		mMajorAdapter = new MajorItemAdapter();
 		mShaixuanIntent = new Intent(mActivity, ShaiXuanActivity.class);
@@ -649,7 +649,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		EduApp.sRequestQueue.add(request);
 	}
 
-	private String getYxss(ArrayList<ShaiXuanConditionItem> conditionlist) {
+	public static String getYxss(ArrayList<ShaiXuanConditionItem> conditionlist) {
 		StringBuffer buffer = new StringBuffer();
 		if (conditionlist != null) {
 			for (ShaiXuanConditionItem item : conditionlist) {
@@ -675,7 +675,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		return buffer.toString();
 	}
 
-	private String getYxlx(ArrayList<ShaiXuanConditionItem> conditionlist) {
+    public static String getYxlx(ArrayList<ShaiXuanConditionItem> conditionlist) {
 		StringBuffer buffer = new StringBuffer();
 		if (conditionlist != null) {
 			for (ShaiXuanConditionItem item : conditionlist) {
@@ -700,7 +700,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		return buffer.toString();
 	}
 
-	private String getYxxz(ArrayList<ShaiXuanConditionItem> conditionlist) {
+    public static String getYxxz(ArrayList<ShaiXuanConditionItem> conditionlist) {
 		StringBuffer buffer = new StringBuffer();
 		if (conditionlist != null) {
 			for (ShaiXuanConditionItem item : conditionlist) {
@@ -757,6 +757,8 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.filter_textview:
+            mShaixuanIntent.putExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG, conditionItemList);
+            mShaixuanIntent.putExtra("LU_QU_QING_KUANG", mLuquQingkuang);
 			startActivityForResult(mShaixuanIntent, 1);
 			break;
 		case R.id.paixu_pinyin:

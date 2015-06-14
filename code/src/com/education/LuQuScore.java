@@ -41,6 +41,8 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.luqu_score);
 		setupTitleBar();
+
+        mUser=User.getInstance();
 		mLuquYearTextView = (TextView) findViewById(R.id.luqu_score_year_spinner);
 		mLowEdit = (EditText) findViewById(R.id.lowScoreEdit);
 		mHighEdit = (EditText) findViewById(R.id.highScoreEdit);
@@ -50,7 +52,6 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
         mConfirmBt = (Button) findViewById(R.id.luqu_confirm_bt);
         mConfirmBt.setOnClickListener(this);
         mTypeGroup = (SegmentedGroup) findViewById(R.id.score_type_radio_grop);
-        mTypeGroup.setOnCheckedChangeListener(this);
         initYear();
         mLuquYearTextView.setOnClickListener(this);
 
@@ -65,8 +66,17 @@ public class LuQuScore extends CommonBaseActivity implements OnClickListener,
         if (!TextUtils.isEmpty(yearScore))
             mLuquYearTextView.setText(yearScore);
 
-        mTypeGroup.check(scoreType == 1 ? R.id.fenshu_radiobutton : R.id.paiwei_radiobutton);
-        mUser=User.getInstance();
+        //要放在setOnCheckedChangeListener之前
+        //不然会调用reset
+        if (scoreType == 1) {
+            mCurrentRadioType = 1;
+            mTypeGroup.check(R.id.fenshu_radiobutton);
+        } else {
+            mCurrentRadioType = 2;
+            mTypeGroup.check(R.id.paiwei_radiobutton);
+        }
+
+        mTypeGroup.setOnCheckedChangeListener(this);
 	}
 
 	/**

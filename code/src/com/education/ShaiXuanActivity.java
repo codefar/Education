@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +35,8 @@ import com.education.entity.User;
 
 public class ShaiXuanActivity extends CommonBaseActivity implements
 		View.OnClickListener {
+
+    private static final String TAG = "ShaiXuanActivity";
 
 	public static final String SHAIXUAN_CLICK_POSITION = "shuaixuan_click_position";
 	public static final String SHAIXUAN_RESULT_TAG = "shuaixuan_result_tag";
@@ -59,7 +62,32 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 		mLuQuPici=mResources.getStringArray(R.array.luqu_pici_name);
 		mDetailConditionItemIntent = new Intent(this,
 				DetailConditionActivity.class);
+
+
+
+
 		mShaixuanIntent = new Intent();
+        Intent intent = getIntent();
+//        List<ShaiXuanConditionItem> tempList = (ArrayList<ShaiXuanConditionItem>) intent.getSerializableExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
+//        if (tempList != null) {
+//            mItemList = tempList;
+//        }
+
+        String luQuQingKuang = intent.getStringExtra("LU_QU_QING_KUANG");
+        if (!TextUtils.isEmpty(luQuQingKuang)) {
+            String[] qingKuangs = luQuQingKuang.split("\\|");
+            mShaixuanIntent.putExtra("year_score", qingKuangs[0]);
+            mShaixuanIntent.putExtra("score_type", Integer.parseInt(qingKuangs[1]));
+            mShaixuanIntent.putExtra("low_score", qingKuangs[2]);
+            mShaixuanIntent.putExtra("high_score", qingKuangs[3]);
+
+//            intent.putExtra("low_score", mShaixuanIntent.getStringExtra("low_score"));
+//            intent.putExtra("high_score", mShaixuanIntent.getStringExtra("high_score"));
+//            intent.putExtra("year_score", mShaixuanIntent.getStringExtra("year_score"));
+//            intent.putExtra("score_type", mShaixuanIntent.getIntExtra("score_type", 1));
+        }
+
+
 		mConditionListView = (ListView) findViewById(R.id.shaixuan_condition_list);
 		mConfirmBt = (Button) findViewById(R.id.shaixuan_confirm_bt);
 		mItemAdapter = new ItemAdapter();
@@ -211,6 +239,10 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
                 intent.putExtra("high_score", mShaixuanIntent.getStringExtra("high_score"));
                 intent.putExtra("year_score", mShaixuanIntent.getStringExtra("year_score"));
                 intent.putExtra("score_type", mShaixuanIntent.getIntExtra("score_type", 1));
+                Log.v(TAG, "low_score: " + mShaixuanIntent.getStringExtra("low_score"));
+                Log.v(TAG, "high_score: " + mShaixuanIntent.getStringExtra("high_score"));
+                Log.v(TAG, "year_score: " + mShaixuanIntent.getStringExtra("year_score"));
+                Log.v(TAG, "score_type: " + mShaixuanIntent.getStringExtra("score_type"));
                 startActivityForResult(intent, 2);
             }
 			else if(position==3){
