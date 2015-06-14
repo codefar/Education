@@ -67,3 +67,5 @@ project_libs/android-segmented-control/library/src/main/.classpath
 *.properties
 
 code/project.properties
+
+code/local.properties

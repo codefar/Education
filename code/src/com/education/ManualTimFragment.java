@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -26,7 +25,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -39,12 +37,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.education.TestActivity.Item2;
 import com.education.common.AppHelper;
 import com.education.common.FastJsonRequest;
 import com.education.common.VolleyErrorListener;
 import com.education.common.VolleyResponseListener;
 import com.education.entity.CollegeItem;
 import com.education.entity.ErrorData;
+import com.education.entity.MajorItem;
 import com.education.entity.ShaiXuanConditionItem;
 import com.education.entity.ShaiXuanJieGuo;
 import com.education.entity.User;
@@ -52,15 +52,18 @@ import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
 
 public class ManualTimFragment extends CommonFragment implements
-		View.OnClickListener,TextWatcher {
+		View.OnClickListener, TextWatcher {
 	private static final String TAG = ManualTimFragment.class.getSimpleName();
 	private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment
 			.newInstance();
-	private ListView mSearchResulListView;
+	private ListView mSearchResulListView, mMajorResultListView;;
 	private List<SchoolItem> mItemList = new ArrayList<SchoolItem>();
+	private List<MajorItem> mZyData = new ArrayList<MajorItem>();
+
 	protected LayoutInflater mInflater;
 	protected Resources mResources;
 	private ItemAdapter mItemAdapter;
+	private MajorItemAdapter mMajorAdapter;
 	private TextView mFilterTextView, mScoreRankText, mSchoolRankText,
 			mUserScoreText, mUserRankText, mUserTypeText, mUserLocation,
 			mSchoolNumbersText, mMajorNumbersText;
@@ -74,7 +77,7 @@ public class ManualTimFragment extends CommonFragment implements
 	private int mPageNo = 1;
 	private User mUser;
 	private EditText mTitleSearchEdit;
-	private String mLuqupici,mLuquqingkuang;
+	private String mLuqupici, mLuquqingkuang;
 
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
@@ -86,7 +89,7 @@ public class ManualTimFragment extends CommonFragment implements
 		mActivity = getActivity();
 		mInflater = (LayoutInflater) mActivity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mUser=User.getInstance();
+		mUser = User.getInstance();
 	}
 
 	/**
@@ -101,21 +104,25 @@ public class ManualTimFragment extends CommonFragment implements
 
 		mLuquQingkuang = getLuquQingkuang(new Intent());
 		mItemAdapter = new ItemAdapter();
+		mMajorAdapter = new MajorItemAdapter();
 		mShaixuanIntent = new Intent(mActivity, ShaiXuanActivity.class);
 		mSearchResulListView.setAdapter(mItemAdapter);
+		mMajorResultListView.setAdapter(mMajorAdapter);
 		displayCollege();
 		mFilterTextView.setOnClickListener(this);
 		mScoreRankText.setOnClickListener(this);
 		mSchoolRankText.setOnClickListener(this);
-		mLuqupici=getLuqupici(null);
-		mLuquQingkuang=getLuquQingkuang(new Intent());
-		postData2Server(null,"",true);
+		mLuqupici = getLuqupici(null);
+		mLuquQingkuang = getLuquQingkuang(new Intent());
+		postData2Server(null, "", true);
 		return v;
 	}
 
 	private void initView(View v) {
 		mSearchResulListView = (ListView) v
 				.findViewById(R.id.filter_school_result_list);
+		mMajorResultListView = (ListView) v
+				.findViewById(R.id.filter_major_result_list);
 		mFilterTextView = (TextView) v.findViewById(R.id.filter_textview);
 		mScoreRankText = (TextView) v.findViewById(R.id.paixu_pinyin);
 		mSchoolRankText = (TextView) v.findViewById(R.id.paiming_school);
@@ -127,20 +134,25 @@ public class ManualTimFragment extends CommonFragment implements
 		mUserLocation = (TextView) v.findViewById(R.id.user_location);
 		mSchoolNumbersText = (TextView) v.findViewById(R.id.school_numbers);
 		mMajorNumbersText = (TextView) v.findViewById(R.id.major_numbers);
-		mTitleSearchEdit=(EditText) getActivity().getActionBar().getCustomView().findViewById(R.id.search_school_major_edit);
+		mTitleSearchEdit = (EditText) getActivity().getActionBar()
+				.getCustomView().findViewById(R.id.search_school_major_edit);
 
-		mTitleSearchEdit.setOnEditorActionListener(new OnEditorActionListener() {
-			
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				 if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE){
-					 postData2Server(conditionItemList,v.getText().toString().trim(),false);
-		}
-				return false;
-			}
-		});
+		mTitleSearchEdit
+				.setOnEditorActionListener(new OnEditorActionListener() {
+
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						if (actionId == KeyEvent.ACTION_DOWN
+								|| actionId == EditorInfo.IME_ACTION_DONE) {
+							postData2Server(conditionItemList, v.getText()
+									.toString().trim(), false);
+						}
+						return false;
+					}
+				});
 		mTitleSearchEdit.addTextChangedListener(this);
-		
+
 		User user = User.getInstance();
 		if (user != null) {
 			Log.w("wutl", user.toString());
@@ -154,7 +166,7 @@ public class ManualTimFragment extends CommonFragment implements
 
 	private void setDataSource(ShaiXuanJieGuo result) {
 		mSchoolNumbers = String.valueOf(result.getYxzydata().size());
-		mMajorNumbers=0;
+		mMajorNumbers = 0;
 		List<CollegeItem> schoolList = result.getYxzydata();
 		mItemList.clear();
 		for (int i = 0; i < schoolList.size(); i++) {
@@ -252,11 +264,149 @@ public class ManualTimFragment extends CommonFragment implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			String yxdh=mItemList.get(position).getYxdh();
-			String luqupic=mLuqupici;
-			String lqqk=mLuquQingkuang;
-			
+			String yxdh = mItemList.get(position).getYxdh();
+			String luqupic = mLuqupici;
+			String lqqk = mLuquQingkuang;
+
+			SchoolItem schoolItem = (SchoolItem) parent.getAdapter().getItem(
+					position);
+			shaiXuanByCollege(schoolItem);
 		}
+	}
+
+	private class MajorItemAdapter extends BaseAdapter implements
+			AdapterView.OnItemClickListener {
+		public int getCount() {
+			return mZyData.size();
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			final ViewHolder holder;
+			if (convertView == null) {
+				convertView = mInflater.inflate(R.layout.item_college, null,
+						false);
+				holder = new ViewHolder();
+				holder.dividerView = convertView.findViewById(R.id.divider);
+				holder.schoolNameTextView = (TextView) convertView
+						.findViewById(R.id.item_title);
+				holder.majorNumberTextView = (TextView) convertView
+						.findViewById(R.id.desc);
+				holder.schoolImg = (ImageView) convertView
+						.findViewById(R.id.icon);
+				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
+						AbsListView.LayoutParams.MATCH_PARENT,
+						mResources.getDimensionPixelSize(R.dimen.dimen_34_dip));
+				convertView.setLayoutParams(lp);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+			convertView.setTag(holder);
+
+			MajorItem majorItem = mZyData.get(position);
+
+			holder.schoolNameTextView.setText(majorItem.getZymc());
+			int source = majorItem.getSource();
+			if (source == 0) {
+				// 未收藏
+				holder.majorNumberTextView.setText("");
+			} else if (source == 1) {
+				holder.majorNumberTextView.setText("手工筛选");
+			} else if (source == 2) {
+				holder.majorNumberTextView.setText("智能推荐");
+			}
+			holder.schoolImg.setImageBitmap(BitmapFactory.decodeResource(
+					mResources, getImgId(position - 1)));
+
+			return convertView;
+		}
+
+		public Object getItem(int position) {
+			return mZyData.get(position);
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+		}
+
+		private int getImgId(int position) {
+			switch (position) {
+			case 0:
+				return R.drawable.xuexiao_1;
+			case 1:
+				return R.drawable.xuexiao_2;
+			case 2:
+				return R.drawable.xuexiao_3;
+			default:
+				return R.drawable.xuexiao_2;
+			}
+		}
+
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void shaiXuanByCollege(final SchoolItem schoolItem) {
+		final FastJsonRequest request = new FastJsonRequest(
+				Request.Method.POST, Url.SHAI_XUAN_BY_COLLEGE, null,
+				new VolleyResponseListener(getActivity()) {
+					@Override
+					public void onSuccessfulResponse(JSONObject response,
+							boolean success) {
+						Log.i(TAG, response.toJSONString());
+						if (success) {
+							String datas = response.getString("datas");
+							Item2 item = JSON.parseObject(datas, Item2.class);
+							mZyData.clear();
+							mZyData.addAll(item.getZydata());
+
+							mSearchResulListView.setVisibility(View.INVISIBLE);
+							mMajorResultListView.setVisibility(View.VISIBLE);
+							mMajorAdapter.notifyDataSetChanged();
+							
+						} else {
+							ErrorData errorData = AppHelper
+									.getErrorData(response);
+							Toast.makeText(getActivity(), errorData.getText(),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				}, new VolleyErrorListener() {
+					@Override
+					public void onVolleyErrorResponse(VolleyError volleyError) {
+						LogUtil.logNetworkResponse(volleyError, TAG);
+						Toast.makeText(
+								getActivity(),
+								getResources().getString(
+										R.string.internet_exception),
+								Toast.LENGTH_SHORT).show();
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				User user = User.getInstance();
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("yxdh", schoolItem.getSchoolName());
+				if (TextUtils.isEmpty(mLuqupici)) {
+					mLuqupici = "3";
+				}
+				map.put("lqpc", mLuqupici);
+				if (TextUtils.isEmpty(mLuquqingkuang)) {
+					mLuquqingkuang = getLuquQingkuang(new Intent());
+				}
+				Log.i(TAG, "mLuquqingkuang="+mLuquqingkuang);
+				map.put("lqqk", mLuquqingkuang);
+				map.put("kskl", String.valueOf(user.getKskl()));
+				map.put("kqdh", String.valueOf(user.getKqdh()));
+				Log.i(TAG, AppHelper.makeSimpleData("searchmajor", map).toString());
+				return AppHelper.makeSimpleData("searchmajor", map);
+			}
+		};
+		EduApp.sRequestQueue.add(request);
 	}
 
 	private class SchoolItem {
@@ -268,11 +418,11 @@ public class ManualTimFragment extends CommonFragment implements
 		public void setYxdh(String yxdh) {
 			this.yxdh = yxdh;
 		}
-		
+
 		public String getYxdh() {
 			return yxdh;
 		}
-		
+
 		public SchoolItem(String marjorNumber, String schoolName) {
 			super();
 			this.marjorNumber = marjorNumber;
@@ -306,7 +456,7 @@ public class ManualTimFragment extends CommonFragment implements
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(data==null)
+		if (data == null)
 			return;
 		// 获取筛选条件
 		if (requestCode == 1 && resultCode == 1) {
@@ -318,90 +468,37 @@ public class ManualTimFragment extends CommonFragment implements
 			conditionItemList = (ArrayList<ShaiXuanConditionItem>) bundle
 					.getSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
 			mLuquQingkuang = getLuquQingkuang(data);
-			postData2Server(conditionItemList,"",false);
+			postData2Server(conditionItemList, "", false);
 			Log.w("wutl", "录取情况＝" + mLuquQingkuang);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private String getLuquQingkuang(Intent data) {
-		String year=data.getStringExtra("year_score");
-		String low_score=data.getStringExtra("low_score");
-		String high_score=data.getStringExtra("high_score");
-		
-		if(TextUtils.isEmpty(year)){
+		String year = data.getStringExtra("year_score");
+		String low_score = data.getStringExtra("low_score");
+		String high_score = data.getStringExtra("high_score");
+
+		if (TextUtils.isEmpty(year)) {
 			Calendar c = Calendar.getInstance(Locale.getDefault());
-			year= String.valueOf(c.get(Calendar.YEAR) - 1);
+			year = String.valueOf(c.get(Calendar.YEAR) - 1);
 		}
-		if(TextUtils.isEmpty(low_score))
-			low_score=String.valueOf(mUser.getKscj()-20);
-		
-		if(TextUtils.isEmpty(high_score))
-			high_score=String.valueOf(mUser.getKscj()+20);
-		
-		mLuquQingkuang=year + "|"
-				+ data.getIntExtra("score_type", 1) + "|"
-				+ low_score + "|"
-				+ high_score;
+		if (TextUtils.isEmpty(low_score))
+			low_score = String.valueOf(mUser.getKscj() - 20);
+
+		if (TextUtils.isEmpty(high_score))
+			high_score = String.valueOf(mUser.getKscj() + 20);
+
+		mLuquQingkuang = year + "|" + data.getIntExtra("score_type", 1) + "|"
+				+ low_score + "|" + high_score;
+		Log.i(TAG, "getLuquQingkuang mLuquqingkuang=" + mLuquqingkuang);
 		return mLuquQingkuang;
 	}
 
-	private void firstGetData(
-			final String skey) {
-		final FastJsonRequest request = new FastJsonRequest(
-				Request.Method.POST, Url.SHAI_XUAN, null,
-				new VolleyResponseListener(mActivity) {
-					@Override
-					public void onSuccessfulResponse(JSONObject response,
-							boolean success) {
-						if (success) {
-							String datas = response.getString("datas");
-							ShaiXuanJieGuo result = JSON.parseObject(datas,
-									ShaiXuanJieGuo.class);
-							if (result != null){
-								setDataSource(result);
-							     mItemAdapter.notifyDataSetChanged();
-							}
-							Log.d("wutl", "resutl=" + result.toString());
-						} else {
-							ErrorData errorData = AppHelper
-									.getErrorData(response);
-						}
-					}
-				}, new VolleyErrorListener() {
-					@Override
-					public void onVolleyErrorResponse(VolleyError volleyError) {
-						LogUtil.logNetworkResponse(volleyError, "wutl");
-						Toast.makeText(
-								mActivity,
-								getResources().getString(
-										R.string.internet_exception),
-								Toast.LENGTH_SHORT).show();
-					}
-				}) {
-			@Override
-			protected Map<String, String> getParams() throws AuthFailureError {
-				User user = User.getInstance();
-				Map<String, String> map = new HashMap<String, String>();
-				map.put("pageno", String.valueOf(1));
-				 map.put("skey", skey);
-				map.put("yxss", "");
-				map.put("yxlx", "");
-				map.put("yxxz", "");
-				map.put("lqpc", mLuqupici);
-				map.put("lqqk", getLuquQingkuang(new Intent()));
-				map.put("kskl", String.valueOf(user.getKskl()));
-				map.put("kqdh", String.valueOf(user.getKqdh()));
-
-				Log.w("wutl","map="+AppHelper.makeSimpleData("search", map).toString());
-				return AppHelper.makeSimpleData("search", map);
-			}
-		};
-		EduApp.sRequestQueue.add(request);
-	}
-	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void postData2Server(
-			final ArrayList<ShaiXuanConditionItem> conditionlist,final String skey,final boolean isFirstInto) {
+			final ArrayList<ShaiXuanConditionItem> conditionlist,
+			final String skey, final boolean isFirstInto) {
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.SHAI_XUAN, null,
 				new VolleyResponseListener(mActivity) {
@@ -412,9 +509,9 @@ public class ManualTimFragment extends CommonFragment implements
 							String datas = response.getString("datas");
 							ShaiXuanJieGuo result = JSON.parseObject(datas,
 									ShaiXuanJieGuo.class);
-							if (result != null){
+							if (result != null) {
 								setDataSource(result);
-							     mItemAdapter.notifyDataSetChanged();
+								mItemAdapter.notifyDataSetChanged();
 							}
 							Log.d("wutl", "resutl=" + result.toString());
 						} else {
@@ -439,9 +536,9 @@ public class ManualTimFragment extends CommonFragment implements
 			protected Map<String, String> getParams() throws AuthFailureError {
 				User user = User.getInstance();
 				Map<String, String> map = new HashMap<String, String>();
-				if(isFirstInto){
+				if (isFirstInto) {
 					map.put("pageno", String.valueOf(1));
-					 map.put("skey", skey);
+					map.put("skey", skey);
 					map.put("yxss", "");
 					map.put("yxlx", "");
 					map.put("yxxz", "");
@@ -449,18 +546,19 @@ public class ManualTimFragment extends CommonFragment implements
 					map.put("lqqk", getLuquQingkuang(new Intent()));
 					map.put("kskl", String.valueOf(user.getKskl()));
 					map.put("kqdh", String.valueOf(user.getKqdh()));
-				}else{
-				map.put("pageno", String.valueOf(1));
-				 map.put("skey", skey);
-				map.put("yxss", getYxss(conditionlist));
-				map.put("yxlx", getYxlx(conditionlist));
-				map.put("yxxz", getYxxz(conditionlist));
-				map.put("lqpc", getLuqupici(conditionlist));
-				map.put("lqqk", mLuquQingkuang);
-				map.put("kskl", String.valueOf(user.getKskl()));
-				map.put("kqdh", String.valueOf(user.getKqdh()));
+				} else {
+					map.put("pageno", String.valueOf(1));
+					map.put("skey", skey);
+					map.put("yxss", getYxss(conditionlist));
+					map.put("yxlx", getYxlx(conditionlist));
+					map.put("yxxz", getYxxz(conditionlist));
+					map.put("lqpc", getLuqupici(conditionlist));
+					map.put("lqqk", mLuquQingkuang);
+					map.put("kskl", String.valueOf(user.getKskl()));
+					map.put("kqdh", String.valueOf(user.getKqdh()));
 				}
-				Log.w("wutl","map="+AppHelper.makeSimpleData("search", map).toString());
+				Log.w("wutl", "map="
+						+ AppHelper.makeSimpleData("search", map).toString());
 				return AppHelper.makeSimpleData("search", map);
 			}
 		};
@@ -563,11 +661,11 @@ public class ManualTimFragment extends CommonFragment implements
 			}
 		}
 		Log.w("wutl", "录取批次＝" + buffer.toString());
-		if (TextUtils.isEmpty(buffer.toString())){
-			mLuqupici="3";
+		if (TextUtils.isEmpty(buffer.toString())) {
+			mLuqupici = "3";
 			return mLuqupici;
 		}
-		mLuqupici=buffer.toString();
+		mLuqupici = buffer.toString();
 		return mLuqupici;
 	}
 
@@ -628,19 +726,28 @@ public class ManualTimFragment extends CommonFragment implements
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
-		
+
 	}
 
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		
+
 	}
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		if(TextUtils.isEmpty(s.toString())){
-			 postData2Server(conditionItemList,"",false);
+		if (TextUtils.isEmpty(s.toString())) {
+			postData2Server(conditionItemList, "", false);
 		}
-		
+
+	}
+
+	public boolean back() {
+		if (mMajorResultListView.getVisibility() == View.VISIBLE) {
+			mMajorResultListView.setVisibility(View.GONE);
+			mSearchResulListView.setVisibility(View.VISIBLE);
+			mZyData.clear();
+		}
+		return false;
 	}
 }
