@@ -1,5 +1,6 @@
 package com.education;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -755,7 +756,10 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.shaixuan_layout:
-            mShaixuanIntent.putExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG, conditionItemList);
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG, conditionItemList);
+			mShaixuanIntent.putExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG, bundle);
+			
             mShaixuanIntent.putExtra("LU_QU_QING_KUANG", mLuquQingkuang);
 			startActivityForResult(mShaixuanIntent, 1);
 			break;
