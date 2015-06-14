@@ -128,7 +128,7 @@ public class SmartRecomentResult3Fragment extends CommonFragment implements
 		for (int i = 0; i < dataSize; i++) {
 			cjPjPjValues.add(new Entry(sum /dataSize, i));
 		}
-		LineDataSet dPjAll = new LineDataSet(cjPjPjValues, "");
+		LineDataSet dPjAll = new LineDataSet(cjPjPjValues, dataSize + "年平均成绩");
 		dPjAll.setLineWidth(2.5f);
 		dPjAll.setColor(mColors[3]);
 		dPjAll.setDrawCubic(false);

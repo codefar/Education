@@ -19,6 +19,7 @@ public class Constants {
     public static final SimpleDateFormat SDF_YYYY_MM_DD_HH_MM_SS_SSS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
     public static final String PASSWORD_STR = "[~`!@#$%^&*()_=+\\[{\\]}\\|;:'\",<.>/?0-9a-zA-Z-]{6,20}";
+    public static final String NICKNAME_STR = "[0-9a-zA-Z-_]{6,20}";
     /*
     * same as microlog.appender.FileAppender.File in assets/microlog.properties
     * */

@@ -130,6 +130,7 @@ public class SmartRecomentFragmentStep3 extends CommonFragment implements
 						} else {
 							ErrorData errorData = AppHelper
 									.getErrorData(response);
+                            Toast.makeText(getActivity(), errorData.getText(), Toast.LENGTH_SHORT).show();
 						}
 					}
 				}, new VolleyErrorListener() {

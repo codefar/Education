@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class PersonCenterFragment extends CommonFragment {
 	
@@ -301,6 +302,12 @@ public class PersonCenterFragment extends CommonFragment {
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        String nickname = et.getText().toString();
+                        if (!Pattern.matches(Constants.NICKNAME_STR, nickname)) {
+                            Toast.makeText(mActivity, "昵称只能由6-20位大小写字母、数字下划线和连词符组成", Toast.LENGTH_LONG).show();
+                            nicknameDialog(view);
+                            return;
+                        }
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         mBlockedDialogFragment.updateMessage(getText(R.string.progress_bar_committing_please_wait));
                         mBlockedDialogFragment.show(ft, "block_dialog");

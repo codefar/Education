@@ -76,7 +76,8 @@
                 android:layout_height="wrap_content"
                 android:text="联系客服"
                 android:textSize="@dimen/dimen_10_dip"
-                android:textColor="@color/hyperlink_text"/>
+                android:textColor="@color/hyperlink_text"
+                android:id="@+id/customer_service"/>
     </LinearLayout>
 </LinearLayout>
 

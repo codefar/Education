@@ -26,7 +26,7 @@
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_34_dip"
-                android:hint="用户名/邮箱/手机号"
+                android:hint="用户名/手机号"
                 android:layout_marginTop="@dimen/dimen_17_dip"
                 android:textSize="@dimen/dimen_12_dip"
                 style="@style/EditText.SingleLine"

@@ -72,6 +72,10 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
         TextView protocolTextView = (TextView) layout.findViewById(R.id.protocol);
         protocolTextView.setOnClickListener(this);
         protocolTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        TextView customerServiceTextView = (TextView) layout.findViewById(R.id.customer_service);
+        customerServiceTextView.setOnClickListener(this);
+        customerServiceTextView.setMovementMethod(LinkMovementMethod.getInstance());
         mRegister = (Button) layout.findViewById(R.id.register);
         mRegister.setOnClickListener(this);
         mCheckBox = (CheckBox) layout.findViewById(R.id.agree);
@@ -131,9 +135,15 @@ public class RegisterStep1Fragment extends CommonFragment implements View.OnClic
                 break;
             case R.id.protocol:
                 Intent intent = new Intent(mActivity, WebViewActivity.class);
-                intent.putExtra("url", "http://www.baidu.com");
+                intent.putExtra("url", "http://kaoying.benshijy.com/contract.html");
                 intent.putExtra("title", "用户注册协议");
                 startActivity(intent);
+                break;
+            case R.id.customer_service:
+                Intent customerServiceIntent = new Intent(mActivity, WebViewActivity.class);
+                customerServiceIntent.putExtra("url", "http://kaoying.benshijy.com/service.html");
+                customerServiceIntent.putExtra("title", "用户注册协议");
+                startActivity(customerServiceIntent);
                 break;
             default:
                 break;
