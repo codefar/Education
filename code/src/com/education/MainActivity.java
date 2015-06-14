@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentTabHost;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -94,7 +95,9 @@ public class MainActivity extends FragmentBaseActivity {
                     user.setKspw(userInfo.getKspw());
                     user.setKskl(userInfo.getKskl());
                     user.setKsklName(userInfo.getKsklName());//科类名称
-                    user.setKqdh(userInfo.getKqdh());//考区代号
+                    user.setKqdh(userInfo.getKskq());//考区代号
+                    Log.d("KQDH", TAG + " fetch userInfo kqdh: " + userInfo.getKqdh());
+                    Log.d("KQDH", TAG + " fetch userInfo kskq*: " + userInfo.getKskq());
                     user.setKskqName(userInfo.getKskqName());
                     User.saveUser(user);
                     if (TextUtils.isEmpty(user.getXm())) {

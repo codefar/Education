@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/dimen_17_dip"
+              android:paddingLeft="@dimen/dimen_17_dip"
+              android:paddingRight="@dimen/dimen_17_dip"
+              android:paddingTop="@dimen/dimen_17_dip" >
+    <EditText
+            android:id="@+id/editText1"
+            style="@style/EditText.SingleLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8_dip"
+            android:gravity="center_vertical"
+            android:hint="@string/input_student_score"
+            android:inputType="number"
+            android:paddingBottom="@dimen/dimen_10_dip"
+            android:paddingLeft="@dimen/dimen_17_dip"
+            android:paddingTop="@dimen/dimen_10_dip"
+            android:textColorHint="@color/third_text"
+            android:textSize="@dimen/dimen_12_dip" >
+    </EditText>
+    <EditText
+            android:id="@+id/editText2"
+            style="@style/EditText.SingleLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8_dip"
+            android:gravity="center_vertical"
+            android:hint="@string/input_student_position"
+            android:inputType="number"
+            android:paddingBottom="@dimen/dimen_10_dip"
+            android:paddingLeft="@dimen/dimen_17_dip"
+            android:paddingTop="@dimen/dimen_10_dip"
+            android:textColorHint="@color/third_text"
+            android:textSize="@dimen/dimen_12_dip" />
+</LinearLayout>

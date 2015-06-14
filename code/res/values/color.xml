@@ -13,14 +13,14 @@
     <color name="tab_select">#178ffe</color>
     <color name="tab_normal">#666666</color>
     <color name="tab_bg">#fafafa</color>
-    <color name="content_bg">#f8f8f8</color>
 
     <color name="first_text">#333333</color>
     <color name="second_text">#666666</color>
     <color name="third_text">#999999</color>
     <color name="radio_button_selected_color">#333333</color>
     <color name="radio_button_unselected_color">@android:color/transparent</color>
-    
+
+    <color name="warning">#EE5930</color>
     <color name="action_bar_bg">#178FFE</color>
     <color name="line_divider">#1580E4</color>
     <color name="share_bg_transparent">#50000000</color>

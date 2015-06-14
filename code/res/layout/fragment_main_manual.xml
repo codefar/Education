@@ -189,21 +189,29 @@
         </LinearLayout>
 
         <!-- 筛选 -->
-        <ImageView
-                android:id="@+id/shaixuan_img"
-                style="@style/shaixuan_img_style"
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/dimen_9_dip"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/paixu_normal" />
+                android:gravity="center_vertical"
+                android:id="@+id/shaixuan_layout">
+            <ImageView
+                    android:id="@+id/shaixuan_img"
+                    style="@style/shaixuan_img_style"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/paixu_normal" />
 
-        <TextView
-                android:id="@+id/filter_textview"
-                style="@style/filter_school_and_major_down_text"
-                android:layout_toLeftOf="@id/shaixuan_img"
-                android:text="筛选"
-                android:textSize="@dimen/dimen_12_dip" >
-        </TextView>
+            <TextView
+                    android:id="@+id/filter_textview"
+                    style="@style/filter_school_and_major_down_text"
+                    android:layout_toLeftOf="@id/shaixuan_img"
+                    android:text="筛选"
+                    android:textSize="@dimen/dimen_12_dip" >
+            </TextView>
+        </LinearLayout>
     </RelativeLayout>
 
     <include layout="@layout/single_line_view" />
