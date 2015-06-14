@@ -54,7 +54,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 public class ManualTimFragment extends CommonFragment implements PullToRefreshBase.OnRefreshListener2<ListView>,
-		View.OnClickListener, TextWatcher {
+		View.OnClickListener {
 	private static final String TAG = ManualTimFragment.class.getSimpleName();
 	private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment
 			.newInstance();
@@ -81,7 +81,10 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	private User mUser;
 	private EditText mTitleSearchEdit;
 	private String mLuqupici, mLuquqingkuang;
-    private int mPageNo = 1;
+
+    private static final int PAGE_START = 1;
+    private int mNextPageNo = PAGE_START;
+    private String sKey = "";
 
 	/**
 	 * When creating, retrieve this instance's number from its arguments.
@@ -119,7 +122,9 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		mSchoolRankText.setOnClickListener(this);
 		mLuqupici = getLuqupici(null);
 		mLuquQingkuang = getLuquQingkuang(new Intent());
-		postData2Server(null, "", true);
+
+        mSearchResulListView.setRefreshing(true);
+//		postData2Server(mNextPageNo, null, "", true);
 		return v;
 	}
 
@@ -152,14 +157,18 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 					public boolean onEditorAction(TextView v, int actionId,
 							KeyEvent event) {
 						if (actionId == KeyEvent.ACTION_DOWN
-								|| actionId == EditorInfo.IME_ACTION_DONE) {
-							postData2Server(conditionItemList, v.getText()
-									.toString().trim(), false);
+								|| actionId == KeyEvent.KEYCODE_ENTER
+                                || actionId == KeyEvent.KEYCODE_ENDCALL
+                                || actionId == KeyEvent.KEYCODE_BACK) {
+                            sKey = v.getText()
+                                    .toString().trim();
+                            mNextPageNo = 1;
+							postData2Server(mNextPageNo, conditionItemList, sKey, false);
 						}
 						return false;
 					}
 				});
-		mTitleSearchEdit.addTextChangedListener(this);
+//		mTitleSearchEdit.addTextChangedListener(this);
 
 		User user = User.getInstance();
 		if (user != null) {
@@ -174,26 +183,27 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 
     @Override
     public void onPullDownToRefresh(final PullToRefreshBase<ListView> refreshView) {
-        postData2Server(conditionItemList, "", true);
+        mNextPageNo = 1;
+        postData2Server(mNextPageNo , conditionItemList, sKey, true);
     }
 
     @Override
     public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView) {
-        postData2Server(conditionItemList, "", false);
+        postData2Server(mNextPageNo , conditionItemList, sKey, false);
     }
 
 	private void setDataSource(ShaiXuanJieGuo result) {
 		mSchoolNumbers = String.valueOf(result.getYxzydata().size());
 		mMajorNumbers = 0;
-		List<CollegeItem> schoolList = result.getYxzydata();
+//		List<CollegeItem> schoolList = result.getYxzydata();
 		mItemList.clear();
-		for (int i = 0; i < schoolList.size(); i++) {
-			SchoolItem localItem = new SchoolItem(schoolList.get(i).getZysl(),
-					schoolList.get(i).getYxmc());
-			mMajorNumbers += Integer.valueOf(schoolList.get(i).getZysl())
+		for (int i = 0; i < mSchoolList.size(); i++) {
+			SchoolItem localItem = new SchoolItem(mSchoolList.get(i).getZysl(),
+                    mSchoolList.get(i).getYxmc());
+			mMajorNumbers += Integer.valueOf(mSchoolList.get(i).getZysl())
 					.intValue();
 			setSchoolImg(localItem, i % 3);
-			localItem.setYxdh(schoolList.get(i).getYxdh());
+			localItem.setYxdh(mSchoolList.get(i).getYxdh());
 			mItemList.add(localItem);
 		}
 		mItemAdapter.notifyDataSetChanged();
@@ -499,7 +509,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 			return;
 		// 获取筛选条件
 		if (requestCode == 1 && resultCode == 1) {
-
+            sKey = "";
 			Bundle bundle = data
 					.getBundleExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
 			// ArrayList<ShaiXuanConditionItem> conditionItemList =
@@ -507,7 +517,9 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 			conditionItemList = (ArrayList<ShaiXuanConditionItem>) bundle
 					.getSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
 			mLuquQingkuang = getLuquQingkuang(data);
-			postData2Server(conditionItemList, "", false);
+
+            mNextPageNo = PAGE_START;
+			postData2Server(mNextPageNo, conditionItemList, "", false);
 			Log.w("wutl", "录取情况＝" + mLuquQingkuang);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -535,12 +547,10 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void postData2Server(
+	private void postData2Server(final int pageNo,
 			final ArrayList<ShaiXuanConditionItem> conditionlist,
 			final String skey, final boolean isFirstInto) {
-        if (mSearchResulListView.getVisibility() == View.VISIBLE) {
-            mSearchResulListView.setRefreshing(true);
-        }
+        Log.d("postData2Server", "pageNo: " + pageNo, new Throwable());
 
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.SHAI_XUAN, null,
@@ -556,16 +566,21 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 							ShaiXuanJieGuo result = JSON.parseObject(datas,
 									ShaiXuanJieGuo.class);
 							if (result != null) {
-								setDataSource(result);
-
-                                mItemAdapter.notifyDataSetChanged();
                                 List<CollegeItem> collegeItemList = result.getYxzydata();
+                                if (pageNo == PAGE_START) {
+                                    mSchoolList.clear();
+                                }
+
                                 if (collegeItemList.size() > 0) {
+                                    mSchoolList.addAll(collegeItemList);
+                                    mNextPageNo++;
                                     mSearchResulListView.setMode(PullToRefreshBase.Mode.BOTH);
                                 } else {
                                     mSearchResulListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
                                 }
 
+                                setDataSource(result);
+                                mItemAdapter.notifyDataSetChanged();
 							}
 							Log.d("wutl", "resutl=" + result.toString());
 						} else {
@@ -596,15 +611,27 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 				if (isFirstInto) {
 					map.put("pageno", String.valueOf(1));
 					map.put("skey", skey);
-					map.put("yxss", "");
-					map.put("yxlx", "");
-					map.put("yxxz", "");
+//					map.put("yxss", "");
+//					map.put("yxlx", "");
+//					map.put("yxxz", "");
+
+
+                    map.put("yxss", getYxss(conditionlist));
+                    map.put("yxlx", getYxlx(conditionlist));
+                    map.put("yxxz", getYxxz(conditionlist));
+
+
 					map.put("lqpc", mLuqupici);
-					map.put("lqqk", getLuquQingkuang(new Intent()));
+
+
+//                    map.put("lqqk", getLuquQingkuang(new Intent()));
+                    map.put("lqqk", mLuquQingkuang);
+
+
 					map.put("kskl", String.valueOf(user.getKskl()));
 					map.put("kqdh", String.valueOf(user.getKqdh()));
 				} else {
-					map.put("pageno", String.valueOf(1));
+					map.put("pageno", String.valueOf(pageNo));
 					map.put("skey", skey);
 					map.put("yxss", getYxss(conditionlist));
 					map.put("yxlx", getYxlx(conditionlist));
@@ -778,25 +805,6 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	@Override
 	protected String getLogTag() {
 		return TAG;
-	}
-
-	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {
-
-	}
-
-	@Override
-	public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-	}
-
-	@Override
-	public void afterTextChanged(Editable s) {
-		if (TextUtils.isEmpty(s.toString())) {
-			postData2Server(conditionItemList, "", false);
-		}
-
 	}
 
 	public boolean back() {
