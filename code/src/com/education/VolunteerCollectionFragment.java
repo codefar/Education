@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ import java.util.Map;
 
 public class VolunteerCollectionFragment extends CommonFragment {
 
-	private static final String TAG = SmartRecomentFragment.class
+	private static final String TAG = VolunteerCollectionFragment.class
 			.getSimpleName();
 	private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment
 			.newInstance();
@@ -86,7 +87,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 		mItemAdapter = new ItemAdapter();
 		mMajorItemAdapter = new MajorItemAdapter();
 		mListView.setAdapter(mItemAdapter);
-		mMajorListView.setAdapter(mMajorItemAdapter);
+
 		mListView.setOnItemClickListener(mItemAdapter);
 		mMajorListView.setOnItemClickListener(mMajorItemAdapter);
 
@@ -95,6 +96,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 		mHeaderTitleTextView = (TextView) mHeaderLayout
 				.findViewById(R.id.header_title);
 		mMajorListView.addHeaderView(mHeaderLayout);
+		mMajorListView.setAdapter(mMajorItemAdapter);
 		shouCangYuanXiaoLieBiao();
 		return v;
 	}
@@ -162,8 +164,10 @@ public class VolunteerCollectionFragment extends CommonFragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+
 			CollegeItem collegeItem = (CollegeItem) mCollegeItemList
 					.get(position);
+			Log.i(TAG, position + " " + id + " " + collegeItem);
 			shouCangZhuanYeLieBiao(collegeItem);
 		}
 	}
@@ -227,14 +231,19 @@ public class VolunteerCollectionFragment extends CommonFragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-
-			Intent intent = new Intent(getActivity(), MajorDetailActivity.class);
-			intent.putExtra("yxdh", mCurrentCollegeItem.getYxdh());
-			MajorItem item = ((MajorItem) parent.getAdapter().getItem(position));
-			intent.putExtra("zydh", item.getZydh());
-			intent.putExtra("yxpc", item.getLqpc());
-			intent.putExtra(MajorDetailActivity.SOURSE_TAG, item.getSource());
-			startActivity(intent);
+			if (id >= 0) {
+				Intent intent = new Intent(getActivity(),
+						MajorDetailActivity.class);
+				intent.putExtra("yxdh", mCurrentCollegeItem.getYxdh());
+				MajorItem item = ((MajorItem) parent.getAdapter().getItem(
+						position));
+				Log.i(TAG, position + " " + id + " " + item);
+				intent.putExtra("zydh", item.getZydh());
+				intent.putExtra("yxpc", item.getLqpc());
+				intent.putExtra(MajorDetailActivity.SOURSE_TAG,
+						item.getSource());
+				startActivity(intent);
+			}
 		}
 	}
 
