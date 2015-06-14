@@ -9,6 +9,7 @@ public class Url {
     public static final String LOGIN = SCHEME + "/login"; //登录
     public static final String REGISTER_GET_SMS_CODE = SCHEME + "/register/getSMCode"; //获取短信
     public static final String REGISTER_CHECK_SMS_CODE = SCHEME + "/register/chkSMCode"; //检查短信
+    public static final String CHECK_USER = SCHEME + "/register/chkPN"; //检查用户
     public static final String REGISTER = SCHEME + "/register/regUser"; //注册
     public static final String CHANGE_PASSWORD = SCHEME + "/my/setpassword"; //修改密码
     public static final String SET_ACCOUNT = SCHEME + "/my/setaccount"; //设置账户
