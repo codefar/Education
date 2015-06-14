@@ -52,11 +52,11 @@ public class VolunteerCollectionFragment extends CommonFragment {
 	private static final int TYPE_COLLEGE = 0;
 	private static final int TYPE_MAJOR = 1;
 	private int mType = TYPE_COLLEGE;
-	private ListView mListView;
-	private List mCollegeItemList;
-	private List mMajorItemList = new ArrayList();
-	private List mItemList = new ArrayList();
+	private ListView mListView, mMajorListView;
+	private ArrayList<MajorItem> mMajorItemList = new ArrayList<MajorItem>();
+	private ArrayList<CollegeItem> mCollegeItemList = new ArrayList<CollegeItem>();
 	private ItemAdapter mItemAdapter;
+	private MajorItemAdapter mMajorItemAdapter;
 	private RelativeLayout mHeaderLayout;
 	private TextView mHeaderTitleTextView;
 	private Activity mActivity;
@@ -82,35 +82,39 @@ public class VolunteerCollectionFragment extends CommonFragment {
 
 		mInflater = inflater;
 		mListView = (ListView) v.findViewById(R.id.list);
+		mMajorListView = (ListView) v.findViewById(R.id.majorlist);
 		mItemAdapter = new ItemAdapter();
+		mMajorItemAdapter = new MajorItemAdapter();
 		mListView.setAdapter(mItemAdapter);
-        mListView.setOnItemClickListener(mItemAdapter);
+		mMajorListView.setAdapter(mMajorItemAdapter);
+		mListView.setOnItemClickListener(mItemAdapter);
+		mMajorListView.setOnItemClickListener(mMajorItemAdapter);
+
 		mHeaderLayout = (RelativeLayout) mInflater.inflate(
 				R.layout.header_collection_list, null);
 		mHeaderTitleTextView = (TextView) mHeaderLayout
 				.findViewById(R.id.header_title);
-		if (mType == TYPE_COLLEGE) {
-			shouCangYuanXiaoLieBiao();
-		} else {
-			displayMajor();
-		}
+		mMajorListView.addHeaderView(mHeaderLayout);
+		shouCangYuanXiaoLieBiao();
 		return v;
 	}
 
 	public boolean back() {
-		if (mType == TYPE_COLLEGE) {
-			return true;
+		if (mMajorListView.getVisibility() == View.VISIBLE) {
+			mMajorListView.setVisibility(View.GONE);
+			mListView.setVisibility(View.VISIBLE);
+			mMajorItemList.clear();
+			mCurrentCollegeItem = null;
+			return false;
 		} else {
-			mType = TYPE_COLLEGE;
-			shouCangYuanXiaoLieBiao();
+			return true;
 		}
-		return false;
 	}
 
 	private class ItemAdapter extends BaseAdapter implements
 			AdapterView.OnItemClickListener {
 		public int getCount() {
-			return mItemList.size();
+			return mCollegeItemList.size();
 		}
 
 		public long getItemId(int position) {
@@ -121,16 +125,16 @@ public class VolunteerCollectionFragment extends CommonFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final ViewHolder holder;
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_volunteer_collection, null,
-						false);
+				convertView = mInflater.inflate(
+						R.layout.item_volunteer_collection, null, false);
 				holder = new ViewHolder();
 				holder.dividerView = convertView.findViewById(R.id.divider);
 				holder.titleTextView = (TextView) convertView
 						.findViewById(R.id.item_title);
 				holder.descTextView = (TextView) convertView
 						.findViewById(R.id.desc);
-                holder.quxiaoTextView = (TextView) convertView
-                        .findViewById(R.id.quxiao);
+				holder.quxiaoTextView = (TextView) convertView
+						.findViewById(R.id.quxiao);
 				holder.iconImageView = (ImageView) convertView
 						.findViewById(R.id.icon);
 				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
@@ -142,74 +146,110 @@ public class VolunteerCollectionFragment extends CommonFragment {
 			}
 			convertView.setTag(holder);
 
-			Object item = mItemList.get(position);
-			if (mType == TYPE_COLLEGE) {
-				CollegeItem collegeItem = (CollegeItem) item;
-				holder.descTextView.setText(collegeItem.getZysl());
-                holder.quxiaoTextView.setVisibility(View.GONE);
-				holder.titleTextView.setText(collegeItem.getYxmc());
-                holder.iconImageView.setImageBitmap(BitmapFactory.decodeResource(
-                        mResources, getImgId(position)));
-			} else {
-				MajorItem majorItem = (MajorItem) item;
-				int source = majorItem.getSource();
-				if (source == 0) {
-					// 未收藏
-				} else if (source == 1) {
-					holder.descTextView.setText("手工筛选");
-				} else if (source == 2) {
-					holder.descTextView.setText("智能推荐");
-                }
-                holder.quxiaoTextView.setVisibility(View.GONE); //以后可能会添加取消收藏
-                holder.titleTextView.setText(majorItem.getZymc());
-                holder.iconImageView.setImageBitmap(BitmapFactory.decodeResource(
-                        mResources, getImgId(position - 1)));
-			}
-
+			CollegeItem collegeItem = mCollegeItemList.get(position);
+			holder.descTextView.setText(collegeItem.getZysl());
+			holder.quxiaoTextView.setVisibility(View.GONE);
+			holder.titleTextView.setText(collegeItem.getYxmc());
+			holder.iconImageView.setImageBitmap(BitmapFactory.decodeResource(
+					mResources, getImgId(position)));
 			return convertView;
 		}
 
 		public Object getItem(int position) {
-			return mItemList.get(position);
+			return mCollegeItemList.get(position);
 		}
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			if (mType == TYPE_MAJOR) {
-                if (position == 0) {
-                    return; // header
-                }
-				Intent intent = new Intent(getActivity(),
-						MajorDetailActivity.class);
-				intent.putExtra("yxdh", mCurrentCollegeItem.getYxdh());
-				MajorItem item = ((MajorItem) parent.getAdapter().getItem(
-						position));
-				intent.putExtra("zydh", item.getZydh());
-				intent.putExtra("yxpc", item.getLqpc());
-				intent.putExtra(MajorDetailActivity.SOURSE_TAG, item.getSource());
-				startActivity(intent);
-			} else {
-				mType = TYPE_MAJOR;
-				CollegeItem collegeItem = (CollegeItem) mCollegeItemList
-						.get(position);
-				shouCangZhuanYeLieBiao(collegeItem);
-			}
+			CollegeItem collegeItem = (CollegeItem) mCollegeItemList
+					.get(position);
+			shouCangZhuanYeLieBiao(collegeItem);
 		}
 	}
 
-    private int getImgId(int position) {
-        switch (position) {
-            case 0:
-                return R.drawable.xuexiao_1;
-            case 1:
-                return R.drawable.xuexiao_2;
-            case 2:
-                return R.drawable.xuexiao_3;
-            default:
-                return R.drawable.xuexiao_2;
-        }
-    }
+	private class MajorItemAdapter extends BaseAdapter implements
+			AdapterView.OnItemClickListener {
+		public int getCount() {
+			return mMajorItemList.size();
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			final ViewHolder holder;
+			if (convertView == null) {
+				convertView = mInflater.inflate(
+						R.layout.item_volunteer_collection, null, false);
+				holder = new ViewHolder();
+				holder.dividerView = convertView.findViewById(R.id.divider);
+				holder.titleTextView = (TextView) convertView
+						.findViewById(R.id.item_title);
+				holder.descTextView = (TextView) convertView
+						.findViewById(R.id.desc);
+				holder.quxiaoTextView = (TextView) convertView
+						.findViewById(R.id.quxiao);
+				holder.iconImageView = (ImageView) convertView
+						.findViewById(R.id.icon);
+				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
+						AbsListView.LayoutParams.MATCH_PARENT,
+						mResources.getDimensionPixelSize(R.dimen.dimen_34_dip));
+				convertView.setLayoutParams(lp);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+			convertView.setTag(holder);
+
+			MajorItem majorItem = mMajorItemList.get(position);
+			int source = majorItem.getSource();
+			if (source == 0) {
+				// 未收藏
+			} else if (source == 1) {
+				holder.descTextView.setText("手工筛选");
+			} else if (source == 2) {
+				holder.descTextView.setText("智能推荐");
+			}
+			holder.quxiaoTextView.setVisibility(View.GONE); // 以后可能会添加取消收藏
+			holder.titleTextView.setText(majorItem.getZymc());
+			holder.iconImageView.setImageBitmap(BitmapFactory.decodeResource(
+					mResources, getImgId(position - 1)));
+
+			return convertView;
+		}
+
+		public Object getItem(int position) {
+			return mMajorItemList.get(position);
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+
+			Intent intent = new Intent(getActivity(), MajorDetailActivity.class);
+			intent.putExtra("yxdh", mCurrentCollegeItem.getYxdh());
+			MajorItem item = ((MajorItem) parent.getAdapter().getItem(position));
+			intent.putExtra("zydh", item.getZydh());
+			intent.putExtra("yxpc", item.getLqpc());
+			intent.putExtra(MajorDetailActivity.SOURSE_TAG, item.getSource());
+			startActivity(intent);
+		}
+	}
+
+	private int getImgId(int position) {
+		switch (position) {
+		case 0:
+			return R.drawable.xuexiao_1;
+		case 1:
+			return R.drawable.xuexiao_2;
+		case 2:
+			return R.drawable.xuexiao_3;
+		default:
+			return R.drawable.xuexiao_2;
+		}
+	}
 
 	public static class Item {
 		private String yxdh;
@@ -244,20 +284,12 @@ public class VolunteerCollectionFragment extends CommonFragment {
 	private static class ViewHolder {
 		TextView titleTextView;
 		TextView descTextView;
-        TextView quxiaoTextView;
+		TextView quxiaoTextView;
 		ImageView iconImageView;
 		View dividerView;
 	}
 
-	private void displayMajor() {
-		mItemList = mMajorItemList;
-		// mListView.setOnItemClickListener(null);
-		mListView.addHeaderView(mHeaderLayout);
-		mHeaderTitleTextView.setText(mResources.getString(
-				R.string.major_collected_in_college, mMajorItemList.size()));
-		mItemAdapter.notifyDataSetChanged();
-	}
-
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void shouCangYuanXiaoLieBiao() {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		mBlockedDialogFragment.show(ft, "block_dialog");
@@ -270,7 +302,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 							boolean success) {
 						mBlockedDialogFragment.dismissAllowingStateLoss();
 						if (success) {
-							mCollegeItemList = new ArrayList<Object>();
+							mCollegeItemList.clear();
 							JSONArray array = response.getJSONArray("datas");
 							int size = array.size();
 							for (int i = 0; i < size; i++) {
@@ -279,9 +311,6 @@ public class VolunteerCollectionFragment extends CommonFragment {
 										item, CollegeItem.class);
 								mCollegeItemList.add(collegeItem);
 							}
-
-							mItemList = mCollegeItemList;
-							mListView.removeHeaderView(mHeaderLayout);
 							mItemAdapter.notifyDataSetChanged();
 						} else {
 							ErrorData errorData = AppHelper
@@ -315,6 +344,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 
 	private CollegeItem mCurrentCollegeItem;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void shouCangZhuanYeLieBiao(final CollegeItem collegeItem) {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		mBlockedDialogFragment.show(ft, "block_dialog");
@@ -328,9 +358,15 @@ public class VolunteerCollectionFragment extends CommonFragment {
 						if (success) {
 							String datas = response.getString("datas");
 							Item item = JSON.parseObject(datas, Item.class);
-							mMajorItemList = item.getSczyDatas();
-							displayMajor();
+							mMajorItemList.clear();
+							mMajorItemList.addAll(item.getSczyDatas());
+							mHeaderTitleTextView.setText(mResources.getString(
+									R.string.major_collected_in_college,
+									mMajorItemList.size()));
+							mMajorItemAdapter.notifyDataSetChanged();
 							mCurrentCollegeItem = collegeItem;
+							mMajorListView.setVisibility(View.VISIBLE);
+							mListView.setVisibility(View.GONE);
 						} else {
 							ErrorData errorData = AppHelper
 									.getErrorData(response);
