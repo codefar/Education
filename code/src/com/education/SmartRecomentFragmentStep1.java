@@ -216,6 +216,8 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
                     user.setKskl(ui.getKskl());
                     user.setKsklName(ui.getKsklName());//科类名称
                     user.setKqdh(ui.getKskq());//考区代号
+                    Log.d("KQDH", TAG + " updateKsxx userInfo kqdh: " + ui.getKqdh());
+                    Log.d("KQDH", TAG + " updateKsxx userInfo kskq*: " + ui.getKskq());
                     user.setKskqName(ui.getKskqName());
                     User.saveUser(user);
 

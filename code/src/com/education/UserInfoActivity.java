@@ -1,8 +1,13 @@
 package com.education;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -33,9 +38,8 @@ public class UserInfoActivity extends CommonBaseActivity implements View.OnClick
 
     private static final String TAG = "UserInfoActivity";
     private SimpleBlockedDialogFragment mBlockedDialogFragment = SimpleBlockedDialogFragment.newInstance();
-
-    private EditText mKscjEditText;
-    private EditText mKspwEditText;
+    private String kscjValue;
+    private String kspwValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,48 +49,56 @@ public class UserInfoActivity extends CommonBaseActivity implements View.OnClick
         User user = User.getInstance();
         TextView xm = (TextView) findViewById(R.id.xm);
         TextView sfzh = (TextView) findViewById(R.id.sfzh);
-        mKscjEditText = (EditText) findViewById(R.id.kscj);
-        mKspwEditText = (EditText) findViewById(R.id.kspw);
+        TextView kscj = (TextView) findViewById(R.id.kscj);
+        TextView kspw = (TextView) findViewById(R.id.kspw);
         TextView kskl = (TextView) findViewById(R.id.kskl);
         TextView kskq = (TextView) findViewById(R.id.kskq);
 
         xm.setText(user.getXm());
         sfzh.setText(user.getSfzh());
-        mKscjEditText.setText(String.valueOf(user.getKscj()));
-        mKspwEditText.setText(String.valueOf(user.getKspw()));
+        kscj.setText(String.valueOf(user.getKscj()));
+        kspw.setText(String.valueOf(user.getKspw()));
         kskl.setText(user.getKskl() == 1 ? "理工" : "文史");
         kskq.setText(user.getKskqName());
 
 
         findViewById(R.id.modify).setOnClickListener(this);
-        findViewById(R.id.save).setOnClickListener(this);
-        enableEdit(false);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.modify:
-                enableEdit(true);
-                break;
-            case R.id.save:
-                updateKsxx();
+                showModifyDialog();
                 break;
             default:
                 break;
         }
     }
 
-    private void enableEdit(boolean enable) {
-        mKscjEditText.setEnabled(enable);
-        mKspwEditText.setEnabled(enable);
-        if (enable) {
-            findViewById(R.id.modify).setVisibility(View.GONE);
-            findViewById(R.id.save).setVisibility(View.VISIBLE);
-        } else {
-            findViewById(R.id.modify).setVisibility(View.VISIBLE);
-            findViewById(R.id.save).setVisibility(View.GONE);
-        }
+    private void showModifyDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_modify_user_info, null);
+        final EditText kscj = (EditText) view.findViewById(R.id.editText1);
+        final EditText kspw = (EditText) view.findViewById(R.id.editText2);
+        new AlertDialog.Builder(this)
+                .setView(view)
+                .setPositiveButton("修改", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (TextUtils.isEmpty(kscj.getText().toString())
+                                || TextUtils.isEmpty(kspw.getText().toString())) {
+                            Toast.makeText(UserInfoActivity.this, "请正确输入信息！", Toast.LENGTH_LONG).show();
+                            showModifyDialog();
+                        } else {
+                            kscjValue = kscj.getText().toString();
+                            kspwValue = kspw.getText().toString();
+                            updateKsxx();
+                        }
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
     }
 
     private void updateKsxx() {
@@ -111,6 +123,8 @@ public class UserInfoActivity extends CommonBaseActivity implements View.OnClick
                     user.setKskl(ui.getKskl());
                     user.setKsklName(ui.getKsklName());//科类名称
                     user.setKqdh(ui.getKskq());//考区代号
+                    Log.d("KQDH", TAG + "updateKsxx userInfo kqdh: " + ui.getKqdh());
+                    Log.d("KQDH", TAG + "updateKsxx userInfo kskq*: " + ui.getKskq());
                     user.setKskqName(ui.getKskqName());
                     User.saveUser(user);
 
@@ -118,6 +132,7 @@ public class UserInfoActivity extends CommonBaseActivity implements View.OnClick
                 } else {
                     ErrorData errorData = AppHelper.getErrorData(response);
                     Toast.makeText(UserInfoActivity.this, errorData.getText(), Toast.LENGTH_SHORT).show();
+                    showModifyDialog();
                 }
             }
         }, new VolleyErrorListener() {
@@ -126,6 +141,7 @@ public class UserInfoActivity extends CommonBaseActivity implements View.OnClick
                 mBlockedDialogFragment.dismissAllowingStateLoss();
                 LogUtil.logNetworkResponse(volleyError, TAG);
                 Toast.makeText(UserInfoActivity.this, getResources().getString(R.string.internet_exception), Toast.LENGTH_SHORT).show();
+                showModifyDialog();
             }
         }) {
             @Override
@@ -135,8 +151,8 @@ public class UserInfoActivity extends CommonBaseActivity implements View.OnClick
                 params.put("userId", user.getId());
                 params.put("xm", user.getXm());
                 params.put("sfzh", user.getSfzh());
-                params.put("kscj", mKscjEditText.getText().toString());
-                params.put("kspw", mKspwEditText.getText().toString());
+                params.put("kscj", kscjValue);
+                params.put("kspw", kspwValue);
                 params.put("kskl", String.valueOf(user.getKskl()));
                 params.put("kskq", String.valueOf(user.getKqdh()));
                 return AppHelper.makeSimpleData("ksxxUpdate", params);

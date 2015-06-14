@@ -89,7 +89,7 @@
                 android:textColor="@color/my_account_preference_title"
                 android:textSize="@dimen/dimen_14_dip" />
 
-        <EditText
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
@@ -121,7 +121,7 @@
                 android:textColor="@color/my_account_preference_title"
                 android:textSize="@dimen/dimen_14_dip" />
 
-        <EditText
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
@@ -209,13 +209,4 @@
             android:text="修改"
             android:id="@+id/modify"
             style="@style/MajorButton"/>
-
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_43_dip"
-            android:layout_margin="@dimen/dimen_17_dip"
-            android:text="保存"
-            android:id="@+id/save"
-            style="@style/MajorButton"
-            android:visibility="gone"/>
 </LinearLayout>
