@@ -16,6 +16,7 @@ public class ConditionItem implements Parcelable ,Serializable{
 	protected int conditionItemSelected = R.drawable.arrow_right;
 	protected String detailConditionName;
 	protected int proviceId;
+	protected boolean isSelected=false;
 
 	public static final Parcelable.Creator<ConditionItem> CREATOR = new Parcelable.Creator<ConditionItem>() {
 		public ConditionItem createFromParcel(Parcel in) {
@@ -31,9 +32,22 @@ public class ConditionItem implements Parcelable ,Serializable{
 		conditionItemSelected = in.readInt();
 		detailConditionName = in.readString();
 		proviceId = in.readInt();
-
 	}
 
+	
+	public boolean getSelected() {
+		return isSelected;
+	}
+
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public ConditionItem(String detailConditionName, int proviceId) {
 		super();
 		this.detailConditionName = detailConditionName;

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,15 +134,22 @@ public class DetailConditionActivity extends Activity implements
 						AbsListView.LayoutParams.MATCH_PARENT,
 						mResources.getDimensionPixelSize(R.dimen.dimen_34_dip));
 				convertView.setLayoutParams(lp);
+				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			convertView.setTag(holder);
 
 			ConditionItem ConditionItem = mItemList.get(position);
 
 			holder.detialConditionItemName.setText(ConditionItem
 					.getDetailConditionName());
+			
+			if(mItemList.get(position).getSelected())
+				holder.conditionItemSelectedImg.setVisibility(View.VISIBLE);
+			else
+				holder.conditionItemSelectedImg.setVisibility(View.GONE);
+				
+				
 
 			return convertView;
 		}
@@ -156,14 +164,17 @@ public class DetailConditionActivity extends Activity implements
 			View selectedImgView = view
 					.findViewById(R.id.detail_condition_item_selected_img);
 			if (selectedImgView.getVisibility() == View.VISIBLE) {
-				selectedImgView.setVisibility(View.GONE);
+				//selectedImgView.setVisibility(View.GONE);
+				mItemList.get(position).setSelected(false);
 				if (mSelectedItmeList.contains(mItemList.get(position)))
 					mSelectedItmeList.remove(mItemList.get(position));
 			} else {
-				selectedImgView.setVisibility(View.VISIBLE);
+				//selectedImgView.setVisibility(View.VISIBLE);
+				mItemList.get(position).setSelected(true);
 				if (!mSelectedItmeList.contains(mItemList.get(position)))
 					mSelectedItmeList.add(mItemList.get(position));
 			}
+			notifyDataSetChanged();
 		}
 	}
 
@@ -171,6 +182,7 @@ public class DetailConditionActivity extends Activity implements
 		TextView detialConditionItemName;
 		ImageView conditionItemSelectedImg;
 		View dividerView;
+		boolean isClick=false;
 	}
 
 	@Override
