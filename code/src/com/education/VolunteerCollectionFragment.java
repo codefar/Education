@@ -84,7 +84,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 		mListView = (ListView) v.findViewById(R.id.list);
 		mItemAdapter = new ItemAdapter();
 		mListView.setAdapter(mItemAdapter);
-
+        mListView.setOnItemClickListener(mItemAdapter);
 		mHeaderLayout = (RelativeLayout) mInflater.inflate(
 				R.layout.header_collection_list, null);
 		mHeaderTitleTextView = (TextView) mHeaderLayout
@@ -156,8 +156,8 @@ public class VolunteerCollectionFragment extends CommonFragment {
 					holder.descTextView.setText("手工筛选");
 				} else if (source == 2) {
 					holder.descTextView.setText("智能推荐");
-				}
-				holder.titleTextView.setText(majorItem.getZymc());
+                }
+                holder.titleTextView.setText(majorItem.getZymc());
                 holder.iconImageView.setImageBitmap(BitmapFactory.decodeResource(
                         mResources, getImgId(position - 1)));
 			}
@@ -275,7 +275,6 @@ public class VolunteerCollectionFragment extends CommonFragment {
 							}
 
 							mItemList = mCollegeItemList;
-							mListView.setOnItemClickListener(mItemAdapter);
 							mListView.removeHeaderView(mHeaderLayout);
 							mItemAdapter.notifyDataSetChanged();
 						} else {
