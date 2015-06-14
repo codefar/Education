@@ -108,6 +108,7 @@ public class ManualTimFragment extends CommonFragment implements
 		mShaixuanIntent = new Intent(mActivity, ShaiXuanActivity.class);
 		mSearchResulListView.setAdapter(mItemAdapter);
 		mMajorResultListView.setAdapter(mMajorAdapter);
+		mMajorResultListView.setOnItemClickListener(mMajorAdapter);
 		displayCollege();
 		mFilterTextView.setOnClickListener(this);
 		mScoreRankText.setOnClickListener(this);
@@ -264,6 +265,7 @@ public class ManualTimFragment extends CommonFragment implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			
 			String yxdh = mItemList.get(position).getYxdh();
 			String luqupic = mLuqupici;
 			String lqqk = mLuquQingkuang;
@@ -276,6 +278,8 @@ public class ManualTimFragment extends CommonFragment implements
 
 	private class MajorItemAdapter extends BaseAdapter implements
 			AdapterView.OnItemClickListener {
+		private String xydh;
+		
 		public int getCount() {
 			return mZyData.size();
 		}
@@ -332,6 +336,15 @@ public class ManualTimFragment extends CommonFragment implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			Intent intent = new Intent(getActivity(),
+					MajorDetailActivity.class);
+			intent.putExtra("yxdh", getXydh());
+			MajorItem item = ((MajorItem) parent.getAdapter().getItem(
+					position));
+			intent.putExtra("zydh", item.getZydh());
+			intent.putExtra("yxpc", item.getLqpc());
+			intent.putExtra(MajorDetailActivity.SOURSE_TAG, item.getSource());
+			startActivity(intent);
 		}
 
 		private int getImgId(int position) {
@@ -345,6 +358,14 @@ public class ManualTimFragment extends CommonFragment implements
 			default:
 				return R.drawable.xuexiao_2;
 			}
+		}
+
+		public String getXydh() {
+			return xydh;
+		}
+
+		public void setXydh(String xydh) {
+			this.xydh = xydh;
 		}
 
 	}
@@ -366,8 +387,9 @@ public class ManualTimFragment extends CommonFragment implements
 
 							mSearchResulListView.setVisibility(View.INVISIBLE);
 							mMajorResultListView.setVisibility(View.VISIBLE);
+							mMajorResultListView.setOnItemClickListener(mMajorAdapter);
+							mMajorAdapter.setXydh(schoolItem.getYxdh());
 							mMajorAdapter.notifyDataSetChanged();
-							
 						} else {
 							ErrorData errorData = AppHelper
 									.getErrorData(response);

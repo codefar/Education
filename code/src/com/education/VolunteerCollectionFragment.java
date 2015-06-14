@@ -187,6 +187,7 @@ public class VolunteerCollectionFragment extends CommonFragment {
 						position));
 				intent.putExtra("zydh", item.getZydh());
 				intent.putExtra("yxpc", item.getLqpc());
+				intent.putExtra(MajorDetailActivity.SOURSE_TAG, item.getSource());
 				startActivity(intent);
 			} else {
 				mType = TYPE_MAJOR;

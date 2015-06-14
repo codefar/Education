@@ -49,11 +49,12 @@ public class MajorDetailFragment extends CommonFragment implements
 	protected LayoutInflater mInflater;
 	List<HistoryMajor> mHistoryMajorItems = new ArrayList<HistoryMajor>();
 	ItemAdapter mAdpter;
-	Item3 mItem;
-
+	Item6 mItem;// 手工筛选或未收藏数据
+	
 	private String yxdh;
 	private String zydh;
 	private String yxpc;
+	private int source;
 
 	public static MajorDetailFragment createInstance(Bundle param) {
 		MajorDetailFragment instance = new MajorDetailFragment();
@@ -68,6 +69,7 @@ public class MajorDetailFragment extends CommonFragment implements
 		yxdh = param.getString("yxdh", "");
 		zydh = param.getString("zydh", "");
 		yxpc = param.getString("yxpc", "");
+		source = param.getInt(MajorDetailActivity.SOURSE_TAG, 0);
 	}
 
 	@Override
@@ -79,7 +81,11 @@ public class MajorDetailFragment extends CommonFragment implements
 		mResultListView = (ListView) v.findViewById(R.id.listView);
 		mAdpter = new ItemAdapter();
 		mResultListView.setAdapter(mAdpter);
-		shaiXuanByMajor();
+		if (source == 2) { // 智能筛选
+			zhuanYeFenXiBaoGao();
+		} else {
+			shaiXuanByMajor(); // 手动筛选 或 未保存
+		}
 		return v;
 	}
 
@@ -213,9 +219,10 @@ public class MajorDetailFragment extends CommonFragment implements
 					@Override
 					public void onSuccessfulResponse(JSONObject response,
 							boolean success) {
+						Log.i("TAG", response.toJSONString());
 						if (success) {
 							String zyfxdata = response.getString("zyfxdata");
-							mItem = JSON.parseObject(zyfxdata, Item3.class);
+							mItem = JSON.parseObject(zyfxdata, Item6.class);
 							mHistoryMajorItems.clear();
 							mHistoryMajorItems.addAll(mItem.getLssj());
 							mAdpter.notifyDataSetChanged();
@@ -246,6 +253,59 @@ public class MajorDetailFragment extends CommonFragment implements
 				map.put("kskl", String.valueOf(User.getInstance().getKskl()));
 				map.put("kqdh", String.valueOf(User.getInstance().getKqdh()));
 				return AppHelper.makeSimpleData("searchmajor", map);
+			}
+		};
+		EduApp.sRequestQueue.add(request);
+	}
+
+	// 单专业分析报告
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void zhuanYeFenXiBaoGao() {
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		mBlockedDialogFragment.show(ft, "block_dialog");
+		final FastJsonRequest request = new FastJsonRequest(
+				Request.Method.POST, Url.ZHUAN_YE_FEN_XI_BAO_GAO, null,
+				new VolleyResponseListener(getActivity()) {
+					@Override
+					public void onSuccessfulResponse(JSONObject response,
+							boolean success) {
+						mBlockedDialogFragment.dismissAllowingStateLoss();
+						Log.i(TAG, response.toJSONString());
+						if (success) {
+							String zyfxdata = response.getString("zyfxdata");
+							mItem = JSON.parseObject(zyfxdata, Item6.class);
+							mHistoryMajorItems.clear();
+							mHistoryMajorItems.addAll(mItem.getLssj());
+							mAdpter.notifyDataSetChanged();
+
+						} else {
+							ErrorData errorData = AppHelper
+									.getErrorData(response);
+							Toast.makeText(getActivity(), errorData.getText(),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				}, new VolleyErrorListener() {
+					@Override
+					public void onVolleyErrorResponse(VolleyError volleyError) {
+						mBlockedDialogFragment.dismissAllowingStateLoss();
+						LogUtil.logNetworkResponse(volleyError, TAG);
+						Toast.makeText(
+								getActivity(),
+								getResources().getString(
+										R.string.internet_exception),
+								Toast.LENGTH_SHORT).show();
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("yxdh", yxdh);
+				map.put("zydh", zydh);
+				map.put("yxpc", String.valueOf(yxpc));
+				map.put("kskl", String.valueOf(User.getInstance().getKskl()));
+				map.put("kqdh", String.valueOf(User.getInstance().getKqdh()));
+				return AppHelper.makeSimpleData("zyfx", map);
 			}
 		};
 		EduApp.sRequestQueue.add(request);

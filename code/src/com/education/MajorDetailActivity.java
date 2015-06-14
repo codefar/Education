@@ -12,6 +12,7 @@ import android.view.Menu;
  */
 public class MajorDetailActivity extends CommonBaseActivity {
 
+	public static final String SOURSE_TAG = "SOURSE_TAG"; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

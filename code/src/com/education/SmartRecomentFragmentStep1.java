@@ -1,7 +1,28 @@
 package com.education;
 
-import android.content.Intent;
+import info.hoang8f.android.segmented.SegmentedGroup;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.volley.AuthFailureError;
@@ -16,31 +37,6 @@ import com.education.entity.User;
 import com.education.entity.UserInfo;
 import com.education.utils.LogUtil;
 import com.education.widget.SimpleBlockedDialogFragment;
-import info.hoang8f.android.segmented.SegmentedGroup;
-
-import com.education.utils.MenuHelper;
-
-import android.app.ActionBar;
-import android.app.AlertDialog;
-import android.app.FragmentTransaction;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SmartRecomentFragmentStep1 extends CommonFragment implements
 		OnClickListener, RadioGroup.OnCheckedChangeListener {
