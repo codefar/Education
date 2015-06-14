@@ -71,7 +71,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
         
     	Bundle bundle = intent
 				.getBundleExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
-    	 ArrayList<ShaiXuanConditionItem> conditionItemList = (ArrayList<ShaiXuanConditionItem>) bundle
+    	 mItemList = (ArrayList<ShaiXuanConditionItem>) bundle
 				.getSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
 
         String luQuQingKuang = intent.getStringExtra("LU_QU_QING_KUANG");
