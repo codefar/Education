@@ -79,6 +79,12 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 			Toast.makeText(this, "click ", Toast.LENGTH_SHORT).show();
 			isReset = true;
 			mItemAdapter.notifyDataSetChanged();
+			
+			int itemCount=mConditionListView.getAdapter().getCount();
+			for(int i=0;i<itemCount;i++){
+				Object obj=mConditionListView.getAdapter().getItem(i);
+				((ShaiXuanConditionItem)obj).setmSubDetailConditionItemList(null);
+			}
 			break;
 		default:
 			break;
