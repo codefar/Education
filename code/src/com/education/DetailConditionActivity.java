@@ -72,20 +72,20 @@ public class DetailConditionActivity extends Activity implements
 		// 省
 		case DetailConditionConstants.PROVINCE:
 			mItemList = generateItem(
-					getResources().getStringArray(R.array.province_name),
-					getResources().getIntArray(R.array.province_id));
+					getResources().getStringArray(R.array.check_all_province_name),
+					getResources().getIntArray(R.array.check_all_province_id));
 			break;
 		// 类型
 		case DetailConditionConstants.SCHOOL_TYPE:
 			mItemList = generateItem(
-					getResources().getStringArray(R.array.college_type_name),
-					getResources().getIntArray(R.array.college_type_id));
+					getResources().getStringArray(R.array.check_all_college_type_name),
+					getResources().getIntArray(R.array.check_all_college_type_id));
 			break;
 		// 院校性质
 		case DetailConditionConstants.MAJOR:
 			mItemList = generateItem(
-					getResources().getStringArray(R.array.college_property_name),
-					getResources().getIntArray(R.array.college_property_id));
+					getResources().getStringArray(R.array.check_all_college_property_name),
+					getResources().getIntArray(R.array.check_all_college_property_id));
 			break;
 		// 录取批次
 		case DetailConditionConstants.LUQU_PICI:
@@ -110,6 +110,27 @@ public class DetailConditionActivity extends Activity implements
 	
 	private class ItemAdapter extends BaseAdapter implements
 			AdapterView.OnItemClickListener {
+		
+		//是否点击全部
+		private boolean isClickAll=false;
+		private int clickPosition;
+		
+		public int getClickPosition() {
+			return clickPosition;
+		}
+
+		public void setClickPosition(int clickPosition) {
+			this.clickPosition = clickPosition;
+		}
+
+		public void setClickAll(boolean isClickAll) {
+			this.isClickAll = isClickAll;
+		}
+		
+		public boolean getClickAll() {
+			return isClickAll;
+		}
+
 		public int getCount() {
 			return mItemList.size();
 		}
@@ -149,8 +170,13 @@ public class DetailConditionActivity extends Activity implements
 			else
 				holder.conditionItemSelectedImg.setVisibility(View.GONE);
 				
+			//选中全部
+			if (mItemList.get(0).getSelected()&&isClickAll) {
+				if (position != 0)
+					holder.conditionItemSelectedImg.setVisibility(View.VISIBLE);
+			}
+			//取消全部
 				
-
 			return convertView;
 		}
 
@@ -164,16 +190,32 @@ public class DetailConditionActivity extends Activity implements
 			View selectedImgView = view
 					.findViewById(R.id.detail_condition_item_selected_img);
 			if (selectedImgView.getVisibility() == View.VISIBLE) {
-				//selectedImgView.setVisibility(View.GONE);
 				mItemList.get(position).setSelected(false);
-				if (mSelectedItmeList.contains(mItemList.get(position)))
-					mSelectedItmeList.remove(mItemList.get(position));
+//				if (mSelectedItmeList.contains(mItemList.get(position)))
+//					mSelectedItmeList.remove(mItemList.get(position));
 			} else {
-				//selectedImgView.setVisibility(View.VISIBLE);
 				mItemList.get(position).setSelected(true);
-				if (!mSelectedItmeList.contains(mItemList.get(position)))
-					mSelectedItmeList.add(mItemList.get(position));
+//				if (!mSelectedItmeList.contains(mItemList.get(position)))
+//					mSelectedItmeList.add(mItemList.get(position));
 			}
+			
+			View firstItemRightImg=mConditionListView.getChildAt(0).findViewById(R.id.detail_condition_item_selected_img);
+			if(position==0&&firstItemRightImg.getVisibility()==View.GONE){
+				mItemAdapter.setClickAll(true);
+				for (int i = 0; i < mItemList.size(); i++)
+					mItemList.get(i).setSelected(true);
+			}
+			else if (position == 0
+					&& firstItemRightImg.getVisibility() == View.VISIBLE) {
+				mItemAdapter.setClickAll(false);
+				for (int i = 0; i < mItemList.size(); i++)
+					mItemList.get(i).setSelected(false);
+			}else if(position != 0
+					&& firstItemRightImg.getVisibility() == View.VISIBLE){
+				mItemAdapter.setClickAll(false);
+			}
+			mItemAdapter.setClickPosition(position);
+			
 			notifyDataSetChanged();
 		}
 	}
@@ -188,11 +230,17 @@ public class DetailConditionActivity extends Activity implements
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.detail_condition_confirm_bt) {
-//			mSelectedItemIntent.putParcelableArrayListExtra(
-//					DetailConditionConstants.SELECTED_ITEM_TAG,
-//					(ArrayList<? extends Parcelable>) mSelectedItmeList);
-			
-			mSelectedItemIntent.putExtra(DetailConditionConstants.SELECTED_ITEM_TAG, (Serializable)mSelectedItmeList);
+			mSelectedItmeList.clear();
+//			if (!(mItemList.get(0)).getSelected()) {
+				for (int i = 1; i < mItemList.size(); i++) {
+					if (mItemList.get(i).getSelected())
+						mSelectedItmeList.add(mItemList.get(i));
+				}
+//			}
+
+			mSelectedItemIntent.putExtra(
+					DetailConditionConstants.SELECTED_ITEM_TAG,
+					(Serializable) mSelectedItmeList);
 			mSelectedItemIntent.putExtra(
 					ShaiXuanActivity.SHAIXUAN_CLICK_POSITION,
 					mCurrentSelectShaixuan);

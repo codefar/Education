@@ -65,7 +65,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	private List<MajorItem> mZyData = new ArrayList<MajorItem>();
 
 	protected LayoutInflater mInflater;
-	protected Resources mResources;
+	protected static Resources mResources;
 	private ItemAdapter mItemAdapter;
 	private MajorItemAdapter mMajorAdapter;
 	private View mFilterLayout;
@@ -194,11 +194,6 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
     }
 
 	private void setDataSource(ShaiXuanJieGuo result,boolean isFirstInto) {
-		//向下拉 数据累加
-		if (isFirstInto)
-			mSchoolNumbers = result.getYxzydata().size();
-		else
-			mSchoolNumbers += result.getYxzydata().size();
 		mMajorNumbers = 0;
 		mItemList.clear();
 		for (int i = 0; i < mSchoolList.size(); i++) {
@@ -211,6 +206,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 			mItemList.add(localItem);
 		}
 		mItemAdapter.notifyDataSetChanged();
+		mSchoolNumbers=mItemAdapter.getCount();
 		mSchoolNumbersText.setText(String.format(
 				getResources().getString(R.string.school_numbers),
 				String.valueOf(mSchoolNumbers)));
@@ -755,6 +751,8 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		Log.w("wutl", "院校省份＝" + buffer.toString());
 		if (TextUtils.isEmpty(buffer.toString()))
 			return "";
+		if(conditionlist!=null&&conditionlist.size()==mResources.getStringArray(R.array.check_all_province_name).length-1)
+			return "";
 		return buffer.toString();
 	}
 
@@ -780,6 +778,8 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		Log.w("wutl", "院校类型＝" + buffer.toString());
 		if (TextUtils.isEmpty(buffer.toString()))
 			return "";
+		if(conditionlist!=null&&conditionlist.size()==mResources.getStringArray(R.array.check_all_college_type_name).length-1)
+			return "";
 		return buffer.toString();
 	}
 
@@ -804,6 +804,8 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		}
 		Log.w("wutl", "院校性质＝" + buffer.toString());
 		if (TextUtils.isEmpty(buffer.toString()))
+			return "";
+		if(conditionlist!=null&&conditionlist.size()==mResources.getStringArray(R.array.check_all_college_property_name).length-1)
 			return "";
 		return buffer.toString();
 	}
