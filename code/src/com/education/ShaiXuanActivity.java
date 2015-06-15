@@ -364,7 +364,7 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 					.getSerializableExtra(DetailConditionConstants.SELECTED_ITEM_TAG);
 
 			mItemList.get(position).setDetailCondition(
-					getSelectedItemString(detailConditionItemList));
+					getShortSelectedItemString(detailConditionItemList));
 			mItemList.get(position).setmSubDetailConditionItemList(
 					detailConditionItemList);
 			mItemAdapter.notifyDataSetChanged();
@@ -407,6 +407,36 @@ public class ShaiXuanActivity extends CommonBaseActivity implements
 					.get(i)).getDetailConditionName());
 			if (i != detailConditionItemList.size() - 1)
 				buffer.append("/");
+		}
+		return buffer.toString();
+	}
+	
+	private String getShortSelectedItemString(
+			ArrayList<ConditionItem> detailConditionItemList) {
+		StringBuffer buffer = new StringBuffer();
+		boolean isAll = false;
+		for (int i = 0; i < detailConditionItemList.size(); i++) {
+			ConditionItem item = detailConditionItemList.get(i);
+			if (item.getProviceId() == -1) {
+				//all
+				isAll = true;
+			}
+		}
+		
+		
+		if (!isAll) {
+			for (int i = 0; i < detailConditionItemList.size(); i++) {
+				buffer.append(((com.education.entity.ConditionItem) detailConditionItemList
+						.get(i)).getDetailConditionName());
+				if (i != detailConditionItemList.size() - 1)
+					buffer.append("/");
+			}
+		} else {
+			return "全部";
+		}
+		
+		if (buffer.length() >= 15) {
+			return buffer.substring(0, 16) + "...";
 		}
 		return buffer.toString();
 	}
