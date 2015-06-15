@@ -63,18 +63,18 @@ public class ManulSearchSchollDetailActivity extends CommonBaseActivity
 		mMajorAdapter = new MajorItemAdapter();
 		mMajorResultListView.setAdapter(mMajorAdapter);
 		mMajorResultListView.setOnItemClickListener(mMajorAdapter);
-		 
+
 		if (getIntent() != null) {
 			mLuqupici = getIntent().getStringExtra("lqpc");
 			mLuquqingkuang = getIntent().getStringExtra("lqqk");
 			yxdh = getIntent().getStringExtra("yxdh");
-			
+
 			ActionBar bar = getActionBar();
 			bar.setTitle(yxdh);
 			bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
 					| ActionBar.DISPLAY_SHOW_TITLE);
 			bar.setHomeButtonEnabled(true);
-			
+
 			shaiXuanByCollege();
 		}
 		Log.i("TAG", getIntent().getExtras().toString());
@@ -161,15 +161,14 @@ public class ManulSearchSchollDetailActivity extends CommonBaseActivity
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			/*
-			 * Intent intent = new Intent(ManulSearchSchollDetailActivity.this,
-			 * MajorDetailActivity.class); intent.putExtra("yxdh", getXydh());
-			 * MajorItem item = ((MajorItem)
-			 * parent.getAdapter().getItem(position)); intent.putExtra("zydh",
-			 * item.getZydh()); intent.putExtra("yxpc", item.getLqpc());
-			 * intent.putExtra(MajorDetailActivity.SOURSE_TAG,
-			 * item.getSource()); startActivity(intent);
-			 */
+			Intent intent = new Intent(ManulSearchSchollDetailActivity.this,
+					MajorDetailActivity.class);
+			intent.putExtra("yxdh", yxdh);
+			MajorItem item = ((MajorItem) parent.getAdapter().getItem(position));
+			intent.putExtra("zydh", item.getZydh());
+			intent.putExtra("yxpc", item.getLqpc());
+			intent.putExtra(MajorDetailActivity.SOURSE_TAG, item.getSource());
+			startActivity(intent);
 		}
 
 		private int getImgId(int position) {
@@ -198,7 +197,9 @@ public class ManulSearchSchollDetailActivity extends CommonBaseActivity
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void shaiXuanByCollege() {
 		final FastJsonRequest request = new FastJsonRequest(
-				Request.Method.POST, Url.SHAI_XUAN_BY_COLLEGE, null,
+				Request.Method.POST,
+				Url.SHAI_XUAN_BY_COLLEGE,
+				null,
 				new VolleyResponseListener(ManulSearchSchollDetailActivity.this) {
 					@Override
 					public void onSuccessfulResponse(JSONObject response,
@@ -213,13 +214,15 @@ public class ManulSearchSchollDetailActivity extends CommonBaseActivity
 							mMajorResultListView.setVisibility(View.VISIBLE);
 							mMajorResultListView
 									.setOnItemClickListener(mMajorAdapter);
-							//mMajorAdapter.setXydh(schoolItem.getYxdh());
+							// mMajorAdapter.setXydh(schoolItem.getYxdh());
 							mMajorAdapter.notifyDataSetChanged();
 						} else {
 							ErrorData errorData = AppHelper
 									.getErrorData(response);
-							Toast.makeText(ManulSearchSchollDetailActivity.this, errorData.getText(),
-									Toast.LENGTH_SHORT).show();
+							Toast.makeText(
+									ManulSearchSchollDetailActivity.this,
+									errorData.getText(), Toast.LENGTH_SHORT)
+									.show();
 						}
 					}
 				}, new VolleyErrorListener() {
@@ -261,7 +264,9 @@ public class ManulSearchSchollDetailActivity extends CommonBaseActivity
 	private void shouCangZhuanYe(final String yxdh, final String zydh,
 			final String zymc, final String lqpc) {
 		final FastJsonRequest request = new FastJsonRequest(
-				Request.Method.POST, Url.SHOU_CANG_ZHUAN_YE, null,
+				Request.Method.POST,
+				Url.SHOU_CANG_ZHUAN_YE,
+				null,
 				new VolleyResponseListener(ManulSearchSchollDetailActivity.this) {
 					@Override
 					public void onSuccessfulResponse(JSONObject response,
@@ -274,14 +279,17 @@ public class ManulSearchSchollDetailActivity extends CommonBaseActivity
 							if (status == 1) {
 
 							}
-							Toast.makeText(ManulSearchSchollDetailActivity.this,
+							Toast.makeText(
+									ManulSearchSchollDetailActivity.this,
 									result.getString("msgText"),
 									Toast.LENGTH_SHORT).show();
 						} else {
 							ErrorData errorData = AppHelper
 									.getErrorData(response);
-							Toast.makeText(ManulSearchSchollDetailActivity.this, errorData.getText(),
-									Toast.LENGTH_SHORT).show();
+							Toast.makeText(
+									ManulSearchSchollDetailActivity.this,
+									errorData.getText(), Toast.LENGTH_SHORT)
+									.show();
 						}
 					}
 				}, new VolleyErrorListener() {
@@ -289,7 +297,7 @@ public class ManulSearchSchollDetailActivity extends CommonBaseActivity
 					public void onVolleyErrorResponse(VolleyError volleyError) {
 						LogUtil.logNetworkResponse(volleyError, TAG);
 						Toast.makeText(
-								 ManulSearchSchollDetailActivity.this,
+								ManulSearchSchollDetailActivity.this,
 								getResources().getString(
 										R.string.internet_exception),
 								Toast.LENGTH_SHORT).show();
@@ -304,14 +312,14 @@ public class ManulSearchSchollDetailActivity extends CommonBaseActivity
 				map.put("zydh", zydh); // 专业代号
 				map.put("zymc", zymc); // 专业名称
 				map.put("lqpc", String.valueOf(lqpc)); // 录取批次
-				map.put("source", "2");// 收藏来源 1为手工筛选 2为智能推荐
+				map.put("source", "1");// 收藏来源 1为手工筛选 2为智能推荐
 				Log.i(TAG, Arrays.toString(map.entrySet().toArray()));
 				return AppHelper.makeSimpleData("search", map);
 			}
 		};
 		EduApp.sRequestQueue.add(request);
 	}
-	
+
 	private String getLuquQingkuang(Intent data) {
 		String year = data.getStringExtra("year_score");
 		String low_score = data.getStringExtra("low_score");
@@ -323,7 +331,7 @@ public class ManulSearchSchollDetailActivity extends CommonBaseActivity
 		}
 		User mUser = User.getInstance();
 		if (TextUtils.isEmpty(low_score))
-			low_score = String.valueOf(mUser .getKscj() - 20);
+			low_score = String.valueOf(mUser.getKscj() - 20);
 
 		if (TextUtils.isEmpty(high_score))
 			high_score = String.valueOf(mUser.getKscj() + 20);
@@ -333,7 +341,7 @@ public class ManulSearchSchollDetailActivity extends CommonBaseActivity
 		Log.i(TAG, "getLuquQingkuang mLuquqingkuang=" + mLuquqingkuang);
 		return mLuquqingkuang;
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return true;

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,6 +71,13 @@ public class MajorDetailFragment extends CommonFragment implements
 		zydh = param.getString("zydh", "");
 		yxpc = param.getString("yxpc", "");
 		source = param.getInt(MajorDetailActivity.SOURSE_TAG, 0);
+		if (getActivity() != null) {
+			ActionBar bar = getActivity().getActionBar();
+			bar.setTitle(zydh);
+			bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP
+					| ActionBar.DISPLAY_SHOW_TITLE);
+			bar.setHomeButtonEnabled(true);
+		}
 	}
 
 	@Override
