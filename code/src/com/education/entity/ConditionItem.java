@@ -7,7 +7,7 @@ import android.os.Parcelable;
 
 import com.education.R;
 
-public class ConditionItem implements Parcelable ,Serializable{
+public class ConditionItem implements  Serializable{
 
 	/**
 	 * 
@@ -86,16 +86,25 @@ public class ConditionItem implements Parcelable ,Serializable{
 		return conditionItemSelected;
 	}
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
 
 	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(conditionItemSelected);
-		dest.writeString(detailConditionName);
-		dest.writeInt(proviceId);
+	public String toString() {
+		return "ConditionItem [conditionItemSelected=" + conditionItemSelected
+				+ ", detailConditionName=" + detailConditionName
+				+ ", proviceId=" + proviceId + ", isSelected=" + isSelected
+				+ "]";
 	}
+
+//	@Override
+//	public int describeContents() {
+//		return 0;
+//	}
+//
+//	@Override
+//	public void writeToParcel(Parcel dest, int flags) {
+//		dest.writeInt(conditionItemSelected);
+//		dest.writeString(detailConditionName);
+//		dest.writeInt(proviceId);
+//	}
 
 }

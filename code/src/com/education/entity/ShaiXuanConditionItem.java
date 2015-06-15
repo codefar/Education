@@ -74,6 +74,14 @@ public class ShaiXuanConditionItem implements Serializable {
 		this.mSubDetailConditionItemList = in.readArrayList(ConditionItem.class.getClassLoader());
 	}
 
+	@Override
+	public String toString() {
+		return "ShaiXuanConditionItem [schoolImg=" + schoolImg
+				+ ", conditionName=" + conditionName + ", detailCondition="
+				+ detailCondition + ", mSubDetailConditionItemList="
+				+ mSubDetailConditionItemList + "]";
+	}
+
 //	public static final Creator<ShaiXuanConditionItem> CREATOR = new Creator<ShaiXuanConditionItem>() {
 //		public ShaiXuanConditionItem createFromParcel(Parcel source) {
 //			return new ShaiXuanConditionItem(source);

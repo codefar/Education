@@ -75,6 +75,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	private ImageView mScoreRankImg, mSchoolRankImg;
 	private int clickPinyinNumbers, clickSchoolNumbers;
 	private String mSchoolNumbers, mLuquQingkuang;
+	private String back2ShaiXuanActivityLuquQingkuang;
     private List<CollegeItem> mSchoolList = new ArrayList<CollegeItem>();//用于记录分页
 	private int mMajorNumbers;
 	private ArrayList<ShaiXuanConditionItem> conditionItemList;
@@ -110,7 +111,6 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 				false);
 		initView(v);
 
-//		mLuquQingkuang = getLuquQingkuang(new Intent());
 		mItemAdapter = new ItemAdapter();
 		mMajorAdapter = new MajorItemAdapter();
 		mShaixuanIntent = new Intent(mActivity, ShaiXuanActivity.class);
@@ -125,7 +125,6 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		mLuquQingkuang = getLuquQingkuang(new Intent());
 
         mSearchResulListView.setRefreshing(true);
-//		postData2Server(mNextPageNo, null, "", true);
 		return v;
 	}
 
@@ -196,7 +195,6 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	private void setDataSource(ShaiXuanJieGuo result) {
 		mSchoolNumbers = String.valueOf(result.getYxzydata().size());
 		mMajorNumbers = 0;
-//		List<CollegeItem> schoolList = result.getYxzydata();
 		mItemList.clear();
 		for (int i = 0; i < mSchoolList.size(); i++) {
 			SchoolItem localItem = new SchoolItem(mSchoolList.get(i).getZysl(),
@@ -344,10 +342,10 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 						.findViewById(R.id.text5);
 				holder.tBtn = (TextView) convertView
 						.findViewById(R.id.collect);
-//				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-//						AbsListView.LayoutParams.MATCH_PARENT,
-//						mResources.getDimensionPixelSize(R.dimen.dimen_34_dip));
-//				convertView.setLayoutParams(lp);
+				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
+						AbsListView.LayoutParams.MATCH_PARENT,
+						mResources.getDimensionPixelSize(R.dimen.dimen_34_dip));
+				convertView.setLayoutParams(lp);
 			} else {
 				holder = (ViewHolderMajor) convertView.getTag();
 			}
@@ -590,6 +588,8 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 					.getSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG);
 			mLuquQingkuang = getLuquQingkuang(data);
 
+			back2ShaiXuanActivityLuquQingkuang=data.getStringExtra("luquqingkuang_detial_condition");
+			
             mNextPageNo = PAGE_START;
 			postData2Server(mNextPageNo, conditionItemList, "", false);
 			Log.w("wutl", "录取情况＝" + mLuquQingkuang);
@@ -829,11 +829,38 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.shaixuan_layout:
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG, conditionItemList);
-			mShaixuanIntent.putExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG, bundle);
+//			Bundle bundle = new Bundle();
+//			bundle.putSerializable(ShaiXuanActivity.SHAIXUAN_RESULT_TAG, conditionItemList);
+//			mShaixuanIntent.putExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG, bundle);
 			
-            mShaixuanIntent.putExtra("LU_QU_QING_KUANG", mLuquQingkuang);
+//			mShaixuanIntent.putExtra(ShaiXuanActivity.SHAIXUAN_RESULT_TAG, (Serializable)conditionItemList);
+			
+			if (conditionItemList != null) {
+				//放入省份
+				if (conditionItemList.get(0) != null)
+					mShaixuanIntent.putExtra(ShaiXuanActivity.SHENGFEN,
+							(Serializable) conditionItemList.get(0));
+				//放入院校类型
+				if (conditionItemList.get(1) != null)
+					mShaixuanIntent.putExtra(ShaiXuanActivity.YUANXIAO_LEIXING,
+							(Serializable) conditionItemList.get(1));
+				//放入院校性质
+				if (conditionItemList.get(2) != null)
+					mShaixuanIntent.putExtra(ShaiXuanActivity.YUANXIAO_XINGZHI,
+							(Serializable) conditionItemList.get(2));
+				//放入录取批次
+				if (conditionItemList.get(3) != null)
+					mShaixuanIntent.putExtra(ShaiXuanActivity.LUQU_PICI,
+							(Serializable) conditionItemList.get(3));
+				//放入历年录取情况
+				if (conditionItemList.get(4) != null)
+					mShaixuanIntent.putExtra(ShaiXuanActivity.LUQUQINGKUANG,
+							(Serializable) conditionItemList.get(4));
+			}
+
+			mShaixuanIntent.putExtra("LU_QU_QING_KUANG", mLuquQingkuang);
+			mShaixuanIntent.putExtra("luquqingkuang_detial_condition",
+					back2ShaiXuanActivityLuquQingkuang);
 			startActivityForResult(mShaixuanIntent, 1);
 			break;
 		case R.id.paixu_pinyin:
