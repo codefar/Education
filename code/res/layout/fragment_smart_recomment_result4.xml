@@ -161,14 +161,54 @@
             android:layout_height="1px"
             android:background="@drawable/divider_selector" />
     </LinearLayout>
+     <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_17_dip"
+                    android:layout_marginRight="@dimen/dimen_17_dip"
+                    android:layout_marginTop="@dimen/dimen_9_dip"
+                    android:includeFontPadding="false"
+                    android:text="一对一专家咨询VIP服务费 198 元"
+                    android:textColor="@color/first_text"
+                    android:id="@+id/spec1" />
+      <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_17_dip"
+                    android:layout_marginRight="@dimen/dimen_17_dip"
+                    android:layout_marginTop="@dimen/dimen_9_dip"
+                    android:includeFontPadding="false"
+                    android:text="优惠金额40元"
+                    android:textColor="@color/first_text"
+                    android:id="@+id/spec2" />
+       <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_17_dip"
+                    android:layout_marginRight="@dimen/dimen_17_dip"
+                    android:layout_marginTop="@dimen/dimen_9_dip"
+                    android:includeFontPadding="false"
+                    android:text="优惠后实际价格150元"
+                    android:textColor="@color/first_text"
+                    android:id="@+id/spec3" />
 	<!--购买-->
         <Button
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_43_dip"
-                android:layout_marginTop="@dimen/dimen_23_dip"
+                android:layout_marginTop="@dimen/dimen_9_dip"
                 android:layout_marginLeft="@dimen/dimen_17_dip"
                 android:layout_marginRight="@dimen/dimen_17_dip"
                 android:text="立即购买"
                 android:id="@+id/buy"
                 style="@style/MajorButton"/>
+        <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_17_dip"
+                    android:layout_marginRight="@dimen/dimen_17_dip"
+                    android:layout_marginTop="@dimen/dimen_9_dip"
+                    android:includeFontPadding="false"
+                    android:text="（优惠原因:优惠码单次最多可使用4个，您现共有优惠码 2 个,可抵现 40 元，剩余 0 个)"
+                    android:textColor="@color/first_text"
+                    android:id="@+id/spec4" />
 </LinearLayout>

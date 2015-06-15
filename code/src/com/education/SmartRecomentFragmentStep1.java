@@ -160,12 +160,16 @@ public class SmartRecomentFragmentStep1 extends CommonFragment implements
             builder.setMessage("请填写正确身份证号");
             builder.show();
             return false;
-        } else if (TextUtils.isEmpty(mScoreEditText.getText().toString())) {
-            builder.setMessage("请填写总分数");
+        } else if (TextUtils.isEmpty(mScoreEditText.getText().toString())
+        		 || Integer.parseInt(mScoreEditText.getText().toString()) > 2000
+                 || Integer.parseInt(mScoreEditText.getText().toString()) < 0) {
+            builder.setMessage("请正确填写总分数");
             builder.show();
             return false;
-        } else if (TextUtils.isEmpty(mPostionEditText.getText().toString())) {
-            builder.setMessage("请填写排名");
+        } else if (TextUtils.isEmpty(mPostionEditText.getText().toString())
+        		|| Integer.parseInt(mPostionEditText.getText().toString()) > 999999
+                || Integer.parseInt(mPostionEditText.getText().toString()) < 1) {
+            builder.setMessage("请正确填写排名");
             builder.show();
             return false;
         } else if (TextUtils.isEmpty(mZoneTextView.getText().toString())) {

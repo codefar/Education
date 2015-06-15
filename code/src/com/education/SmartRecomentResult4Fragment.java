@@ -140,7 +140,6 @@ public class SmartRecomentResult4Fragment extends CommonFragment implements
                     	String mTimeStamp = result.getString("timestamp");
                     	String mPackageString = result.getString("package");
                     	String mSign = result.getString("sign");
-                    	mSign = "513a4f303c2795f555b33fd136e6aa877b289f26";
                     	String mAppId = result.getString("appid");
                     	Log.v("WX", "partnerId: " + mPartnerId);
                     	Log.v("WX", "prepayId: " + mPrepayId);

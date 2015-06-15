@@ -87,7 +87,11 @@ public class UserInfoActivity extends CommonBaseActivity implements View.OnClick
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (TextUtils.isEmpty(kscj.getText().toString())
-                                || TextUtils.isEmpty(kspw.getText().toString())) {
+                                || TextUtils.isEmpty(kspw.getText().toString())
+                                || Integer.parseInt(kscj.getText().toString()) > 2000
+                                || Integer.parseInt(kscj.getText().toString()) < 0
+                                || Integer.parseInt(kspw.getText().toString()) > 999999
+                                || Integer.parseInt(kspw.getText().toString()) < 1) {
                             Toast.makeText(UserInfoActivity.this, "请正确输入信息！", Toast.LENGTH_LONG).show();
                             showModifyDialog();
                         } else {

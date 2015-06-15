@@ -387,7 +387,7 @@ public class PersonCenterFragment extends CommonFragment {
         mItemList.add(item4);
 
         Item item5 = new Item();
-        item5.title = "分享";
+        item5.title = "分享得优惠";
         item5.icon = R.drawable.share;
         mItemList.add(item5);
 
