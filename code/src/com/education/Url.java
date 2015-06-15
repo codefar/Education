@@ -36,5 +36,12 @@ public class Url {
     public static final String SHOU_CANG_ZHUAN_YE = SCHEME + "/zysc/collectmajor"; //收藏专业
     public static final String SHOU_CANG_YUAN_XIAO_LIE_BIAO = SCHEME + "/zysc/getcollectschool"; //收藏院校列表
     public static final String SHOU_CANG_ZHUAN_YE_LIE_BIAO = SCHEME + "/zysc/getcollectmajor"; //收藏专业列表
+    
+    
+    public static final String WEIXIN_ORDER = SCHEME + "/pay/unifiedorder"; //获取订单
+    public static final String WEIXIN_QUERY_ORDER = SCHEME + "/pay/orderquery"; //查询订单
+    public static final String WEIXIN_TRADE_NO = "1217752501201407033233368018";
+    public static final String WEIXIN_PRODUCT_ID = "12345678123456781234567812345678";
+
 }
 

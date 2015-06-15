@@ -161,5 +161,14 @@
             android:layout_height="1px"
             android:background="@drawable/divider_selector" />
     </LinearLayout>
-
+	<!--购买-->
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_43_dip"
+                android:layout_marginTop="@dimen/dimen_23_dip"
+                android:layout_marginLeft="@dimen/dimen_17_dip"
+                android:layout_marginRight="@dimen/dimen_17_dip"
+                android:text="立即购买"
+                android:id="@+id/buy"
+                style="@style/MajorButton"/>
 </LinearLayout>

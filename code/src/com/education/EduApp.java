@@ -16,11 +16,14 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.education.common.AppHelper;
 import com.education.common.PhoneService;
 import com.education.common.SpHelper;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import java.io.File;
 
@@ -58,7 +61,8 @@ public class EduApp extends Application {
     public static final String SP_COLUMN_NEW_VERSION_TITLE = "new_version_title";
 
     public static final String WX_APP_ID = "wxa85e1dd72d4132cf";
-
+    private IWXAPI mWxApi;
+    
     static {
         File externalStorage = Environment.getExternalStorageDirectory();
         String prefix = externalStorage.getAbsolutePath() + File.separator;
@@ -146,18 +150,23 @@ public class EduApp extends Application {
 
         String userId = defaultSP.getString(Constants.SP_COLUMN_USER_ID, "-1");
 
-        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        if (size.x < size.y) {
-            sScreenWidth = size.x;
-            sScreenHeight = size.y;
-        } else {
-            sScreenWidth = size.y;
-            sScreenHeight = size.x;
-        }
-
+//        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+//        Display display = wm.getDefaultDisplay();
+//        Point size = new Point();
+//        display.getSize(size);
+//        if (size.x < size.y) {
+//            sScreenWidth = size.x;
+//            sScreenHeight = size.y;
+//        } else {
+//            sScreenWidth = size.y;
+//            sScreenHeight = size.x;
+//        }
+        regToWx();
         AppHelper.initImageLoader(this);
+    }
+    
+    private void regToWx() {
+        mWxApi = WXAPIFactory.createWXAPI(this, WX_APP_ID, true);
+        mWxApi.registerApp(WX_APP_ID);
     }
 }
