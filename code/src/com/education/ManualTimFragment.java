@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -74,10 +75,10 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	private Intent mShaixuanIntent;
 	private ImageView mScoreRankImg, mSchoolRankImg;
 	private int clickPinyinNumbers, clickSchoolNumbers;
-	private String mSchoolNumbers, mLuquQingkuang;
+	private String mLuquQingkuang;
 	private String back2ShaiXuanActivityLuquQingkuang;
     private List<CollegeItem> mSchoolList = new ArrayList<CollegeItem>();//用于记录分页
-	private int mMajorNumbers;
+	private int mMajorNumbers,mSchoolNumbers;
 	private ArrayList<ShaiXuanConditionItem> conditionItemList;
 	private Activity mActivity;
 	private User mUser;
@@ -192,8 +193,12 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
         postData2Server(mNextPageNo , conditionItemList, sKey, false);
     }
 
-	private void setDataSource(ShaiXuanJieGuo result) {
-		mSchoolNumbers = String.valueOf(result.getYxzydata().size());
+	private void setDataSource(ShaiXuanJieGuo result,boolean isFirstInto) {
+		//向下拉 数据累加
+		if (isFirstInto)
+			mSchoolNumbers = result.getYxzydata().size();
+		else
+			mSchoolNumbers += result.getYxzydata().size();
 		mMajorNumbers = 0;
 		mItemList.clear();
 		for (int i = 0; i < mSchoolList.size(); i++) {
@@ -208,7 +213,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		mItemAdapter.notifyDataSetChanged();
 		mSchoolNumbersText.setText(String.format(
 				getResources().getString(R.string.school_numbers),
-				mSchoolNumbers));
+				String.valueOf(mSchoolNumbers)));
 		mMajorNumbersText.setText(String.format(
 				getResources().getString(R.string.major_numbers),
 				String.valueOf(mMajorNumbers)));
@@ -624,6 +629,10 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 			final String skey, final boolean isFirstInto) {
         Log.d("postData2Server", "pageNo: " + pageNo, new Throwable());
 
+        //展示家在对话框
+    	FragmentTransaction ft = getFragmentManager().beginTransaction();
+		mBlockedDialogFragment.show(ft, "block_dialog");
+		
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.SHAI_XUAN, null,
 				new VolleyResponseListener(mActivity) {
@@ -634,6 +643,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
                             mSearchResulListView.onRefreshComplete();
                         }
 						if (success) {
+							mBlockedDialogFragment.dismissAllowingStateLoss();
 							String datas = response.getString("datas");
 							ShaiXuanJieGuo result = JSON.parseObject(datas,
 									ShaiXuanJieGuo.class);
@@ -651,7 +661,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
                                     mSearchResulListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
                                 }
 
-                                setDataSource(result);
+                                setDataSource(result,isFirstInto);
                                 mItemAdapter.notifyDataSetChanged();
 							}
 							Log.d("wutl", "resutl=" + result.toString());
@@ -665,6 +675,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 				}, new VolleyErrorListener() {
 					@Override
 					public void onVolleyErrorResponse(VolleyError volleyError) {
+						mBlockedDialogFragment.dismissAllowingStateLoss();
                         if (mSearchResulListView.getVisibility() == View.VISIBLE) {
                             mSearchResulListView.onRefreshComplete();
                         }
