@@ -366,7 +366,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 				public void onClick(View v) {
 					//final String yxdh, final String zydh,
 					//final String zymc, final int lqpc
-					//shouCangZhuanYe(item2.getYxdh(),majorItem.getZydh(),majorItem.getZymc(),1);
+					shouCangZhuanYe(item2.getYxdh(),majorItem.getZydh(),majorItem.getZymc(),mLuqupici);
 				}
 			});
 			return convertView;
@@ -413,7 +413,7 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void shouCangZhuanYe(final String yxdh, final String zydh,
-			final String zymc, final int lqpc) {
+			final String zymc, final String lqpc) {
 		final FastJsonRequest request = new FastJsonRequest(
 				Request.Method.POST, Url.SHOU_CANG_ZHUAN_YE, null,
 				new VolleyResponseListener(getActivity()) {
