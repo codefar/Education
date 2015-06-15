@@ -5,8 +5,8 @@ package com.education;
  */
 public class Url {
 
-//    public static final String SCHEME = "http://king.benshijy.com" 以后外网用上面的域名（注册时，协议与联系客服页面的链接要单独替换）
-    public static final String SCHEME = "http://10.10.18.7:8018"; //以后外网用上面的域名（注册时，协议与联系客服页面的链接要单独替换）
+//    public static final String SCHEME = "http://www.benshijy.com:8018" 以后外网用上面的域名（注册时，协议与联系客服页面的链接要单独替换）
+    public static final String SCHEME = "http://king.benshijy.com"; //以后外网用上面的域名（注册时，协议与联系客服页面的链接要单独替换）
     public static final String LOGIN = SCHEME + "/login"; //登录
     public static final String REGISTER_GET_SMS_CODE = SCHEME + "/register/getSMCode"; //获取短信
     public static final String REGISTER_CHECK_SMS_CODE = SCHEME + "/register/chkSMCode"; //检查短信

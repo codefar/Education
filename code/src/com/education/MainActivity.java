@@ -225,15 +225,6 @@ public class MainActivity extends FragmentBaseActivity {
 				return;
 			}
 		}
-		if (tabId == TAB_MANUAL) {
-			ManualTimFragment f = (ManualTimFragment) getFragmentManager()
-					.findFragmentByTag("tab_manual");
-			if (f.back()) {
-				super.onBackPressed();
-			} else {
-				return;
-			}
-		}
 		super.onBackPressed();
 	}
 }

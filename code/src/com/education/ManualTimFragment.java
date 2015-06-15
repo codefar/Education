@@ -62,12 +62,10 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	private PullToRefreshListView mSearchResulListView;
     private ListView mMajorResultListView;;
 	private List<SchoolItem> mItemList = new ArrayList<SchoolItem>();
-	private List<MajorItem> mZyData = new ArrayList<MajorItem>();
 
 	protected LayoutInflater mInflater;
 	protected static Resources mResources;
 	private ItemAdapter mItemAdapter;
-	private MajorItemAdapter mMajorAdapter;
 	private View mFilterLayout;
     private TextView mScoreRankText, mSchoolRankText,
 			mUserScoreText, mUserRankText, mUserTypeText, mUserLocation,
@@ -113,11 +111,9 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		initView(v);
 
 		mItemAdapter = new ItemAdapter();
-		mMajorAdapter = new MajorItemAdapter();
 		mShaixuanIntent = new Intent(mActivity, ShaiXuanActivity.class);
 		mSearchResulListView.setAdapter(mItemAdapter);
-		mMajorResultListView.setAdapter(mMajorAdapter);
-		mMajorResultListView.setOnItemClickListener(mMajorAdapter);
+		
 		displayCollege();
 		mFilterLayout.setOnClickListener(this);
 		mScoreRankText.setOnClickListener(this);
@@ -244,15 +240,6 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		View dividerView;
 	}
 
-	private static class ViewHolderMajor {
-		TextView zymcTextView;
-		TextView personNumberTextView;
-		TextView t1;
-		TextView t2;
-		TextView t3;
-		TextView tBtn;
-	}
-	
 	private class ItemAdapter extends BaseAdapter implements
 			AdapterView.OnItemClickListener {
 		public int getCount() {
@@ -302,231 +289,20 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 
-			String yxdh = mItemList.get(position).getYxdh();
+			//String yxdh = mItemList.get(position).getYxdh();
 			String luqupic = mLuqupici;
 			String lqqk = mLuquQingkuang;
 
 			SchoolItem schoolItem = (SchoolItem) parent.getAdapter().getItem(
 					position);
-			shaiXuanByCollege(schoolItem);
-		}
-	}
-
-	private class MajorItemAdapter extends BaseAdapter implements
-			AdapterView.OnItemClickListener {
-		private String xydh;
-
-		public int getCount() {
-			return mZyData.size();
-		}
-
-		public long getItemId(int position) {
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			final ViewHolderMajor holder;
-			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_zhuanye_by_colleage, null,
-						false);
-				holder = new ViewHolderMajor();
-				holder.zymcTextView = (TextView) convertView
-						.findViewById(R.id.zymc);
-				holder.personNumberTextView = (TextView) convertView
-						.findViewById(R.id.person_num);
-				holder.t1 = (TextView) convertView
-						.findViewById(R.id.text1);
-				holder.t2 = (TextView) convertView
-						.findViewById(R.id.text3);
-				holder.t3 = (TextView) convertView
-						.findViewById(R.id.text5);
-				holder.tBtn = (TextView) convertView
-						.findViewById(R.id.collect);
-				AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-						AbsListView.LayoutParams.MATCH_PARENT,
-						mResources.getDimensionPixelSize(R.dimen.dimen_34_dip));
-				convertView.setLayoutParams(lp);
-			} else {
-				holder = (ViewHolderMajor) convertView.getTag();
-			}
-			convertView.setTag(holder);
-
-			final MajorItem majorItem = mZyData.get(position);
-
-			holder.zymcTextView.setText(majorItem.getZymc());
-			holder.personNumberTextView.setText("共录取"+majorItem.getLqrs()+"人");
-			holder.t1.setText(String.valueOf(majorItem.getMin()));
-			holder.t2.setText(String.valueOf(majorItem.getMax()));
-			holder.t3.setText(String.valueOf(majorItem.getPjz()));
 			
-			holder.tBtn.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					//final String yxdh, final String zydh,
-					//final String zymc, final int lqpc
-					shouCangZhuanYe(item2.getYxdh(),majorItem.getZydh(),majorItem.getZymc(),mLuqupici);
-				}
-			});
-			return convertView;
-		}
-
-		public Object getItem(int position) {
-			return mZyData.get(position);
-		}
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			Intent intent = new Intent(getActivity(), MajorDetailActivity.class);
-			intent.putExtra("yxdh", getXydh());
-			MajorItem item = ((MajorItem) parent.getAdapter().getItem(position));
-			intent.putExtra("zydh", item.getZydh());
-			intent.putExtra("yxpc", item.getLqpc());
-			intent.putExtra(MajorDetailActivity.SOURSE_TAG, item.getSource());
+			Log.i("TAG", schoolItem.yxdh);
+			Intent intent = new Intent(getActivity(), ManulSearchSchollDetailActivity.class);
+			intent.putExtra("lqpc", mLuqupici);
+			intent.putExtra("lqqk", mLuquQingkuang);
+			intent.putExtra("yxdh", schoolItem.yxdh);
 			startActivity(intent);
 		}
-
-		private int getImgId(int position) {
-			switch (position) {
-			case 0:
-				return R.drawable.xuexiao_1;
-			case 1:
-				return R.drawable.xuexiao_2;
-			case 2:
-				return R.drawable.xuexiao_3;
-			default:
-				return R.drawable.xuexiao_2;
-			}
-		}
-
-		public String getXydh() {
-			return xydh;
-		}
-
-		public void setXydh(String xydh) {
-			this.xydh = xydh;
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void shouCangZhuanYe(final String yxdh, final String zydh,
-			final String zymc, final String lqpc) {
-		final FastJsonRequest request = new FastJsonRequest(
-				Request.Method.POST, Url.SHOU_CANG_ZHUAN_YE, null,
-				new VolleyResponseListener(getActivity()) {
-					@Override
-					public void onSuccessfulResponse(JSONObject response,
-							boolean success) {
-						Log.i(TAG, response.toJSONString());
-						if (success) {
-							JSONObject result = response
-									.getJSONObject("result");
-							int status = result.getInteger("status");
-							if (status == 1) {
-
-							}
-							Toast.makeText(getActivity(),
-									result.getString("msgText"),
-									Toast.LENGTH_SHORT).show();
-						} else {
-							ErrorData errorData = AppHelper
-									.getErrorData(response);
-							Toast.makeText(getActivity(), errorData.getText(),
-									Toast.LENGTH_SHORT).show();
-						}
-					}
-				}, new VolleyErrorListener() {
-					@Override
-					public void onVolleyErrorResponse(VolleyError volleyError) {
-						LogUtil.logNetworkResponse(volleyError, TAG);
-						Toast.makeText(
-								getActivity(),
-								getResources().getString(
-										R.string.internet_exception),
-								Toast.LENGTH_SHORT).show();
-					}
-				}) {
-			@Override
-			protected Map<String, String> getParams() throws AuthFailureError {
-				User user = User.getInstance();
-				Map<String, String> map = new HashMap<String, String>();
-				map.put("userId", user.getId());
-				map.put("yxdh", yxdh); // 院校代号
-				map.put("zydh", zydh); // 专业代号
-				map.put("zymc", zymc); // 专业名称
-				map.put("lqpc", String.valueOf(lqpc)); // 录取批次
-				map.put("source", "2");// 收藏来源 1为手工筛选 2为智能推荐
-				Log.i(TAG, Arrays.toString(map.entrySet().toArray()));
-				return AppHelper.makeSimpleData("search", map);
-			}
-		};
-		EduApp.sRequestQueue.add(request);
-	}
-
-	Item2 item2;
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void shaiXuanByCollege(final SchoolItem schoolItem) {
-		final FastJsonRequest request = new FastJsonRequest(
-				Request.Method.POST, Url.SHAI_XUAN_BY_COLLEGE, null,
-				new VolleyResponseListener(getActivity()) {
-					@Override
-					public void onSuccessfulResponse(JSONObject response,
-							boolean success) {
-						Log.i(TAG, response.toJSONString());
-						if (success) {
-							String datas = response.getString("datas");
-							item2 = JSON.parseObject(datas, Item2.class);
-							mZyData.clear();
-							mZyData.addAll(item2.getZydata());
-
-							mSearchResulListView.setVisibility(View.INVISIBLE);
-							mMajorResultListView.setVisibility(View.VISIBLE);
-							mMajorResultListView
-									.setOnItemClickListener(mMajorAdapter);
-							mMajorAdapter.setXydh(schoolItem.getYxdh());
-							mMajorAdapter.notifyDataSetChanged();
-						} else {
-							ErrorData errorData = AppHelper
-									.getErrorData(response);
-							Toast.makeText(getActivity(), errorData.getText(),
-									Toast.LENGTH_SHORT).show();
-						}
-					}
-				}, new VolleyErrorListener() {
-					@Override
-					public void onVolleyErrorResponse(VolleyError volleyError) {
-						LogUtil.logNetworkResponse(volleyError, TAG);
-						Toast.makeText(
-								getActivity(),
-								getResources().getString(
-										R.string.internet_exception),
-								Toast.LENGTH_SHORT).show();
-					}
-				}) {
-			@Override
-			protected Map<String, String> getParams() throws AuthFailureError {
-				User user = User.getInstance();
-				Map<String, String> map = new HashMap<String, String>();
-				map.put("yxdh", schoolItem.getSchoolName());
-				if (TextUtils.isEmpty(mLuqupici)) {
-					mLuqupici = "3";
-				}
-				map.put("lqpc", mLuqupici);
-				if (TextUtils.isEmpty(mLuquqingkuang)) {
-					mLuquqingkuang = getLuquQingkuang(new Intent());
-				}
-				Log.i(TAG, "mLuquqingkuang=" + mLuquqingkuang);
-				map.put("lqqk", mLuquqingkuang);
-				map.put("kskl", String.valueOf(user.getKskl()));
-				map.put("kqdh", String.valueOf(user.getKqdh()));
-				Log.i(TAG, AppHelper.makeSimpleData("searchmajor", map)
-						.toString());
-				return AppHelper.makeSimpleData("searchmajor", map);
-			}
-		};
-		EduApp.sRequestQueue.add(request);
 	}
 
 	private class SchoolItem {
@@ -922,16 +698,5 @@ public class ManualTimFragment extends CommonFragment implements PullToRefreshBa
 	@Override
 	protected String getLogTag() {
 		return TAG;
-	}
-
-	public boolean back() {
-		if (mMajorResultListView.getVisibility() == View.VISIBLE) {
-			mMajorResultListView.setVisibility(View.GONE);
-			mSearchResulListView.setVisibility(View.VISIBLE);
-			mZyData.clear();
-			return false;
-		} else {
-			return true;
-		}
 	}
 }

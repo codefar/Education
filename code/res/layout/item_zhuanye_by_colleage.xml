@@ -27,7 +27,7 @@
             android:textSize="@dimen/dimen_12_dip" />
 
         <LinearLayout
-            android:layout_width="@dimen/dimen_51_dip"
+            android:layout_width="@dimen/dimen_61_dip"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true" >
 
@@ -157,7 +157,7 @@
 
         <TextView
             android:id="@+id/collect"
-            android:layout_width="@dimen/dimen_51_dip"
+            android:layout_width="@dimen/dimen_61_dip"
             android:layout_height="@dimen/dimen_17_dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
